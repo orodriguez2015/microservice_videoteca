@@ -24,7 +24,7 @@ import lombok.Setter;
  */
 @Getter @Setter
 @Entity
-@Table(name = "albums")
+@Table(name = "album")
 public class Album {
 
 	private static final long serialVersionUID = 1L;
@@ -42,19 +42,19 @@ public class Album {
     @Column(nullable = false,name = "publico")
     private String publico;
  
-    @Column(nullable = false, updatable = false,name="fechaAlta")
+    @Column(nullable = false, updatable = false,name="fecha_alta")
     @CreationTimestamp
     private Date fechaAlta;
     	    
-    @Column(nullable = true, updatable = true,name="fechaModificacion")    
+    @Column(nullable = true, updatable = true,name="fecha_modificacion")    
     private Date fechaModificacion;
     
     @ManyToOne
-    @JoinColumn(name="idUsuario")
+    @JoinColumn(name="id_usuario")
     private User usuarioAlta;
     
     @ManyToOne
-    @JoinColumn(name="idUsuarioModificacion")
+    @JoinColumn(name="id_usuario_modificacion")
     private User usuarioModificacion;
 	
 }

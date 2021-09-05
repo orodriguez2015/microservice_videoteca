@@ -17,55 +17,38 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Clase de tipo Entity que representa a un registro de la tabla foto de BBDD
- * @author oscar
+ * Entidad Video
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez</a>
  *
  */
 @Getter @Setter
 @Entity
-@Table(name = "foto")
-public class Foto {
-	    
-    @Id
+@Table(name = "video")
+public class Video {
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @Column(nullable = false,name = "nombre")
     private String nombre;
     
-    @Column(nullable = false,name = "ruta")
-    private String ruta;
+    @Column(nullable = false,name = "extension")
+    private String extension;
     
-    @Column(nullable = false,name = "rutaMiniatura")
-    private String rutaMiniatura;
-     
     @Column(nullable = false,name = "publico")
     private String publico;
-        
-    @Column(nullable = false,name = "alto")
-    private Integer alto;
-    
-    @Column(nullable = false,name = "ancho")
-    private Integer ancho;
-    
-    @Column(nullable = true,name = "numeroVisualizaciones")
-    private Integer numeroVisualizaciones;
-    
-    @Column(nullable = true,name = "tipoMime")
-    private String tipoMime;
-    
-    @Column(nullable = false, updatable = false,name="fechaAlta")
+            
+    @Column(nullable = false, updatable = false,name="fecha_alta")
     @CreationTimestamp
     private Date fechaAlta;
         
-    @JoinColumn(name="id_usuario")
+    @JoinColumn(name="id_usuario", nullable=false,updatable=true)
     @ManyToOne
     private User usuario;
     
-    @JoinColumn(name="id_album")
+    @JoinColumn(name="id_videoteca", nullable=false,updatable=true)
     @ManyToOne
-    private Album album;
-    
-    
+    private Videoteca videoteca;
 	
 }

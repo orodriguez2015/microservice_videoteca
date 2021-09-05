@@ -17,13 +17,13 @@ import lombok.Setter;
 
 
 /**
- * Representa la tabla Users de la BBDD
+ * Representa un registro de la tabla users de la BBDD
  * @author oscar
  *
  */
 @Getter @Setter
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User implements Serializable {
  
     private static final long serialVersionUID = 1L;
@@ -56,14 +56,14 @@ public class User implements Serializable {
     @Column(name = "activo")
     private Boolean activo;
     
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false, name="fecha_alta")
     @CreationTimestamp
     private Date fechaAlta;
     
-    @Column(nullable = true, updatable = true)    
+    @Column(nullable = true, updatable = true, name="fecha_modificacion")    
     private Date fechaModificacion;
     
-    @Column(nullable = true, updatable = true)    
+    @Column(nullable = true, updatable = true,name="fecha_baja")    
     private Date fechaBaja;
     
     
