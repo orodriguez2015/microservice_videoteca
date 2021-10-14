@@ -11,11 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oscar.videoteca.rest.dto.UserDTO;
-import com.oscar.videoteca.rest.dto.mapping.UserConverter;
-import com.oscar.videoteca.rest.exception.UserNotFoundException;
 import com.oscar.videoteca.rest.exception.api.ResponseError;
 import com.oscar.videoteca.rest.manager.UserManager;
-import com.oscar.videoteca.rest.model.repository.UserRepository;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -28,12 +25,6 @@ import io.swagger.annotations.ApiResponses;
  */
 @RestController
 public class UserController {
-
-	@Autowired
-	private UserRepository userRepository;
-	
-	@Autowired
-	private UserConverter userConverter;
 	
 	@Autowired
 	private UserManager userManager;
