@@ -25,9 +25,23 @@ public class GlobalControllerAdvice {
 	 * @return ResponseEntity<UserNotFoundException>
 	 */
 	@ExceptionHandler(UserNotFoundException.class)
-	public ResponseEntity<ResponseError> handleProductoNotFoundException(UserNotFoundException e) {
+	public ResponseEntity<ResponseError> handleUserNotFoundException(UserNotFoundException e) {
 		ResponseError error = new ResponseError(HttpStatus.NOT_FOUND,e.getMessage());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
+	
+
+	/**
+	 * Manejador para excepciones de tipo UserLoginExistsException. Esto permite controlar la salida
+	 * para devolver exactamente lo que se quiere devolver, y customizar la salida de Spring
+	 * @param e UserLoginExistsException
+	 * @return ResponseEntity<UserLoginExistsException>
+	 */
+	@ExceptionHandler(UserLoginExistsException.class)
+	public ResponseEntity<ResponseError> handleUserLoginExistsException(UserLoginExistsException e) {
+		ResponseError error = new ResponseError(HttpStatus.BAD_REQUEST,e.getMessage());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 	}
 	
 

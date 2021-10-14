@@ -14,7 +14,7 @@ import com.oscar.videoteca.rest.dto.UserDTO;
 import com.oscar.videoteca.rest.dto.mapping.UserConverter;
 import com.oscar.videoteca.rest.exception.UserNotFoundException;
 import com.oscar.videoteca.rest.exception.api.ResponseError;
-import com.oscar.videoteca.rest.model.entity.User;
+import com.oscar.videoteca.rest.manager.UserManager;
 import com.oscar.videoteca.rest.model.repository.UserRepository;
 
 import io.swagger.annotations.ApiOperation;
@@ -35,6 +35,9 @@ public class UserController {
 	@Autowired
 	private UserConverter userConverter;
 	
+	@Autowired
+	private UserManager userManager;
+	
 	
 	
 	/**
@@ -50,9 +53,7 @@ public class UserController {
 		@ApiResponse(code=500,message="Internal Server Error",response=ResponseError.class)
 	})
 	public UserDTO getUser(@PathVariable Long id) {
-		return userRepository.findById(id).map(user->{
-			return userConverter.convertTo(user);
-		}).orElseThrow(() -> new UserNotFoundException(id));
+		return userManager.getUser(id);
 		
 	}
 	
@@ -71,13 +72,12 @@ public class UserController {
 		@ApiResponse(code=500,message="Internal Server Error",response=ResponseError.class)
 	})
 	public ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO nuevo){
-		System.out.println("saveUser");
-		
-		User user = userRepository.save(userConverter.convertTo(nuevo));
-		return ResponseEntity.status(HttpStatus.CREATED).body(userConverter.convertTo(user));	
-			
+
+		UserDTO salida = userManager.saveUser(nuevo);
+		return ResponseEntity.status(HttpStatus.CREATED).body(salida);
+					
 	}
-	
-	
+
+		
 	
 }
