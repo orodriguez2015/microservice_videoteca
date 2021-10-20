@@ -1,9 +1,10 @@
 package com.oscar.videoteca.rest.manager;
 
+import com.oscar.videoteca.rest.dto.LoginDTO;
 import com.oscar.videoteca.rest.dto.UserDTO;
+import com.oscar.videoteca.rest.dto.authentication.OperationResponseDTO;
 import com.oscar.videoteca.rest.exception.UserLoginExistsException;
 import com.oscar.videoteca.rest.exception.UserNotFoundException;
-import com.oscar.videoteca.rest.model.entity.User;
 
 /**
  * Interface UserManager
@@ -44,4 +45,13 @@ public interface UserManager {
 	 * @throws UserNotFoundException si ocurre algún error
 	 */
 	UserDTO getUser(Long id) throws UserNotFoundException;
+	
+	
+	/**
+	 * Valida un usuario contra la BBDD
+	 * @param login
+	 * @return
+	 * @throws OperationResponseDTO
+	 */
+	OperationResponseDTO validarUsuario(LoginDTO login) throws UserNotFoundException;
 }

@@ -72,9 +72,9 @@ public class GlobalControllerAdvice {
 	
 	
 	/**
-	 * Se controla un 
-	 * @param e
-	 * @return
+	 * Se controla un error genérico que pueda ocurrir y que no haya sido controado
+	 * @param e Exception 
+	 * @return ResponseEntity<ResponseError>
 	 */
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ResponseError> handleException(Exception e) {

@@ -21,6 +21,15 @@ public class PasswordUtil {
 	
 	
 	/**
+	 * Método que devuelve el hash MD5 correspondiente a un String
+	 * @param dato String
+	 * @return String
+	 */
+	public static String getMd5(String dato) {
+		return DigestUtils.md5Hex(dato);
+	}
+	
+	/**
 	 * Comprueba si el hash de parámetro <param>hash</param> coincide con el hash SHA1 que se obtiene a partir del 
 	 * @param hash String que contiene un hash SHA1
 	 * @param data String del cual se quiere obtener el hash1 y compararlo con el del parámetro <param>hash</param>

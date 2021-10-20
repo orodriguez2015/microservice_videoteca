@@ -21,4 +21,14 @@ public class UserNotFoundException extends RuntimeException{
 		super("No se puede encontrar el usuario con ID: " + id);
 	}
 	
+	
+	/**
+	 * Constructor
+	 * @param login Login del usuario
+	 */
+	public UserNotFoundException(String login) {
+		super("No se puede encontrar el usuario con login: " + login + " y/o contraseña introducida");
+	}
+	
+	
 }
