@@ -1,5 +1,7 @@
 package com.oscar.videoteca.rest.manager;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import com.oscar.videoteca.rest.dto.LoginDTO;
 import com.oscar.videoteca.rest.dto.UserDTO;
 import com.oscar.videoteca.rest.dto.authentication.OperationResponseDTO;
@@ -48,10 +50,12 @@ public interface UserManager {
 	
 	
 	/**
-	 * Valida un usuario contra la BBDD
+	 * Valida un usuario contra la BBDD, y si el usuario existe genera el token JWT
+	 * que se almacena en el objeto de respuesta de la operación
 	 * @param login
-	 * @return
-	 * @throws OperationResponseDTO
+	 * @return OperationResponseDTO con la respuesta de la operación. Si el usuario se ha podido autenticar, también
+	 * se devuelve el token JWT
+	 * @throws  UsernameNotFoundException en el el caso de que el usuario no exista
 	 */
 	OperationResponseDTO validarUsuario(LoginDTO login) throws UserNotFoundException;
 }

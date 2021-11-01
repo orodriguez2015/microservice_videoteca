@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.oscar.videoteca.rest.authentication.jwt.JwtTokenUtil;
 import com.oscar.videoteca.rest.dto.LoginDTO;
 import com.oscar.videoteca.rest.dto.authentication.OperationResponseDTO;
 import com.oscar.videoteca.rest.exception.api.ResponseError;
@@ -41,11 +42,10 @@ public class LoginController {
 		@ApiResponse(code=500,message="Internal Server Error",response=ResponseError.class)
 	})
 	public ResponseEntity<OperationResponseDTO> autenticarUsuario(@RequestBody LoginDTO nuevo){		
-		OperationResponseDTO respuesta = userManager.validarUsuario(nuevo);
+		OperationResponseDTO respuesta = userManager.validarUsuario(nuevo);	
 		return ResponseEntity.status(HttpStatus.OK).body(respuesta);
-					
 	}
 
 	
-	
+		
 }

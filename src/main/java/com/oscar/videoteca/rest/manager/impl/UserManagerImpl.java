@@ -7,6 +7,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
+import com.oscar.videoteca.rest.authentication.jwt.JwtTokenUtil;
 import com.oscar.videoteca.rest.dto.LoginDTO;
 import com.oscar.videoteca.rest.dto.UserDTO;
 import com.oscar.videoteca.rest.dto.authentication.OperationResponseDTO;
@@ -32,6 +33,9 @@ public class UserManagerImpl implements UserManager{
 	
 	@Autowired
 	private UserConverter userConverter;
+	
+	@Autowired
+	private JwtTokenUtil jwtTokeUtil;
 
 	
 	/**
@@ -86,16 +90,13 @@ public class UserManagerImpl implements UserManager{
 		ExampleMatcher ignoringExampleMatcher = ExampleMatcher.matchingAll()
 			      .withMatcher("login", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase())
 			      .withMatcher("password", ExampleMatcher.GenericPropertyMatchers.startsWith().ignoreCase());
-	
-		
-		
+			
 		// Se busca un usuario con el login y el password
 		User user = new User();
 		user.setLogin(login.getLogin());
 		user.setPassword(PasswordUtil.getSha1(login.getPassword()));
 				
 		Example<User> example = Example.of(user, ignoringExampleMatcher);
-
 		
 		// Se buscan los usuarios que tengan el login y password introducidos por el usuario
 		List<User> usuarios = userRepository.findAll(example);
@@ -103,6 +104,7 @@ public class UserManagerImpl implements UserManager{
 		if(usuarios!=null && Boolean.FALSE.equals(usuarios.isEmpty())) {
 			response.setCodStatus(0);
 			response.setDescStatus("Autenticacion correcta");
+			response.setTokenJwt(jwtTokeUtil.generateToken(login.getLogin()));
 		}		
 		return response;		
 	}
@@ -126,7 +128,6 @@ public class UserManagerImpl implements UserManager{
 		
 		// Se buscan los usuarios que tengan un determinado login
 		List<User> usuarios = userRepository.findAll(example);
-		
 		if(usuarios!=null && Boolean.FALSE.equals(usuarios.isEmpty())) {
 			exito =Boolean.TRUE;
 		}
