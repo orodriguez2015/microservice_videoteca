@@ -40,7 +40,7 @@ public class Videoteca {
     private String rutaCompleta;
      
     @Column(nullable = false,name = "publico")
-    private String publico;
+    private Boolean publico;
         
     @Column(nullable = false, updatable = false,name="fecha_alta")
     @CreationTimestamp

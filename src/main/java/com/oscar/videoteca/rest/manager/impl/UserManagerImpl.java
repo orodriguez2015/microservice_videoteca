@@ -35,7 +35,7 @@ public class UserManagerImpl implements UserManager{
 	private UserConverter userConverter;
 	
 	@Autowired
-	private JwtTokenUtil jwtTokeUtil;
+	private JwtTokenUtil jwtTokenUtil;
 
 	
 	/**
@@ -104,7 +104,7 @@ public class UserManagerImpl implements UserManager{
 		if(usuarios!=null && Boolean.FALSE.equals(usuarios.isEmpty())) {
 			response.setCodStatus(0);
 			response.setDescStatus("Autenticacion correcta");
-			response.setTokenJwt(jwtTokeUtil.generateToken(login.getLogin()));
+			response.setTokenJwt(jwtTokenUtil.generateToken(login.getLogin()));
 		}		
 		return response;		
 	}
