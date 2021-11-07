@@ -34,7 +34,7 @@ public class VideotecasController {
 	 * @return UserDTO
 	 */
 	@GetMapping(value="/p_videoteca")
-	@ApiOperation(value="Recupera laBearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJ2aWRlb3RlY2FKV1QiLCJzdWIiOiJhZG1pbiIsImF1dGhvcml0aWVzIjpbIlJPTEVfVVNFUiJdLCJpYXQiOjE2MzYyMzk3OTAsImV4cCI6MTYzNjI0MDM5MH0.OeYHYkY5x_Uxq5p_5SbH5VOpj5lBeTsshdBg20QVO97RDLPuUdXiNKESBtMEMcvjaysKUa7llQmk2iVf7f6ODgs videotecas públicas",notes="Provee un mecanismo para recuperar las videotecas públicas")
+	@ApiOperation(value="Recupera las videotecas públicas",notes="Provee un mecanismo para recuperar las videotecas públicas")
 	@ApiResponses(value={
 		@ApiResponse(code=200,message="OK",response=VideotecaDTO.class),
 		@ApiResponse(code=404,message="Not Found",response=ResponseError.class),
