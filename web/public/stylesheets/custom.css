@@ -1,0 +1,129 @@
+body {
+    font-family: Verdana,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 11pt;
+}
+
+.container {
+    margin-top:10px
+}
+
+.subtitulo {
+    margin-top: 15px;
+    font-family: Verdana,Arial, Helvetica, sans-serif;
+}
+
+a.tituloWeb {
+    color: #D05803;
+    font-family: Verdana,Open Sans,sans-serif;
+    font-size: 16px;
+}
+
+a.tituloWeb:hover {
+    color: #D05803;
+    font-family: Verdana,Open Sans,sans-serif;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+a.nombreAlbum  {
+    color: #D05803;
+    font-family: Verdana,Open Sans,sans-serif;
+    font-size: 25px;
+}
+
+a.nombreAlbum:hover {
+    color: #D05803;
+    font-family: Verdana,Open Sans,sans-serif;
+    font-size: 25px;
+    text-decoration: underline;
+}
+
+.imagenMiniatura {
+    float: left;
+    margin-left:45px;
+}
+
+.cabeceraMensajeError {
+    margin-top: 20px;
+    color: red;
+    font-family: Verdana,Open Sans,sans-serif;
+    font-size: 30px;
+}
+
+
+.estiloBordeDivPrueba {
+    border: 1px solid #000000;
+}
+
+.estiloBotoneraFormulario {
+    border: 0px solid #000000;
+    width:20%;
+    text-align: right;
+    margin-left:208px;
+}
+
+
+.d-flex {
+    display: flex!important;
+    height: 30vh;
+    border: 1px solid #FFFFFF
+}
+
+.center {
+    margin: 0 auto;
+    align-self: center;
+}
+
+.DISPLAY_NONE {
+    display: none;
+}
+
+.vjsControls {
+    display: none; 
+    top: 229px;
+}
+
+
+.contenedorVideo {
+    border: 0px solid rgba(135, 125, 145, 0.719);
+    width:30%;
+    float: left;
+    margin-left: 12px;
+}
+
+.idVideoFoto {
+    font-size:14px;
+    margin-left:10px;
+}
+
+.nombreVideoFoto {
+    font-size: 14pt;
+    margin-left:10px;
+}
+
+
+.mensajeError {
+    color:red;
+    font-size:20px;
+    display: inline-block;
+    margin-left:auto;
+    margin-right:auto;
+    margin-bottom: 10pt;
+}
+
+
+
+a.visorMultimedia:hover {
+    color: #000000;
+    font-family: Verdana,Open Sans,sans-serif;
+    font-size: 14px;
+    text-decoration: underline;
+}
+
+
+a.visorMultimedia {
+    color: #000000;
+    font-family: Verdana,Open Sans,sans-serif;
+    font-size: 14px;
+    text-decoration: none;
+}

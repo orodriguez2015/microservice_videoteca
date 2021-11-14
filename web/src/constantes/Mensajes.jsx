@@ -1,0 +1,1 @@
+export const MENSAJE_ERROR_GENERICO = "Operación no permitida. Contacte con el administrador";

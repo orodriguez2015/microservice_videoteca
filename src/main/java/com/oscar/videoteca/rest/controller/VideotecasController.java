@@ -33,7 +33,7 @@ public class VideotecasController {
 	 * @param id Id del usuario
 	 * @return UserDTO
 	 */
-	@GetMapping(value="/p_videoteca")
+	@GetMapping(value="/p_videotecas")
 	@ApiOperation(value="Recupera las videotecas públicas",notes="Provee un mecanismo para recuperar las videotecas públicas")
 	@ApiResponses(value={
 		@ApiResponse(code=200,message="OK",response=VideotecaDTO.class),
@@ -41,7 +41,6 @@ public class VideotecasController {
 		@ApiResponse(code=500,message="Internal Server Error",response=ResponseError.class)
 	})
 	public ResponseEntity<?> getVideotecasPublicas() {
-
 		List<VideotecaDTO> videotecas = videotecaManager.getVideotecasPublicas();
 
 		if(videotecas==null || Boolean.TRUE.equals(videotecas.isEmpty())) {

@@ -26,9 +26,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "album")
 public class Album {
-
-	private static final long serialVersionUID = 1L;
-	     
+     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -40,7 +38,7 @@ public class Album {
     private String descripcion;
      
     @Column(nullable = false,name = "publico")
-    private String publico;
+    private Boolean publico;
  
     @Column(nullable = false, updatable = false,name="fecha_alta")
     @CreationTimestamp
@@ -54,7 +52,7 @@ public class Album {
     private User usuarioAlta;
     
     @ManyToOne
-    @JoinColumn(name="id_usuario_modificacion")
+    @JoinColumn(name="id_usuario_mod")
     private User usuarioModificacion;
 	
 }
