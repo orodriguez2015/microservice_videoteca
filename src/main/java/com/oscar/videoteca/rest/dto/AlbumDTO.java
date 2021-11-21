@@ -15,7 +15,12 @@ import lombok.Setter;
 @Setter
 public class AlbumDTO implements Serializable {
 
-    private Long id;
+ 
+	private static final long serialVersionUID = 1L;
+
+	private final String BLANK_SPACE = " ";
+	
+	private Long id;
     
     private String nombre;
     
@@ -29,6 +34,20 @@ public class AlbumDTO implements Serializable {
     
     private String loginUsuarioAlta;
     
-    //private String usuarioModificacion;
+    private String nombreUsuarioAlta;
+    
+    private String apellido1UsuarioAlta;
 
+    private String apellido2UsuarioAlta;
+    
+    
+    /**
+     * Devuelve el nombre comppleto del usuario que ha dado de alta el álbum
+     * @return String
+     */
+    public String getNombreCompleto() {
+    	return this.nombreUsuarioAlta.concat(BLANK_SPACE).concat(this.apellido1UsuarioAlta).concat(BLANK_SPACE).concat(this.apellido2UsuarioAlta);
+    }
+    
 }
+

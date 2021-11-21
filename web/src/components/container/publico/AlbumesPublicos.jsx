@@ -49,10 +49,10 @@ class AlbumesPublicos extends React.Component {
                 <p>Desde esta sección tendrás acceso a las fotografías que los usuarios han publicado</p>
      
                 {this.state.albumes.map((value, index) => {
-                    return <div key={value.ID}>
-                                <NavLink to={{ pathname:`p_album/${value.ID}`,state:{nombre:`${value.NOMBRE}`}}} className="nombreAlbum">{value.NOMBRE}</NavLink>
-                                <p>{value.DESCRIPCION}</p>
-                                <p>Dado de alta el {value.FECHAALTA} por {value.NOMBREUSUARIO}</p>
+                    return <div key={value.id}>
+                                <NavLink to={{ pathname:`p_album/${value.id}`,state:{nombre:`${value.nombre}`}}} className="nombreAlbum">{value.nombre}</NavLink>
+                                <p>{value.descricion}</p>
+                                <p>Dado de alta el {value.fechaAlta} por {value.nombreCompleto}</p>
                            </div>
                 })}
             </div>
