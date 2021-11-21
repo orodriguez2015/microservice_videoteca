@@ -7,7 +7,7 @@ export const URL_BACKEND = "http://localhost:8080/videoteca";
 /*
  * POST /login: URL a la que se envía una petición por POST para comprobar si un usuario está autenticado
  */
-export const LOGIN_API = URL_BACKEND + "/autenticar";
+export const LOGIN_API = URL_BACKEND + "/login";
 
 /*
  * GET /p_albumes: URL a la que se envía una petición por GET para recuperar los álbumes fotográficos
