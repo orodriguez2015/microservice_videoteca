@@ -16,4 +16,12 @@ public interface AlbumManager {
 	 * @return List<AlbumDTO>
 	 */
 	List<AlbumDTO> getAlbumesPublicos();
+	
+	
+	/**
+	 * Recupera los álbumes fotográficos de un determinado usuario
+	 * @param idUsuario Long
+	 * @return List<AlbumDTO>
+	 */
+	List<AlbumDTO> getAlbumesUsuario(Long idUsuario);
 }

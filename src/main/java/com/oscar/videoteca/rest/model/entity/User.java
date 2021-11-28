@@ -12,14 +12,13 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 
 /**
  * Representa un registro de la tabla users de la BBDD
- * @author oscar
+ * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez</a>
  *
  */
 @Getter @Setter

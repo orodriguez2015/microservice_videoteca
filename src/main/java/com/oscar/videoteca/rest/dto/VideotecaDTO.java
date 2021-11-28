@@ -1,5 +1,6 @@
 package com.oscar.videoteca.rest.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import lombok.Getter;
@@ -12,7 +13,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class VideotecaDTO {
+public class VideotecaDTO implements Serializable{
+
+	private static final long serialVersionUID = 6290523579825421361L;
 
 	private Long id;
     
@@ -30,7 +33,6 @@ public class VideotecaDTO {
   
     private Date fechaBaja;
         
-    //private User usuario;
     private String loginUsuario;
 	
 }

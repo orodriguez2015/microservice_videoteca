@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.oscar.videoteca.rest.dto.UserDTO;
+import com.oscar.videoteca.rest.dto.UserLoginDTO;
 import com.oscar.videoteca.rest.model.entity.User;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,16 @@ public class UserConverter {
 	 */
 	public User convertTo(UserDTO user) {
 		return modelMapper.map(user,User.class);
+	}
+	
+	
+	/**
+	 * Convierte un objeto de tipo User en uno de tipo UserLoginDTO
+	 * @param user User
+	 * @return UserLoginDTO
+	 */
+	public UserLoginDTO convertToUserLoginDTO(User user) {
+		return modelMapper.map(user,UserLoginDTO.class);
 	}
 	
 }

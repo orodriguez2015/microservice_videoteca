@@ -11,10 +11,11 @@ import com.oscar.videoteca.rest.dto.AlbumDTO;
 import com.oscar.videoteca.rest.dto.mapping.AlbumConverter;
 import com.oscar.videoteca.rest.manager.AlbumManager;
 import com.oscar.videoteca.rest.model.entity.Album;
+import com.oscar.videoteca.rest.model.entity.User;
 import com.oscar.videoteca.rest.model.repository.AlbumRepository;
 
 /**
- * Clase AlbumManagerImpl
+ * Implementación de AlbumManager
  * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez Brea</a>
  *
  */
@@ -35,6 +36,25 @@ public class AlbumManagerImpl implements AlbumManager {
 		
 		Album a = new Album();
 		a.setPublico(Boolean.TRUE);
+		
+		Example<Album> example = Example.of(a,publicMatcher);
+		
+		List<Album> albumes = albumRepository.findAll(example);
+		return converter.converTo(albumes);
+	}
+
+	
+	@Override
+	public List<AlbumDTO> getAlbumesUsuario(Long idUsuario) {
+		
+		ExampleMatcher publicMatcher = ExampleMatcher.matchingAll()
+			      .withMatcher("idUsuarioAlta", ExampleMatcher.GenericPropertyMatchers.exact());	
+		
+		User user = new User();
+		user.setId(idUsuario);
+		
+		Album a = new Album();
+		a.setUsuarioAlta(user);
 		
 		Example<Album> example = Example.of(a,publicMatcher);
 		

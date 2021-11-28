@@ -85,7 +85,9 @@ class WindowModalLogin extends React.Component {
         if(StringUtil.isNotEmpty(login) && StringUtil.isNotEmpty(password)) {
             LoginFacade.authenticate(login,password)
             .then(resultado=>{
-                switch(resultado.status){
+              
+                switch(resultado.codStatus){
+
                     case 0: {
                         // Autenticación correcta, se cierra la ventana modal y hay que modificar
                         // el estado general de la aplicación a autenticado

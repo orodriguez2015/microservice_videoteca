@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.oscar.videoteca.rest.dto.LoginDTO;
-import com.oscar.videoteca.rest.dto.authentication.OperationResponseDTO;
+import com.oscar.videoteca.rest.dto.authentication.LoginResponseDTO;
 import com.oscar.videoteca.rest.exception.api.ResponseError;
 import com.oscar.videoteca.rest.manager.UserManager;
 
@@ -36,12 +36,12 @@ public class LoginController {
 	@PostMapping(value="/login",consumes=MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value="Permite autenticar un usuario contra BBDD",notes="Provee un mecanismo para autenticar a un usuario")
 	@ApiResponses(value={
-		@ApiResponse(code=200,message="OK",response=LoginDTO.class),
+		@ApiResponse(code=200,message="OK",response=LoginResponseDTO.class),
 		@ApiResponse(code=404,message="Not Found",response=ResponseError.class),
 		@ApiResponse(code=500,message="Internal Server Error",response=ResponseError.class)
 	})
-	public ResponseEntity<OperationResponseDTO> autenticarUsuario(@RequestBody LoginDTO nuevo){		
-		OperationResponseDTO respuesta = userManager.validarUsuario(nuevo);	
+	public ResponseEntity<LoginResponseDTO> autenticarUsuario(@RequestBody LoginDTO nuevo){		
+		LoginResponseDTO respuesta = userManager.validarUsuario(nuevo);	
 		return ResponseEntity.status(HttpStatus.OK).body(respuesta);
 	}
 

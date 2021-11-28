@@ -4,7 +4,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.oscar.videoteca.rest.dto.LoginDTO;
 import com.oscar.videoteca.rest.dto.UserDTO;
-import com.oscar.videoteca.rest.dto.authentication.OperationResponseDTO;
+import com.oscar.videoteca.rest.dto.authentication.LoginResponseDTO;
 import com.oscar.videoteca.rest.exception.UserLoginExistsException;
 import com.oscar.videoteca.rest.exception.UserNotFoundException;
 
@@ -57,5 +57,5 @@ public interface UserManager {
 	 * se devuelve el token JWT
 	 * @throws  UsernameNotFoundException en el el caso de que el usuario no exista
 	 */
-	OperationResponseDTO validarUsuario(LoginDTO login) throws UserNotFoundException;
+	LoginResponseDTO validarUsuario(LoginDTO login) throws UserNotFoundException;
 }

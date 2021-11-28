@@ -8,7 +8,7 @@ export const ALBUM_SAVE_API = URL_BACKEND +  "/pr_album/save";
 /*
  * POST /pr_albumes URL a la que se envía una petición por POST para grabar un álbu en el sistema
  */
-export const ALBUMES_USUARIO_ADMIN_API = URL_BACKEND +  "/pr_albumes";
+export const ALBUMES_USUARIO_ADMIN_API = URL_BACKEND +  "/pr_albumes/";
 
 /*
  * GET /pr_album URL a la que se envía una petición por GET para recuperar info. básica de un álbum

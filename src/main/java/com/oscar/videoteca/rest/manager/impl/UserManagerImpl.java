@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
 import com.oscar.videoteca.rest.authentication.jwt.JwtTokenUtil;
 import com.oscar.videoteca.rest.dto.LoginDTO;
 import com.oscar.videoteca.rest.dto.UserDTO;
-import com.oscar.videoteca.rest.dto.authentication.OperationResponseDTO;
+import com.oscar.videoteca.rest.dto.UserLoginDTO;
+import com.oscar.videoteca.rest.dto.authentication.LoginResponseDTO;
 import com.oscar.videoteca.rest.dto.mapping.UserConverter;
 import com.oscar.videoteca.rest.exception.UserEmailExistsException;
 import com.oscar.videoteca.rest.exception.UserLoginExistsException;
@@ -82,8 +83,8 @@ public class UserManagerImpl implements UserManager{
 
 
 	@Override
-	public OperationResponseDTO validarUsuario(LoginDTO login) throws UserNotFoundException {
-		OperationResponseDTO response = new OperationResponseDTO();
+	public LoginResponseDTO validarUsuario(LoginDTO login) throws UserNotFoundException {
+		LoginResponseDTO response = new LoginResponseDTO();
 		response.setCodStatus(1);
 		response.setDescStatus("Autenticación incorrecta");
 		
@@ -104,7 +105,11 @@ public class UserManagerImpl implements UserManager{
 		if(usuarios!=null && Boolean.FALSE.equals(usuarios.isEmpty())) {
 			response.setCodStatus(0);
 			response.setDescStatus("Autenticacion correcta");
-			response.setTokenJwt(jwtTokenUtil.generateToken(login.getLogin()));
+			
+			UserLoginDTO userDTO = userConverter.convertToUserLoginDTO(usuarios.get(0));
+			userDTO.setAuthenticationToken(jwtTokenUtil.generateToken(login.getLogin()));
+			response.setUser(userDTO);
+			
 		}		
 		return response;		
 	}

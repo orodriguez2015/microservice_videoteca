@@ -2,6 +2,8 @@ package com.oscar.videoteca.rest.dto.authentication;
 
 import java.io.Serializable;
 
+import com.oscar.videoteca.rest.dto.UserLoginDTO;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,15 +14,17 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class OperationResponseDTO implements Serializable {
+public class LoginResponseDTO implements Serializable {
 
-    /** Código de estado/respuesta de la operación de un servicio */
+    /**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 722066133643744313L;
+	/** Código de estado/respuesta de la operación de un servicio */
 	private Integer codStatus;
 	/** Código de estado/respuesta de la operación de un servicio */
 	private String descStatus;
-	
-	/** Contiene el token JWT */
-	private String tokenJwt;
-	
+	/** Atributo que contiene los datos del usuario */
+	private UserLoginDTO user;
 	
 }

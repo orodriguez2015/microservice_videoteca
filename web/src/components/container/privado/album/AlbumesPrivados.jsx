@@ -38,31 +38,24 @@ class AlbumesPrivados extends ComponenteAutenticado {
 
             let user = AlmacenFacade.getUser();
             
-            AlbumFacade.getAlbumesUsuario(user.id).then(resultado=>{
+            AlbumFacade.getAlbumesUsuario(user).then(resultado=>{
                 if(resultado!==undefined && resultado!==null) {
-                    switch(resultado.status) {
-                        case 0: {
-                            this.setState({
-                                albumes: resultado.resultados,
-                                error: false,
-                                descError: ''
-                            });
-                            break;
-                        }
-                        case 1: {
-                            this.setState({
-                                albumes: [],
-                                error: true,
-                                descError: "Se ha producido un error al recuperar sus álbumes fotográficos"
-                            });
-                            break;
-                        }
 
-                        default: {
-                            break;
-                        }
+                    if(resultado.status!==undefined) {
+                        // Se ha producido un error de tipo 404,500, etc
+                        this.setState({
+                            albumes: [],
+                            error: true,
+                            descError: "Se ha producido un error al recuperar sus álbumes fotográficos"
+                        });
+                    } else {
+                        this.setState({
+                            albumes: resultado,
+                            error: false,
+                            descError: ''
+                        });
                     }
-                }
+                 }
                 
             }).catch(err=>{
                 this.setState({
@@ -169,20 +162,20 @@ class AlbumesPrivados extends ComponenteAutenticado {
                     <tbody>
 
                     {this.state.albumes.map((value, index) => {
-                        let publico = (value.PUBLICO===1)?'SI':'NO';
+                        let publico = (value.publico===1)?'SI':'NO';
                          return (
-                            <tr key={value.ID}>
-                                <td><a className="visorMultimedia" href={'/pr_album/' + value.ID}>{value.ID}</a></td>
-                                <td><a className="visorMultimedia" href={'/pr_album/' + value.ID}>{value.NOMBRE}</a></td>
-                                <td><a className="visorMultimedia" href={'/pr_album/' + value.ID}>{value.DESCRIPCION}</a></td>
+                            <tr key={value.id}>
+                                <td><a className="visorMultimedia" href={'/pr_album/' + value.ID}>{value.id}</a></td>
+                                <td><a className="visorMultimedia" href={'/pr_album/' + value.ID}>{value.nombre}</a></td>
+                                <td><a className="visorMultimedia" href={'/pr_album/' + value.ID}>{value.descripcion}</a></td>
                                 <td><a className="visorMultimedia" href={'/pr_album/' + value.ID}>{publico}</a></td>
-                                <td><a className="visorMultimedia" href={'/pr_album/' + value.ID}>{value.FECHAALTA}</a></td>
+                                <td><a className="visorMultimedia" href={'/pr_album/' + value.ID}>{value.fechaAlta}</a></td>
                                 <td>
-                                    <img src="/images/pencil2.png" width="22" onClick={()=>this.handleEditarAlbum(value.ID)} alt="Editar álbum" title="Editar álbum"/>
+                                    <img src="/images/pencil2.png" width="22" onClick={()=>this.handleEditarAlbum(value.id)} alt="Editar álbum" title="Editar álbum"/>
                                     &nbsp;                                    
-                                    <img src="/images/backup.jpeg" width="22" onClick={()=>this.handleAdjuntarFoto(value.ID)} alt="Adjuntar vídeo" title="Adjuntar vídeo"/>
+                                    <img src="/images/backup.jpeg" width="22" onClick={()=>this.handleAdjuntarFoto(value.id)} alt="Adjuntar vídeo" title="Adjuntar vídeo"/>
                                     &nbsp;
-                                    <img src="/images/full_trash.png" width="22" onClick={()=>this.handleEliminarAlbum(value.ID)} alt="Eliminar álbum" title="Eliminar álbum"/>
+                                    <img src="/images/full_trash.png" width="22" onClick={()=>this.handleEliminarAlbum(value.id)} alt="Eliminar álbum" title="Eliminar álbum"/>
                                 </td>                               
                             </tr>)                           
                     })}
