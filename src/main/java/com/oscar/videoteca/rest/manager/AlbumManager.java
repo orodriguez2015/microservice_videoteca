@@ -32,4 +32,17 @@ public interface AlbumManager {
 	 * @return AlbumDTO con los datos del álbum creado más completos
 	 */
 	AlbumDTO saveAlbum(CreateAlbumDTO album);
+	
+	/**
+	 * Elimina un álbum de BBDD
+	 * @param id Long
+	 */
+	void deleteAlbum(Long id);
+	
+	/**
+	 * Comprueba si existe un álbum en la BBDD
+	 * @param id Long
+	 * @return Boolean
+	 */
+	Boolean existsById(Long id);
 }

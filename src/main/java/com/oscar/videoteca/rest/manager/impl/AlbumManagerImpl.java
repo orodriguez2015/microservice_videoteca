@@ -86,5 +86,28 @@ public class AlbumManagerImpl implements AlbumManager {
 				
 		return salida;
 	}
+	
+	
+	/**
+	 * Comprueba si existe un álbum en la BBDD
+	 * @param id Long
+	 * @return Boolean
+	 */
+	@Override
+	public Boolean existsById(Long id) {
+		return albumRepository.existsById(id);
+	}
+
+
+	@Override
+	public void deleteAlbum(Long id) {
+		// TODO: Eliminar las fotografías almacenadas en BBDD
+		
+		if(Boolean.TRUE.equals(albumRepository.existsById(id))) {
+			albumRepository.deleteById(id);		
+		}
+	
+		
+	}
 
 }

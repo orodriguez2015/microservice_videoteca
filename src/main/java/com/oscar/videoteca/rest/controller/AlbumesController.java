@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -103,5 +104,33 @@ public class AlbumesController {
 		AlbumDTO salida = manager.saveAlbum(album);
 		return ResponseEntity.status(HttpStatus.CREATED).body(salida);
 	}
+
+	
+	
+	/**
+	 * Permite borrar un álbum en BBDD 
+	 * @param album AlbumDTO que contiene la info básica del álbum
+	 * @return ResponseEntity<?>
+	 */
+	@DeleteMapping(value="/private/album/{id}")
+	@ApiOperation(value="Eimina un álbum fotográfico",notes="Provee de un mecanismo para eliminar álbumes fotográficos")
+	@ApiResponses(value={
+			@ApiResponse(code=401,message="Not Found",response=ResponseError.class),
+			@ApiResponse(code=403,message="Not Found",response=ResponseError.class),
+			@ApiResponse(code=404,message="Not Found",response=ResponseError.class),
+			@ApiResponse(code=500,message="Internal Server Error",response=ResponseError.class)
+		})
+	public ResponseEntity<?> deleteAlbum(@PathVariable Long id) {
+
+		if(manager.existsById(id)) {
+			manager.deleteAlbum(id);
+			// En api rest al hacer un delete se devuelve un noContent porque una vez borrado
+			// el producto, este no existe en el servidor
+			return ResponseEntity.noContent().build();
+		} else {
+			return ResponseEntity.notFound().build();
+		}		
+	}
+	
 	
 }
