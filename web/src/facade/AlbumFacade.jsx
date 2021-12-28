@@ -115,11 +115,12 @@ export class AlbumFacade {
      * @param {Integer} idUsuario: Id del usuario
      * @return Una promesa
      */
-    static saveAlbum(nombreAlbum,descripcionAlbum,publico,idUsuario) {
+    static saveAlbum(nombreAlbum,descripcionAlbum,publico,user) {
         let headers =  {
             "Content-Type": "application/json",
             "Access-Control-Request-Headers": "*",
-            "Access-Control-Request-Method": "*"
+            "Access-Control-Request-Method": "*",
+            "Authorization" : user.authenticationToken
         }
 
         var opciones = {
@@ -130,7 +131,7 @@ export class AlbumFacade {
                 nombre: nombreAlbum,
                 descripcion: descripcionAlbum,
                 publico: publico,
-                idUsuario: idUsuario
+                idUsuarioAlta: user.id
             })
         };
 

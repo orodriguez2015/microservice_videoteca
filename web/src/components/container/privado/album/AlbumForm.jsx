@@ -43,24 +43,15 @@ class AlbumForm extends ComponenteAutenticado {
         evt.preventDefault();
         let user = AlmacenFacade.getUser();
        
-        AlbumFacade.saveAlbum(this.nombre.current.value,this.descripcion.current.value,this.publico.current.checked,user.id)
+        AlbumFacade.saveAlbum(this.nombre.current.value,this.descripcion.current.value,this.publico.current.checked,user)
         .then(resultado=>{
-            switch(resultado.status) {
-                case 0: {
-                    // Se redirige a la pantalla de administración de álbumes
-                    window.location.href="/pr_albumes";
-                    break;
-                }
-                case 1: {
-                    this.mostrarMensajeError("Se ha producido un error al guardar el álbum. Intentelo de nuevo");
-                    break;
-                }
-
-                default: {
-                    this.mostrarMensajeError("Se ha producido un error al guardar el álbum. Intentelo de nuevo");
-                    break;
-                }
+            if(resultado!==undefined && resultado.status!==undefined) { 
+                // Se ha producido un error
+                this.mostrarMensajeError("Se ha producido un error al guardar el álbum. Intentelo de nuevo");
+            }else {
+                window.location.href="/pr_albumes";
             }
+
         }).catch(err=>{
             this.mostrarMensajeError("Se ha producido un error genérico al dar de alta el álbum fotográfico. Intentelo de nuevo");
         });        

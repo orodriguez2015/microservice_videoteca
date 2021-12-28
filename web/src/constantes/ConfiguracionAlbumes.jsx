@@ -3,12 +3,12 @@ import {URL_BACKEND} from './Configuracion.jsx';
 /*
  * POST /p_album URL a la que se envía una petición por POST para grabar un álbu en el sistema
  */
-export const ALBUM_SAVE_API = URL_BACKEND +  "/pr_album/save";
+export const ALBUM_SAVE_API = URL_BACKEND +  "/private/album";
 
 /*
  * POST /pr_albumes URL a la que se envía una petición por POST para grabar un álbu en el sistema
  */
-export const ALBUMES_USUARIO_ADMIN_API = URL_BACKEND +  "/pr_albumes/";
+export const ALBUMES_USUARIO_ADMIN_API = URL_BACKEND +  "/private/album/";
 
 /*
  * GET /pr_album URL a la que se envía una petición por GET para recuperar info. básica de un álbum
@@ -20,7 +20,7 @@ export const ALBUM_ADMIN_API = URL_BACKEND +  "/pr_album/";
  * GET /p_albumes: URL a la que se envía una petición por GET para recuperar los álbumes fotográficos
  * marcados como público que se pueden mostrar en la parte pública de la web
  */
-export const ALBUMES_PUBLICO_API = URL_BACKEND +  "/p_albumes";
+export const ALBUMES_PUBLICO_API = URL_BACKEND +  "/public/album";
 
 /*
  * POST /p_album URL a la que se envía una petición por GET para recuperar las fotografías

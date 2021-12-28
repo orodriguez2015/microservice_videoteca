@@ -7,9 +7,7 @@ import ComponenteAutenticado from '../autenticacion/ComponenteAutenticado';
 import ErrorMessage from '../../../error/ErrorMessage';
 import FileList from '../../common/Filelist';
 import ModalProgressBar from '../../common/ModalProgressBar';
-import {AlbumFacade} from '../../../../facade/AlbumFacade';
 import AreaMensajes from '../../../mensajes/AreaMensajes';
-import { AlmacenFacade } from '../../../../store/AlmacenFacade';
 import FileUtil from '../../../../util/FileUtil';
 
 /**

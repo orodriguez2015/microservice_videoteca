@@ -3,6 +3,8 @@ package com.oscar.videoteca.rest.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.oscar.videoteca.constants.ConstantsAuthentication;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,19 +16,16 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AlbumDTO implements Serializable {
-
  
 	private static final long serialVersionUID = 1L;
 
-	private final String BLANK_SPACE = " ";
-	
 	private Long id;
     
     private String nombre;
     
     private String descripcion;
      
-    private String publico;
+    private Boolean publico;
  
     private Date fechaAlta;
     	    
@@ -46,7 +45,7 @@ public class AlbumDTO implements Serializable {
      * @return String
      */
     public String getNombreCompleto() {
-    	return this.nombreUsuarioAlta.concat(BLANK_SPACE).concat(this.apellido1UsuarioAlta).concat(BLANK_SPACE).concat(this.apellido2UsuarioAlta);
+    	return this.nombreUsuarioAlta.concat(ConstantsAuthentication.BLANK_SPACE).concat(this.apellido1UsuarioAlta).concat(ConstantsAuthentication.BLANK_SPACE).concat(this.apellido2UsuarioAlta);
     }
     
 }

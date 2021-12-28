@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.oscar.videoteca.rest.dto.AlbumDTO;
+import com.oscar.videoteca.rest.dto.CreateAlbumDTO;
 import com.oscar.videoteca.rest.model.entity.Album;
 
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,26 @@ public class AlbumConverter {
 	 */
 	public AlbumDTO convertTo(Album album) {
 		return this.mapper.map(album,AlbumDTO.class);
+	}
+	
+	
+	/**
+	 * Convierte unobjeto de tipo AlbumDTO en uno de tipo Album
+	 * @param albumDTO AlbumDTO
+	 * @return Album
+	 */
+	public Album convertTo(AlbumDTO albumDTO) {
+		return this.mapper.map(albumDTO,Album.class);
+	}
+	
+	
+	/**
+	 * Convierte un objeto de tipo CreateAlbumDTO en uno de tipo Album
+	 * @param create CreateAlbumDTO
+	 * @return Album
+	 */
+	public Album convertTo(CreateAlbumDTO create) {
+		return this.mapper.map(create,Album.class);
 	}
 	
 	

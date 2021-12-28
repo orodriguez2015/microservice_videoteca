@@ -18,5 +18,7 @@ public class ConstantsAuthentication {
 	public static final String SECRET_KEY     		= "enunlugardelamancha";
 	public static final String ID_JWT  		 		= "videotecaJWT";
 	
-		
+	// Otros	
+	public static final String BLANK_SPACE = " ";
+	
 }

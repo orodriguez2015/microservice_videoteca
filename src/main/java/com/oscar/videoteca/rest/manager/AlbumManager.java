@@ -3,6 +3,7 @@ package com.oscar.videoteca.rest.manager;
 import java.util.List;
 
 import com.oscar.videoteca.rest.dto.AlbumDTO;
+import com.oscar.videoteca.rest.dto.CreateAlbumDTO;
 
 /**
  * Interface AlbumManager
@@ -24,4 +25,11 @@ public interface AlbumManager {
 	 * @return List<AlbumDTO>
 	 */
 	List<AlbumDTO> getAlbumesUsuario(Long idUsuario);
+	
+	/**
+	 * Persiste un álbum fotográfico en BBDD
+	 * @param album CreateAlbumDTO con la info básica del álbum a crear
+	 * @return AlbumDTO con los datos del álbum creado más completos
+	 */
+	AlbumDTO saveAlbum(CreateAlbumDTO album);
 }

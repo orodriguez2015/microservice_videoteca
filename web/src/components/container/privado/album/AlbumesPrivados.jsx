@@ -162,7 +162,7 @@ class AlbumesPrivados extends ComponenteAutenticado {
                     <tbody>
 
                     {this.state.albumes.map((value, index) => {
-                        let publico = (value.publico===1)?'SI':'NO';
+                        let publico = (value.publico===true)?'SI':'NO';
                          return (
                             <tr key={value.id}>
                                 <td><a className="visorMultimedia" href={'/pr_album/' + value.ID}>{value.id}</a></td>

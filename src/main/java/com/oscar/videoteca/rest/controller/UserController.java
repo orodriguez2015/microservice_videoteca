@@ -51,9 +51,9 @@ public class UserController {
 	
 	
 	/**
-	 * Recupera un determinado usuario de la BBDD
-	 * @param id Id del usuario
-	 * @return UserDTO
+	 * Almacena los datos de un usuario del sistema en BBDD
+	 * @param UserDTO userDTO
+	 * @return UserDTO con los datos del usuario recién creado
 	 */
 	@PostMapping(value="/user",consumes=MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value="Permite dar de alta un usuario",notes="Provee un mecanismo para guardar un determinado usuario")
@@ -63,7 +63,6 @@ public class UserController {
 		@ApiResponse(code=500,message="Internal Server Error",response=ResponseError.class)
 	})
 	public ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO nuevo){
-
 		UserDTO salida = userManager.saveUser(nuevo);
 		return ResponseEntity.status(HttpStatus.CREATED).body(salida);
 					

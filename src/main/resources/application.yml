@@ -15,5 +15,10 @@ authentication:
         "/swagger-ui/**",
         "/login",
         "/p_videotecas",
-        "/p_albumes"
+        "/public/album"
   ]
+# Propiedades configuración carpeta de backup de fotos y videos
+backup:
+   folder:
+      album: /home/oscar/album
+      video: /home/oscar/video
