@@ -24,7 +24,7 @@ import lombok.Setter;
 public class ParentResponse implements Serializable {
 
 	/**
-	 * 
+	 * serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
 	

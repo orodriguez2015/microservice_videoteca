@@ -1,9 +1,12 @@
 package com.oscar.videoteca.rest.manager.impl;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -76,14 +79,19 @@ public class AlbumManagerImpl implements AlbumManager {
 		AlbumDTO salida = null;
 		String folderBackupAlbum = backupConfiguration.getAlbum();
 		if(StringUtils.isNotEmpty(folderBackupAlbum)) {
-			// Se crea la carpeta de backup de álbumes sino existe
-			FileUtil.createFolder(folderBackupAlbum);
-			
-			// Se da de alta el álbum en BBDD
-			
-			Album created = albumRepository.save(converter.convertTo(album));
-			salida = converter.convertTo(created); 
-		}
+			// Se crea la carpeta raíz de backup de álbumes sino existe
+			FileUtil.createFolder(folderBackupAlbum);	
+		} 	
+		
+		// Se da de alta el álbum en BBDD	
+		Album created = albumRepository.save(converter.convertTo(album));
+		
+		// Se crea la subcarpeta propia del álbum en la que se almacenaránsus fotos
+		String folderBackupAlbumDetail = folderBackupAlbum + File.separator + created.getId();
+		FileUtil.createFolder(folderBackupAlbumDetail);
+		
+		salida = converter.convertTo(created); 
+	
 				
 		return salida;
 	}
@@ -102,7 +110,7 @@ public class AlbumManagerImpl implements AlbumManager {
 
 	@Override
 	public Boolean deleteAlbum(Long id,Long idUsuario) {
-		// TODO: Eliminar las fotografías almacenadas en BBDD
+		String folderBackupAlbum = backupConfiguration.getAlbum();
 		
 		Boolean exito  = Boolean.FALSE;
 		ExampleMatcher exampleMatcher = ExampleMatcher.matchingAll()
@@ -121,10 +129,21 @@ public class AlbumManagerImpl implements AlbumManager {
 		Optional<Album> opt = albumRepository.findOne(example);
 		
 		if(opt.isPresent()) {
-			albumRepository.delete(opt.get());
-			exito = Boolean.TRUE;
-		}
-		
+			
+			
+			// Se elimina la subcarpeta que contiene las fotos del álbumm
+			String folderBackupAlbumDetail = folderBackupAlbum + File.separator + id;
+			
+			try {
+				FileUtils.deleteDirectory(new File(folderBackupAlbumDetail));
+				albumRepository.delete(opt.get());
+				exito = Boolean.TRUE;	
+			}catch(IOException e) {
+				exito = Boolean.FALSE;
+				e.printStackTrace();
+			}
+			
+		}		
 		return exito;
 		
 	}

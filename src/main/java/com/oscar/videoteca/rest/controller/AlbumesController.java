@@ -111,7 +111,8 @@ public class AlbumesController {
 	
 	/**
 	 * Permite borrar un álbum en BBDD 
-	 * @param album AlbumDTO que contiene la info básica del álbum
+	 * @param id Id del álbum a borrar
+	 * @param idUsuario Id del usuario al que pertenece el álbum
 	 * @return ResponseEntity<?>
 	 */
 	@DeleteMapping(value="/private/album/{id}/{idUsuario}")
@@ -128,7 +129,7 @@ public class AlbumesController {
 		if(Boolean.TRUE.equals(this.manager.deleteAlbum(id,idUsuario))){
 			// En api rest al hacer un delete se devuelve un noContent porque una vez borrado
 			// el producto, este no existe en el servidor
-			ResponseOperation response = new ResponseOperation();
+			ResponseOperation<Object> response = new ResponseOperation<Object>();
 			response.setStatus(HttpStatus.OK);
 			response.setDescStatus("OK");
 			
