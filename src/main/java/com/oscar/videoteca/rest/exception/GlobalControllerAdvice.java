@@ -82,4 +82,17 @@ public class GlobalControllerAdvice {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
 	}
 	
+
+	/**
+	 * Se controla cuando no se encuentra un determinado álbumun error ge
+	 * @param e Exception 
+	 * @return ResponseEntity<ResponseError>
+	 */
+	@ExceptionHandler(AlbumNotFoundException.class)
+	public ResponseEntity<ResponseError> handleAlbumNotFoundException(AlbumNotFoundException e) {
+		ResponseError error = new ResponseError(HttpStatus.NOT_FOUND,e.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+
+	
 }

@@ -1,5 +1,7 @@
 package com.oscar.videoteca.jwt.security;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,6 +45,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 			.antMatchers(HttpMethod.GET,urlWhiteList.getArrayListaBlancaUrlPorGet()).permitAll() // Lista blanca de url permitidas por GET que no necesitan autenticación JWT
 			.antMatchers(HttpMethod.POST,urlWhiteList.getArrayListaBlancaUrlPorPost()).permitAll() // Lista blanca de url permitidas por POST que no necesitan autenticación JWT
+			//.antMatchers(HttpMethod.DELETE,new String[2]).
 			.anyRequest().authenticated();
 		
 		// Se habilita cors con la configuración por defecto
@@ -59,8 +62,13 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	 */
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
-	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-	    source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+		
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedMethods(Arrays.asList("HEAD", "GET","POST","PUT","DELETE","OPTIONS"));
+		configuration.applyPermitDefaultValues();
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		
 	    return source;
 	   }
 

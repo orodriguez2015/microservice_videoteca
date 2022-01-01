@@ -34,10 +34,12 @@ public interface AlbumManager {
 	AlbumDTO saveAlbum(CreateAlbumDTO album);
 	
 	/**
-	 * Elimina un álbum de BBDD
-	 * @param id Long
+	 * Elimina un álbum de BBDD que pertenezca a un determinado usuario
+	 * @param id Id del álbum a eliminar
+	 * @param idUsuario: Id del usuario al que pertenece el álbum
+	 * @return True si se ha podido borrar y false en caso contrario
 	 */
-	void deleteAlbum(Long id);
+	Boolean deleteAlbum(Long id,Long idUsuario);
 	
 	/**
 	 * Comprueba si existe un álbum en la BBDD

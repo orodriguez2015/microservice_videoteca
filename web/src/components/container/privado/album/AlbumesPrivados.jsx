@@ -99,14 +99,15 @@ class AlbumesPrivados extends ComponenteAutenticado {
         if(idAlbum!==null && idAlbum!==undefined) {
             const user = AlmacenFacade.getUser();
 
-            AlbumFacade.deleteAlbum(idAlbum,user.id)
+            AlbumFacade.deleteAlbum(idAlbum,user)
             .then(resultado=>{
-                if(resultado.status===0) {
+                console.log("resultado = " + JSON.stringify(resultado));
+                if(resultado.status!=undefined && resultado.status==="OK") {
                     window.location.href="/pr_albumes";
                 }
 
             }).catch(err=>{
-                console.log("Se ha producido un error al borrar el álbum");
+                console.log("Se ha producido un error al borrar el álbum : " + err.message);
             });
         }
     }

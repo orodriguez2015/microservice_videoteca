@@ -271,25 +271,22 @@ export class AlbumFacade {
      * @param {Integer} idUsuario : Id del usuario
      * @return Una promesa
      */
-    static deleteAlbum(idAlbum,idUsuario) {
+    static deleteAlbum(idAlbum,user) {
         let headers =  {
             "Content-Type": "application/json",
             "Access-Control-Request-Headers": "*",
-            "Access-Control-Request-Method": "*"
+            "Access-Control-Request-Method": "*",
+            "Authorization" : user.authenticationToken
         }
 
         var opciones = {
             method: 'DELETE',
             mode: 'cors',
-            headers: headers,
-            body: JSON.stringify({
-                idUsuario: idUsuario,
-                idAlbum: idAlbum
-            })
+            headers: headers
         };
 
         return new Promise((resolver, rechazar) => {
-            fetch(ALBUM_ADMIN_API + idAlbum,opciones)
+            fetch(ALBUMES_USUARIO_ADMIN_API + idAlbum + "/" + user.id,opciones)
             .then((response) => {
                 return response.json()
             })

@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.oscar.videoteca.rest.dto.AlbumDTO;
 import com.oscar.videoteca.rest.dto.CreateAlbumDTO;
+import com.oscar.videoteca.rest.exception.AlbumNotFoundException;
 import com.oscar.videoteca.rest.exception.api.ResponseError;
+import com.oscar.videoteca.rest.exception.api.ResponseOperation;
 import com.oscar.videoteca.rest.manager.AlbumManager;
 
 import io.swagger.annotations.ApiOperation;
@@ -112,23 +114,27 @@ public class AlbumesController {
 	 * @param album AlbumDTO que contiene la info básica del álbum
 	 * @return ResponseEntity<?>
 	 */
-	@DeleteMapping(value="/private/album/{id}")
+	@DeleteMapping(value="/private/album/{id}/{idUsuario}")
 	@ApiOperation(value="Eimina un álbum fotográfico",notes="Provee de un mecanismo para eliminar álbumes fotográficos")
 	@ApiResponses(value={
+			@ApiResponse(code=200,message="OK",response=ResponseError.class),
 			@ApiResponse(code=401,message="Not Found",response=ResponseError.class),
 			@ApiResponse(code=403,message="Not Found",response=ResponseError.class),
 			@ApiResponse(code=404,message="Not Found",response=ResponseError.class),
 			@ApiResponse(code=500,message="Internal Server Error",response=ResponseError.class)
 		})
-	public ResponseEntity<?> deleteAlbum(@PathVariable Long id) {
+	public ResponseEntity<?> deleteAlbum(@PathVariable Long id, @PathVariable Long idUsuario) {
 
-		if(manager.existsById(id)) {
-			manager.deleteAlbum(id);
+		if(Boolean.TRUE.equals(this.manager.deleteAlbum(id,idUsuario))){
 			// En api rest al hacer un delete se devuelve un noContent porque una vez borrado
 			// el producto, este no existe en el servidor
-			return ResponseEntity.noContent().build();
+			ResponseOperation response = new ResponseOperation();
+			response.setStatus(HttpStatus.OK);
+			response.setDescStatus("OK");
+			
+			return ResponseEntity.status(HttpStatus.OK).body(response);
 		} else {
-			return ResponseEntity.notFound().build();
+			throw new AlbumNotFoundException("No existe el álbum a eliminar");
 		}		
 	}
 	

@@ -1,6 +1,7 @@
 package com.oscar.videoteca.rest.manager.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,13 +101,31 @@ public class AlbumManagerImpl implements AlbumManager {
 
 
 	@Override
-	public void deleteAlbum(Long id) {
+	public Boolean deleteAlbum(Long id,Long idUsuario) {
 		// TODO: Eliminar las fotografías almacenadas en BBDD
 		
-		if(Boolean.TRUE.equals(albumRepository.existsById(id))) {
-			albumRepository.deleteById(id);		
+		Boolean exito  = Boolean.FALSE;
+		ExampleMatcher exampleMatcher = ExampleMatcher.matchingAll()
+			      .withMatcher("id", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase())
+			      .withMatcher("idUsuarioAlta", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase());
+
+		Album album = new Album();
+		album.setId(id);
+		
+		User user = new User();
+		user.setId(idUsuario);		
+		album.setUsuarioAlta(user);
+		
+		
+		Example<Album> example = Example.of(album,exampleMatcher);		
+		Optional<Album> opt = albumRepository.findOne(example);
+		
+		if(opt.isPresent()) {
+			albumRepository.delete(opt.get());
+			exito = Boolean.TRUE;
 		}
-	
+		
+		return exito;
 		
 	}
 
