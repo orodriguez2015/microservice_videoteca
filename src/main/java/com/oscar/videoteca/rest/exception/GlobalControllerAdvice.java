@@ -95,4 +95,28 @@ public class GlobalControllerAdvice {
 	}
 
 	
+	/**
+	 * Se controla cuando no hay álbumes fotográficos disponibles
+	 * @param e Exception 
+	 * @return ResponseEntity<ResponseError>
+	 */
+	@ExceptionHandler(AlbumesNotFoundException.class)
+	public ResponseEntity<ResponseError> handleAlbumesNotFoundException(AlbumesNotFoundException e) {
+		ResponseError error = new ResponseError(HttpStatus.NOT_FOUND,e.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+
+	
+
+	/**
+	 * Se controla cuando se ha producido un error al eliminar un álbum fotográfico
+	 * @param e Exception 
+	 * @return ResponseEntity<ResponseError>
+	 */
+	@ExceptionHandler(ErrorDeleteAlbumException.class)
+	public ResponseEntity<ResponseError> handleErrorDeleteAlbumException(ErrorDeleteAlbumException e) {
+		ResponseError error = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
 }

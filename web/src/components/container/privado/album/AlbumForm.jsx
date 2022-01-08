@@ -45,7 +45,8 @@ class AlbumForm extends ComponenteAutenticado {
        
         AlbumFacade.saveAlbum(this.nombre.current.value,this.descripcion.current.value,this.publico.current.checked,user)
         .then(resultado=>{
-            if(resultado!==undefined && resultado.status!==undefined) { 
+            
+            if(resultado!==undefined && resultado.status!=="CREATED") { 
                 // Se ha producido un error
                 this.mostrarMensajeError("Se ha producido un error al guardar el álbum. Intentelo de nuevo");
             }else {

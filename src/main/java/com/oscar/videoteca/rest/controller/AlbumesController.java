@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.oscar.videoteca.rest.dto.AlbumDTO;
 import com.oscar.videoteca.rest.dto.CreateAlbumDTO;
 import com.oscar.videoteca.rest.exception.AlbumNotFoundException;
+import com.oscar.videoteca.rest.exception.AlbumesNotFoundException;
+import com.oscar.videoteca.rest.exception.ErrorDeleteAlbumException;
 import com.oscar.videoteca.rest.exception.api.ResponseError;
 import com.oscar.videoteca.rest.exception.api.ResponseOperation;
 import com.oscar.videoteca.rest.manager.AlbumManager;
@@ -65,6 +67,7 @@ public class AlbumesController {
 	 * Recupera los álbumes fotográficos públicos
 	 * @param id Id del usuario
 	 * @return UserDTO
+	 * @throws AlbumesNotFoundException si no hay álbumes fotográficos
 	 */
 	@PostMapping(value="/private/album/{id}")
 	@ApiOperation(value="Recupera las álbumes de un determinado usuario",notes="Provee un mecanismo para recuperar los álbumes de un determinado usuario")
@@ -75,15 +78,18 @@ public class AlbumesController {
 		@ApiResponse(code=404,message="Not Found",response=ResponseError.class),
 		@ApiResponse(code=500,message="Internal Server Error",response=ResponseError.class)
 	})
-	public ResponseEntity<?> getAlbumesUsuario(@PathVariable Long id) {
-
+	public ResponseEntity<?> getAlbumesUsuario(@PathVariable Long id) throws AlbumesNotFoundException {
 		List<AlbumDTO> albumes = manager.getAlbumesUsuario(id);
 
 		if(albumes==null || Boolean.TRUE.equals(albumes.isEmpty())) {
-			//Si no hay álbumes se devuelve un Http 400 - Not Found
-			return ResponseEntity.notFound().build();
+			throw new AlbumesNotFoundException("No hay álbumes fotográficos disponibles");
 		}else {			 
-			return ResponseEntity.ok(albumes);
+			
+			ResponseOperation<List<AlbumDTO>> respuesta = new ResponseOperation<List<AlbumDTO>>();
+			respuesta.setStatus(HttpStatus.OK);
+			respuesta.setData(albumes);
+			
+			return ResponseEntity.status(HttpStatus.OK).body(respuesta);
 		}
 	}
 	
@@ -104,7 +110,15 @@ public class AlbumesController {
 		})
 	public ResponseEntity<?> saveAlbum(@RequestBody CreateAlbumDTO album) {
 		AlbumDTO salida = manager.saveAlbum(album);
-		return ResponseEntity.status(HttpStatus.CREATED).body(salida);
+		
+		// En api rest al hacer un delete se devuelve un noContent porque una vez borrado
+		// el producto, este no existe en el servidor
+		ResponseOperation<AlbumDTO> result = new ResponseOperation<AlbumDTO>();
+		result.setStatus(HttpStatus.CREATED);
+		result.setData(salida);
+		result.setDescStatus("OK");
+				
+		return ResponseEntity.status(HttpStatus.CREATED).body(result);
 	}
 
 	
@@ -116,7 +130,7 @@ public class AlbumesController {
 	 * @return ResponseEntity<?>
 	 */
 	@DeleteMapping(value="/private/album/{id}/{idUsuario}")
-	@ApiOperation(value="Eimina un álbum fotográfico",notes="Provee de un mecanismo para eliminar álbumes fotográficos")
+	@ApiOperation(value="Elimina un álbum fotográfico",notes="Provee de un mecanismo para eliminar álbumes fotográficos")
 	@ApiResponses(value={
 			@ApiResponse(code=200,message="OK",response=ResponseError.class),
 			@ApiResponse(code=401,message="Not Found",response=ResponseError.class),
@@ -124,19 +138,26 @@ public class AlbumesController {
 			@ApiResponse(code=404,message="Not Found",response=ResponseError.class),
 			@ApiResponse(code=500,message="Internal Server Error",response=ResponseError.class)
 		})
-	public ResponseEntity<?> deleteAlbum(@PathVariable Long id, @PathVariable Long idUsuario) {
-
-		if(Boolean.TRUE.equals(this.manager.deleteAlbum(id,idUsuario))){
+	public ResponseEntity<?> deleteAlbum(@PathVariable Long id, @PathVariable Long idUsuario) throws ErrorDeleteAlbumException {
+		
+		if(Boolean.FALSE.equals(this.manager.existsById(id))) {
+			// No existe el id del álbum a eliminar
+			throw new AlbumNotFoundException("No existe el álbum a eliminar");	
+		}
+		
+		
+		if(Boolean.TRUE.equals(this.manager.deleteAlbum(id,idUsuario))) {
 			// En api rest al hacer un delete se devuelve un noContent porque una vez borrado
 			// el producto, este no existe en el servidor
 			ResponseOperation<Object> response = new ResponseOperation<Object>();
 			response.setStatus(HttpStatus.OK);
 			response.setDescStatus("OK");
 			
-			return ResponseEntity.status(HttpStatus.OK).body(response);
+			return ResponseEntity.status(HttpStatus.OK).body(response);			
 		} else {
-			throw new AlbumNotFoundException("No existe el álbum a eliminar");
-		}		
+			throw new ErrorDeleteAlbumException("Error al eliminar el álbum");
+		}
+		
 	}
 	
 	

@@ -16,6 +16,7 @@ import com.oscar.videoteca.rest.config.BackupConfiguration;
 import com.oscar.videoteca.rest.dto.AlbumDTO;
 import com.oscar.videoteca.rest.dto.CreateAlbumDTO;
 import com.oscar.videoteca.rest.dto.mapping.AlbumConverter;
+import com.oscar.videoteca.rest.exception.ErrorDeleteAlbumException;
 import com.oscar.videoteca.rest.manager.AlbumManager;
 import com.oscar.videoteca.rest.model.entity.Album;
 import com.oscar.videoteca.rest.model.entity.User;
@@ -89,7 +90,7 @@ public class AlbumManagerImpl implements AlbumManager {
 		// Se crea la subcarpeta propia del álbum en la que se almacenaránsus fotos
 		String folderBackupAlbumDetail = folderBackupAlbum + File.separator + created.getId();
 		FileUtil.createFolder(folderBackupAlbumDetail);
-		
+
 		salida = converter.convertTo(created); 
 	
 				
@@ -109,41 +110,40 @@ public class AlbumManagerImpl implements AlbumManager {
 
 
 	@Override
-	public Boolean deleteAlbum(Long id,Long idUsuario) {
-		String folderBackupAlbum = backupConfiguration.getAlbum();
-		
+	public Boolean deleteAlbum(Long id,Long idUsuario) throws ErrorDeleteAlbumException {
 		Boolean exito  = Boolean.FALSE;
-		ExampleMatcher exampleMatcher = ExampleMatcher.matchingAll()
-			      .withMatcher("id", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase())
-			      .withMatcher("idUsuarioAlta", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase());
-
-		Album album = new Album();
-		album.setId(id);
 		
-		User user = new User();
-		user.setId(idUsuario);		
-		album.setUsuarioAlta(user);
-		
-		
-		Example<Album> example = Example.of(album,exampleMatcher);		
-		Optional<Album> opt = albumRepository.findOne(example);
-		
-		if(opt.isPresent()) {
+		try {
+			String folderBackupAlbum = backupConfiguration.getAlbum();
+				
+			ExampleMatcher exampleMatcher = ExampleMatcher.matchingAll()
+				      .withMatcher("id", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase())
+				      .withMatcher("idUsuarioAlta", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase());
+	
+			Album album = new Album();
+			album.setId(id);
+			
+			User user = new User();
+			user.setId(idUsuario);		
+			album.setUsuarioAlta(user);
 			
 			
-			// Se elimina la subcarpeta que contiene las fotos del álbumm
-			String folderBackupAlbumDetail = folderBackupAlbum + File.separator + id;
+			Example<Album> example = Example.of(album,exampleMatcher);		
+			Optional<Album> opt = albumRepository.findOne(example);
 			
-			try {
+			if(opt.isPresent()) {
+					
+				// Se elimina la subcarpeta que contiene las fotos del álbumm
+				String folderBackupAlbumDetail = folderBackupAlbum + File.separator + id;
+				
 				FileUtils.deleteDirectory(new File(folderBackupAlbumDetail));
 				albumRepository.delete(opt.get());
 				exito = Boolean.TRUE;	
-			}catch(IOException e) {
-				exito = Boolean.FALSE;
-				e.printStackTrace();
-			}
 			
-		}		
+			}
+		}catch(Exception e) {
+			throw new ErrorDeleteAlbumException("Error al eliminar el álbum",e);
+		}
 		return exito;
 		
 	}

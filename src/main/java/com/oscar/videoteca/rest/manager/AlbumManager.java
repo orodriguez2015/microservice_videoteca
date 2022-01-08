@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.oscar.videoteca.rest.dto.AlbumDTO;
 import com.oscar.videoteca.rest.dto.CreateAlbumDTO;
+import com.oscar.videoteca.rest.exception.ErrorDeleteAlbumException;
 
 /**
  * Interface AlbumManager
@@ -38,8 +39,9 @@ public interface AlbumManager {
 	 * @param id Id del álbum a eliminar
 	 * @param idUsuario: Id del usuario al que pertenece el álbum
 	 * @return True si se ha podido borrar y false en caso contrario
+	 * @throws ErrorDeleteAlbumException si ocurre algún error durante el borrado
 	 */
-	Boolean deleteAlbum(Long id,Long idUsuario);
+	Boolean deleteAlbum(Long id,Long idUsuario) throws ErrorDeleteAlbumException;
 	
 	/**
 	 * Comprueba si existe un álbum en la BBDD

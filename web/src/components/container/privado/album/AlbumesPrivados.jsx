@@ -35,27 +35,28 @@ class AlbumesPrivados extends ComponenteAutenticado {
     componentDidMount() {
 
         if(this.estaUsuarioAutenticado()) {
-
             let user = AlmacenFacade.getUser();
             
             AlbumFacade.getAlbumesUsuario(user).then(resultado=>{
-                if(resultado!==undefined && resultado!==null) {
+ 
+                if(resultado!==undefined && resultado.status==="OK") {
 
-                    if(resultado.status!==undefined) {
-                        // Se ha producido un error de tipo 404,500, etc
-                        this.setState({
-                            albumes: [],
-                            error: true,
-                            descError: "Se ha producido un error al recuperar sus álbumes fotográficos"
-                        });
-                    } else {
-                        this.setState({
-                            albumes: resultado,
-                            error: false,
-                            descError: ''
-                        });
-                    }
-                 }
+                    this.setState({
+                        albumes: resultado.data,
+                        error: false,
+                        descError: ''
+                    });
+                } else {
+
+                    var message = resultado.status==="NOT_FOUND"?"No hay álbumes disponibles":"Se ha producido un error al recuperar sus álbumes fotográficos";
+
+                    // Se ha producido un error de tipo 404,500, etc
+                    this.setState({
+                        albumes: [],
+                        error: true,
+                        descError: message
+                    });
+                }
                 
             }).catch(err=>{
                 this.setState({
@@ -101,8 +102,7 @@ class AlbumesPrivados extends ComponenteAutenticado {
 
             AlbumFacade.deleteAlbum(idAlbum,user)
             .then(resultado=>{
-                console.log("resultado = " + JSON.stringify(resultado));
-                if(resultado.status!=undefined && resultado.status==="OK") {
+                if(resultado.status!==undefined && resultado.status==="OK") {
                     window.location.href="/pr_albumes";
                 }
 
