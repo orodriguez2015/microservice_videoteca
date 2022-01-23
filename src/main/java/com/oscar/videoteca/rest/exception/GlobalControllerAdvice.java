@@ -84,7 +84,7 @@ public class GlobalControllerAdvice {
 	
 
 	/**
-	 * Se controla cuando no se encuentra un determinado álbumun error ge
+	 * Se controla cuando no se ha podido recuperar un determinado álbum fotográfico
 	 * @param e Exception 
 	 * @return ResponseEntity<ResponseError>
 	 */
@@ -106,7 +106,7 @@ public class GlobalControllerAdvice {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
 
-	
+
 
 	/**
 	 * Se controla cuando se ha producido un error al eliminar un álbum fotográfico

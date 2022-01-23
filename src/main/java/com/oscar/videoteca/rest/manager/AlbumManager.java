@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.oscar.videoteca.rest.dto.AlbumDTO;
 import com.oscar.videoteca.rest.dto.CreateAlbumDTO;
+import com.oscar.videoteca.rest.exception.AlbumNotFoundException;
+import com.oscar.videoteca.rest.exception.AlbumesNotFoundException;
 import com.oscar.videoteca.rest.exception.ErrorDeleteAlbumException;
 
 /**
@@ -24,8 +26,20 @@ public interface AlbumManager {
 	 * Recupera los álbumes fotográficos de un determinado usuario
 	 * @param idUsuario Long
 	 * @return List<AlbumDTO>
+	 * @throws AlbumesNotFoundException si el usuario no tiene álbumes fotográficos
 	 */
-	List<AlbumDTO> getAlbumesUsuario(Long idUsuario);
+	List<AlbumDTO> getAlbumesUsuario(Long idUsuario) throws AlbumesNotFoundException;
+	
+	
+	/**
+	 * Recupera un álbum fotográfico determinado de un determinado usuario
+	 * @param idAlbum Id del álbum
+	 * @param idUsuario Id del usuario
+	 * @return AlbumDTO
+	 * @throws AlbumNotFoundException
+	 */
+	AlbumDTO getAlbum(Long idAlbum,Long idUsuario) throws AlbumNotFoundException;
+	
 	
 	/**
 	 * Persiste un álbum fotográfico en BBDD
@@ -42,6 +56,15 @@ public interface AlbumManager {
 	 * @throws ErrorDeleteAlbumException si ocurre algún error durante el borrado
 	 */
 	Boolean deleteAlbum(Long id,Long idUsuario) throws ErrorDeleteAlbumException;
+	
+	
+	/**
+	 * Permite actualizar un álbum fotográfico determinada
+	 * @param album CreateAlbumDTO
+	 * @return AlbumDTO modificado
+	 * @throws AlbumNotFoundException si no existe el álbum a modificar
+	 */
+	AlbumDTO updateAlbum(CreateAlbumDTO album) throws AlbumNotFoundException;
 	
 	/**
 	 * Comprueba si existe un álbum en la BBDD

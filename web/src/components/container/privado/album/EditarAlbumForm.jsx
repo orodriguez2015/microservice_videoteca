@@ -46,6 +46,8 @@ class EditarAlbumForm extends ComponenteAutenticado {
 
         AlbumFacade.updateAlbum(this.idAlbum.current.value,this.nombre.current.value,this.descripcion.current.value,this.publico.current.checked,user.id)
         .then(resultado=>{
+
+            console.log("resultado = " + JSON.stringify(resultado));
             window.location.href="/pr_albumes";
         }).catch(err=>{
             this.mostrarMensajeError("No se ha podido modificar el álbum fotográfico. Intentelo de nuevo");
@@ -58,19 +60,23 @@ class EditarAlbumForm extends ComponenteAutenticado {
      * Método componentDidMount
      */
     componentDidMount() {
-
         if(this.estaUsuarioAutenticado()) {
             // Se recupera el idAlbum de la url cargada en ese momento en el navegador
             var idAlbum= StringUtil.getLastElementFromString(window.location.href,"/");
             this.idAlbum.current.value=idAlbum;
             if(StringUtil.isNotEmpty(idAlbum)) {
-                AlbumFacade.getAlbum(idAlbum,AlmacenFacade.getUser().id)
+                AlbumFacade.getAlbum(idAlbum,AlmacenFacade.getUser())
                 .then(resultado=>{
-                    this.nombre.current.value = resultado.nombre;
-                    this.descripcion.current.value = resultado.descripcion;
-                    if(resultado.publico===1) {
-                        this.publico.current.checked =true;
+
+                    if(resultado.status==="OK") {
+                        this.nombre.current.value = resultado.data.nombre;
+                        this.descripcion.current.value = resultado.data.descripcion;
+                        if(resultado.data.publico===1) {
+                            this.publico.current.checked =true;
+                        }
                     }
+
+                    
                     
                 }).catch(err=>{
                     this.mostrarMensajeError("Se ha producido un error al recuperar el álbum a editar");

@@ -1,7 +1,6 @@
 package com.oscar.videoteca.rest.manager.impl;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +15,8 @@ import com.oscar.videoteca.rest.config.BackupConfiguration;
 import com.oscar.videoteca.rest.dto.AlbumDTO;
 import com.oscar.videoteca.rest.dto.CreateAlbumDTO;
 import com.oscar.videoteca.rest.dto.mapping.AlbumConverter;
+import com.oscar.videoteca.rest.exception.AlbumNotFoundException;
+import com.oscar.videoteca.rest.exception.AlbumesNotFoundException;
 import com.oscar.videoteca.rest.exception.ErrorDeleteAlbumException;
 import com.oscar.videoteca.rest.manager.AlbumManager;
 import com.oscar.videoteca.rest.model.entity.Album;
@@ -57,7 +58,7 @@ public class AlbumManagerImpl implements AlbumManager {
 
 	
 	@Override
-	public List<AlbumDTO> getAlbumesUsuario(Long idUsuario) {
+	public List<AlbumDTO> getAlbumesUsuario(Long idUsuario) throws AlbumesNotFoundException {
 		
 		ExampleMatcher publicMatcher = ExampleMatcher.matchingAll()
 			      .withMatcher("idUsuarioAlta", ExampleMatcher.GenericPropertyMatchers.exact());	
@@ -71,6 +72,10 @@ public class AlbumManagerImpl implements AlbumManager {
 		Example<Album> example = Example.of(a,publicMatcher);
 		
 		List<Album> albumes = albumRepository.findAll(example);
+		if(albumes==null || albumes.isEmpty()) {
+			throw new AlbumesNotFoundException("No hay álbumes fotográficos para el usuario actual");
+		}
+		
 		return converter.converTo(albumes);
 	}
 
@@ -146,6 +151,46 @@ public class AlbumManagerImpl implements AlbumManager {
 		}
 		return exito;
 		
+	}
+
+
+	@Override
+	public AlbumDTO getAlbum(Long idAlbum, Long idUsuario) throws AlbumNotFoundException {
+		ExampleMatcher publicMatcher = ExampleMatcher.matchingAll()
+				  .withMatcher("id",ExampleMatcher.GenericPropertyMatchers.exact())
+			      .withMatcher("idUsuarioAlta", ExampleMatcher.GenericPropertyMatchers.exact());	
+		
+		User user = new User();
+		user.setId(idUsuario);
+		
+		Album a = new Album();
+		a.setId(idAlbum);
+		a.setUsuarioAlta(user);
+		
+		Example<Album> example = Example.of(a,publicMatcher);
+
+		Optional<Album> opt = albumRepository.findOne(example);
+		if(Boolean.TRUE.equals(opt.isPresent())) {
+			return converter.convertTo(opt.get());
+		} else {
+			throw new AlbumNotFoundException("No existe el álbum fotográfico");
+		}
+		
+	}
+
+
+	@Override
+	public AlbumDTO updateAlbum(CreateAlbumDTO album) {
+		
+		if(Boolean.FALSE.equals(albumRepository.findById(album.getId()))) {
+			throw new AlbumNotFoundException("No existe el álbum que se pretende modificar");
+		}
+		
+		// 
+		//albumRepository.findOne(null)
+		
+		
+		return null;
 	}
 
 }

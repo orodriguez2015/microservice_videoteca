@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -69,7 +70,7 @@ public class AlbumesController {
 	 * @return UserDTO
 	 * @throws AlbumesNotFoundException si no hay álbumes fotográficos
 	 */
-	@PostMapping(value="/private/album/{id}")
+	@PostMapping(value="/private/albumes/{id}")
 	@ApiOperation(value="Recupera las álbumes de un determinado usuario",notes="Provee un mecanismo para recuperar los álbumes de un determinado usuario")
 	@ApiResponses(value={
 		@ApiResponse(code=200,message="OK",response=AlbumDTO.class),
@@ -80,18 +81,45 @@ public class AlbumesController {
 	})
 	public ResponseEntity<?> getAlbumesUsuario(@PathVariable Long id) throws AlbumesNotFoundException {
 		List<AlbumDTO> albumes = manager.getAlbumesUsuario(id);
-
-		if(albumes==null || Boolean.TRUE.equals(albumes.isEmpty())) {
-			throw new AlbumesNotFoundException("No hay álbumes fotográficos disponibles");
-		}else {			 
-			
-			ResponseOperation<List<AlbumDTO>> respuesta = new ResponseOperation<List<AlbumDTO>>();
-			respuesta.setStatus(HttpStatus.OK);
-			respuesta.setData(albumes);
-			
-			return ResponseEntity.status(HttpStatus.OK).body(respuesta);
-		}
+		
+		ResponseOperation<List<AlbumDTO>> respuesta = new ResponseOperation<List<AlbumDTO>>();
+		respuesta.setStatus(HttpStatus.OK);
+		respuesta.setData(albumes);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(respuesta);
 	}
+	
+
+	
+	
+	
+	/**
+	 * Recupera un determinado álbum fotográfico de un detemlos álbumes fotográficos públicos
+	 * @param id Id del usuario
+	 * @return ResponseEntity<ResponseOperationDTO>
+	 * @throws AlbumesNotFoundException si no hay álbumes fotográficos
+	 */
+	@GetMapping(value="/private/album/detail/{id}/{idUsuario}")
+	@ApiOperation(value="Recupera las álbumes de un determinado usuario",notes="Provee un mecanismo para recuperar los álbumes de un determinado usuario")
+	@ApiResponses(value={
+		@ApiResponse(code=200,message="OK",response=AlbumDTO.class),
+		@ApiResponse(code=401,message="Not Found",response=ResponseError.class),
+		@ApiResponse(code=403,message="Not Found",response=ResponseError.class),
+		@ApiResponse(code=404,message="Not Found",response=ResponseError.class),
+		@ApiResponse(code=500,message="Internal Server Error",response=ResponseError.class)
+	})
+	public ResponseEntity<?> getAlbumUsuario(@PathVariable Long id,@PathVariable Long idUsuario) throws AlbumNotFoundException {
+		
+		AlbumDTO album = manager.getAlbum(id, idUsuario);
+			
+		ResponseOperation<AlbumDTO> respuesta = new ResponseOperation<AlbumDTO>();
+		respuesta.setStatus(HttpStatus.OK);
+		respuesta.setData(album);
+			
+		return ResponseEntity.status(HttpStatus.OK).body(respuesta);
+	}
+	
+	
 	
 	
 	/**
@@ -121,6 +149,37 @@ public class AlbumesController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(result);
 	}
 
+	
+	
+	
+	/**
+	 * Persiste un álbum en BBDD 
+	 * @param album AlbumDTO que contiene la info básica del álbum
+	 * @return ResponseEntity<?>
+	 */
+	@PutMapping(value="/private/album")
+	@ApiOperation(value="Actualiza un determinado álbum fotográfico",notes="Provee de un mecanismo para editar un álbum fotográfico")
+	@ApiResponses(value={
+			@ApiResponse(code=200,message="OK",response=AlbumDTO.class),
+			@ApiResponse(code=401,message="Not Found",response=ResponseError.class),
+			@ApiResponse(code=403,message="Not Found",response=ResponseError.class),
+			@ApiResponse(code=404,message="Not Found",response=ResponseError.class),
+			@ApiResponse(code=500,message="Internal Server Error",response=ResponseError.class)
+		})
+	public ResponseEntity<?> updateAlbum(@RequestBody CreateAlbumDTO album) {
+		AlbumDTO salida = manager.updateAlbum(album);
+		
+		
+		// En api rest al hacer un delete se devuelve un noContent porque una vez borrado
+		// el producto, este no existe en el servidor
+		ResponseOperation<AlbumDTO> result = new ResponseOperation<AlbumDTO>();
+		result.setStatus(HttpStatus.CREATED);
+		result.setData(salida);
+		result.setDescStatus("OK");
+				
+		return ResponseEntity.status(HttpStatus.CREATED).body(result);
+	}
+	
 	
 	
 	/**

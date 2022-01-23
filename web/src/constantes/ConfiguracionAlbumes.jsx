@@ -6,9 +6,16 @@ import {URL_BACKEND} from './Configuracion.jsx';
 export const ALBUM_SAVE_API = URL_BACKEND +  "/private/album";
 
 /*
- * POST /pr_albumes URL a la que se envía una petición por POST para grabar un álbu en el sistema
+ * POST /private/albumes/ URL a la que se envía una petición por POST para grabar un álbu en el sistema
  */
-export const ALBUMES_USUARIO_ADMIN_API = URL_BACKEND +  "/private/album/";
+export const ALBUMES_USUARIO_ADMIN_API = URL_BACKEND +  "/private/albumes/";
+
+
+/*
+ * GETT /private/album/detail URL a la que se envía una petición para recuperar el detalle de un álbum fotográfico de un usuario
+ */
+
+export const ALBUM_DETAIL_API = URL_BACKEND + "/private/album/detail/";
 
 /*
  * GET /pr_album URL a la que se envía una petición por GET para recuperar info. básica de un álbum

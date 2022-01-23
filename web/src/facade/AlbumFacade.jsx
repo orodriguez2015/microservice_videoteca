@@ -1,4 +1,4 @@
-import {FOTO_ALBUM_PUBLICO_API,ALBUMES_PUBLICO_API,ALBUM_SAVE_API,ALBUMES_USUARIO_ADMIN_API,ALBUM_ADMIN_API ,PR_FOTO_API,PUBLICAR_FOTO_API,FOTO_ALBUM_ADMIN,URL_ATTACH_PHOTOS} from '../constantes/ConfiguracionAlbumes';
+import {ALBUM_DETAIL_API,FOTO_ALBUM_PUBLICO_API,ALBUMES_PUBLICO_API,ALBUM_SAVE_API,ALBUMES_USUARIO_ADMIN_API,ALBUM_ADMIN_API ,PR_FOTO_API,PUBLICAR_FOTO_API,FOTO_ALBUM_ADMIN,URL_ATTACH_PHOTOS} from '../constantes/ConfiguracionAlbumes';
 
 /**
  * ,
@@ -231,26 +231,25 @@ export class AlbumFacade {
   /**
      * Se envía una petición al servidor para recuperar los datos básicos de un álbum
      * @param {Integer} idAlbum: Id del álbum
+     * @param {Object} user: Objeto usuario
      * @return Una promesa
      */
-    static getAlbum(idAlbum,idUsuario) {
+    static getAlbum(idAlbum,user) {
         let headers =  {
             "Content-Type": "application/json",
             "Access-Control-Request-Headers": "*",
-            "Access-Control-Request-Method": "*"
+            "Access-Control-Request-Method": "*",
+            "Authorization": user.authenticationToken
         }
 
         var opciones = {
-            method: 'POST',
+            method: 'GET',
             mode: 'cors',
-            headers: headers,
-            body: JSON.stringify({
-                idUsuario: idUsuario
-            })
+            headers: headers
         };
 
         return new Promise((resolver, rechazar) => {
-            fetch(ALBUM_ADMIN_API + idAlbum,opciones)
+            fetch(ALBUM_DETAIL_API + idAlbum + "/" + user.id,opciones)
             .then((response) => {
                 return response.json()
             })

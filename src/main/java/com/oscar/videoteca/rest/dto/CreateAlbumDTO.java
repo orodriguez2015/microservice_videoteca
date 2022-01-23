@@ -14,6 +14,8 @@ import lombok.Setter;
 @Setter
 public class CreateAlbumDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
+	/** Id del álbum */
+	private Long id;
 	/** Nombre del álbum */
 	private String nombre;
 	/** Descripción del álbum */
