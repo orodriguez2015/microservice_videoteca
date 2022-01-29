@@ -1,4 +1,4 @@
-import {ALBUM_DETAIL_API,FOTO_ALBUM_PUBLICO_API,ALBUMES_PUBLICO_API,ALBUM_SAVE_API,ALBUMES_USUARIO_ADMIN_API,ALBUM_ADMIN_API ,PR_FOTO_API,PUBLICAR_FOTO_API,FOTO_ALBUM_ADMIN,URL_ATTACH_PHOTOS} from '../constantes/ConfiguracionAlbumes';
+import {ALBUM_DETAIL_API,FOTO_ALBUM_PUBLICO_API,ALBUMES_PUBLICO_API,ALBUM_PRIVATE_API,ALBUMES_USUARIO_ADMIN_API ,PR_FOTO_API,PUBLICAR_FOTO_API,FOTO_ALBUM_ADMIN,URL_ATTACH_PHOTOS} from '../constantes/ConfiguracionAlbumes';
 
 /**
  * ,
@@ -136,7 +136,7 @@ export class AlbumFacade {
         };
 
         return new Promise((resolver, rechazar) => {
-            fetch(ALBUM_SAVE_API,opciones)
+            fetch(ALBUM_PRIVATE_API,opciones)
             .then((response) => {
                 return response.json()
             })
@@ -155,14 +155,15 @@ export class AlbumFacade {
      * @param {String} nombreAlbum: Nombre del álbum
      * @param {String} descripcionAlbum : Descripción del álbum
      * @param {Boolean} publico: Indica si el álbum es o no público
-     * @param {Integer} idUsuario: Id del usuario
+     * @param {Object} user: Objeto con los datos del usuario autenticado
      * @return Una promesa
      */
-    static updateAlbum(idAlbum,nombreAlbum,descripcionAlbum,publico,idUsuario) {
+    static updateAlbum(idAlbum,nombreAlbum,descripcionAlbum,publico,user) {
         let headers =  {
             "Content-Type": "application/json",
             "Access-Control-Request-Headers": "*",
-            "Access-Control-Request-Method": "*"
+            "Access-Control-Request-Method": "*",
+            "Authorization" : user.authenticationToken
         }
 
         var opciones = {
@@ -173,14 +174,14 @@ export class AlbumFacade {
                 nombre: nombreAlbum,
                 descripcion: descripcionAlbum,
                 publico: publico,
-                idUsuario: idUsuario,
-                idAlbum: idAlbum
+                idUsuario: user.id,
+                id: idAlbum
             })
         };
 
     
         return new Promise((resolver, rechazar) => {
-            fetch(ALBUM_ADMIN_API + idAlbum,opciones)
+            fetch(ALBUM_PRIVATE_API,opciones)
             .then((response) => {
                 return response.json()
             })
@@ -284,8 +285,10 @@ export class AlbumFacade {
             headers: headers
         };
 
+        console.log("opciones= " + JSON.stringify(opciones));
+
         return new Promise((resolver, rechazar) => {
-            fetch(ALBUMES_USUARIO_ADMIN_API + idAlbum + "/" + user.id,opciones)
+            fetch(ALBUM_PRIVATE_API + "/" + idAlbum + "/" + user.id,opciones)
             .then((response) => {
                 return response.json()
             })

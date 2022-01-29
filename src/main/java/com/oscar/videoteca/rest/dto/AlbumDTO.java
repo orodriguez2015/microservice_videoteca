@@ -39,14 +39,16 @@ public class AlbumDTO implements Serializable {
 
     private String apellido2UsuarioAlta;
     
+   // private String nombreCompleto;
+    
     
     /**
      * Devuelve el nombre comppleto del usuario que ha dado de alta el álbum
      * @return String
      */
-    public String getNombreCompleto() {
-    	return this.nombreUsuarioAlta.concat(ConstantsAuthentication.BLANK_SPACE).concat(this.apellido1UsuarioAlta).concat(ConstantsAuthentication.BLANK_SPACE).concat(this.apellido2UsuarioAlta);
-    }
-    
+//    public String getNombreCompleto() {
+//    	return this.nombreUsuarioAlta.concat(ConstantsAuthentication.BLANK_SPACE).concat(this.apellido1UsuarioAlta).concat(ConstantsAuthentication.BLANK_SPACE).concat(this.apellido2UsuarioAlta);
+//    }
+//    
 }
 

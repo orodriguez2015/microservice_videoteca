@@ -211,7 +211,7 @@ public class AlbumesController {
 			ResponseOperation<Object> response = new ResponseOperation<Object>();
 			response.setStatus(HttpStatus.OK);
 			response.setDescStatus("OK");
-			
+			response.setData(null);
 			return ResponseEntity.status(HttpStatus.OK).body(response);			
 		} else {
 			throw new ErrorDeleteAlbumException("Error al eliminar el álbum");

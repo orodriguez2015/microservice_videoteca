@@ -3,7 +3,7 @@ import {URL_BACKEND} from './Configuracion.jsx';
 /*
  * POST /p_album URL a la que se envía una petición por POST para grabar un álbu en el sistema
  */
-export const ALBUM_SAVE_API = URL_BACKEND +  "/private/album";
+export const ALBUM_PRIVATE_API = URL_BACKEND +  "/private/album";
 
 /*
  * POST /private/albumes/ URL a la que se envía una petición por POST para grabar un álbu en el sistema

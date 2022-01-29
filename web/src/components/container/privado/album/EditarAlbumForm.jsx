@@ -44,10 +44,8 @@ class EditarAlbumForm extends ComponenteAutenticado {
         evt.preventDefault();
         let user = AlmacenFacade.getUser();
 
-        AlbumFacade.updateAlbum(this.idAlbum.current.value,this.nombre.current.value,this.descripcion.current.value,this.publico.current.checked,user.id)
+        AlbumFacade.updateAlbum(this.idAlbum.current.value,this.nombre.current.value,this.descripcion.current.value,this.publico.current.checked,user)
         .then(resultado=>{
-
-            console.log("resultado = " + JSON.stringify(resultado));
             window.location.href="/pr_albumes";
         }).catch(err=>{
             this.mostrarMensajeError("No se ha podido modificar el álbum fotográfico. Intentelo de nuevo");
@@ -71,7 +69,7 @@ class EditarAlbumForm extends ComponenteAutenticado {
                     if(resultado.status==="OK") {
                         this.nombre.current.value = resultado.data.nombre;
                         this.descripcion.current.value = resultado.data.descripcion;
-                        if(resultado.data.publico===1) {
+                        if(resultado.data.publico===true) {
                             this.publico.current.checked =true;
                         }
                     }

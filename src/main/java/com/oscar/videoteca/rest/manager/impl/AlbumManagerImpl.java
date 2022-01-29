@@ -180,17 +180,20 @@ public class AlbumManagerImpl implements AlbumManager {
 
 
 	@Override
-	public AlbumDTO updateAlbum(CreateAlbumDTO album) {
-		
-		if(Boolean.FALSE.equals(albumRepository.findById(album.getId()))) {
+	public AlbumDTO updateAlbum(CreateAlbumDTO album) {		
+		Optional<Album> opt = albumRepository.findById(album.getId());
+		AlbumDTO nuevo = null;
+		if(Boolean.FALSE.equals(opt.isPresent())) {
 			throw new AlbumNotFoundException("No existe el álbum que se pretende modificar");
+		} else {
+			Album original = opt.get();
+			original.setDescripcion(album.getDescripcion());
+			original.setNombre(album.getNombre());
+			original.setPublico(album.getPublico());
+			nuevo = converter.convertTo(albumRepository.save(original));
+			
 		}
-		
-		// 
-		//albumRepository.findOne(null)
-		
-		
-		return null;
+		return nuevo;
 	}
 
 }
