@@ -85,7 +85,7 @@ public class GlobalControllerAdvice {
 
 	/**
 	 * Se controla cuando no se ha podido recuperar un determinado álbum fotográfico
-	 * @param e Exception 
+	 * @param e AlbumNotFoundException 
 	 * @return ResponseEntity<ResponseError>
 	 */
 	@ExceptionHandler(AlbumNotFoundException.class)
@@ -97,7 +97,7 @@ public class GlobalControllerAdvice {
 	
 	/**
 	 * Se controla cuando no hay álbumes fotográficos disponibles
-	 * @param e Exception 
+	 * @param e AlbumesNotFoundException 
 	 * @return ResponseEntity<ResponseError>
 	 */
 	@ExceptionHandler(AlbumesNotFoundException.class)
@@ -107,14 +107,26 @@ public class GlobalControllerAdvice {
 	}
 
 
-
 	/**
 	 * Se controla cuando se ha producido un error al eliminar un álbum fotográfico
-	 * @param e Exception 
+	 * @param e ErrorDeleteAlbumException 
 	 * @return ResponseEntity<ResponseError>
 	 */
 	@ExceptionHandler(ErrorDeleteAlbumException.class)
 	public ResponseEntity<ResponseError> handleErrorDeleteAlbumException(ErrorDeleteAlbumException e) {
+		ResponseError error = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+
+	
+
+	/**
+	 * Se controla cuando se ha producido un error al recuperar las videotecas de un usuario
+	 * @param e VideotecasNotFoundException 
+	 * @return ResponseEntity<ResponseError>
+	 */
+	@ExceptionHandler(VideotecasNotFoundException.class)
+	public ResponseEntity<ResponseError> handleVideotecasNotFoundException(VideotecasNotFoundException e) {
 		ResponseError error = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}

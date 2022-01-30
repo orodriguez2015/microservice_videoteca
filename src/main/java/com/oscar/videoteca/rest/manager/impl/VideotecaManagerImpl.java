@@ -9,12 +9,14 @@ import org.springframework.stereotype.Service;
 
 import com.oscar.videoteca.rest.dto.VideotecaDTO;
 import com.oscar.videoteca.rest.dto.mapping.VideotecaConverter;
+import com.oscar.videoteca.rest.exception.VideotecasNotFoundException;
 import com.oscar.videoteca.rest.manager.VideotecaManager;
+import com.oscar.videoteca.rest.model.entity.User;
 import com.oscar.videoteca.rest.model.entity.Videoteca;
 import com.oscar.videoteca.rest.model.repository.VideotecaRepository;
 
 /**
- * Manager Videoteca
+ * Clase VideotecaManagerImpl
  * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez Brea</a>
  *
  */
@@ -38,6 +40,26 @@ public class VideotecaManagerImpl implements VideotecaManager {
 		
 		Example<Videoteca> example = Example.of(v, publicMatcher);
 		return videotecaConverter.convertTo(videotecaRepository.findAll(example));
+	}
+
+	@Override
+	public List<VideotecaDTO> getVideotecasUsuario(Long id) throws VideotecasNotFoundException {
+		
+		ExampleMatcher publicMatcher = ExampleMatcher.matchingAll()
+			      .withMatcher("idUsuario", ExampleMatcher.GenericPropertyMatchers.exact());	      
+		
+		Videoteca v = new Videoteca();
+		User user = new User();
+		user.setId(id);
+		v.setUsuario(user);
+		
+		Example<Videoteca> example = Example.of(v, publicMatcher);		
+		List<Videoteca> videotecas = videotecaRepository.findAll(example);
+		if(videotecas==null || Boolean.TRUE.equals(videotecas.isEmpty())) {
+			throw new VideotecasNotFoundException("El usuario no tiene videotecas");
+		}		
+		
+		return videotecaConverter.convertTo(videotecas);
 	}
 
 }
