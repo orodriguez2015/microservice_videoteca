@@ -6,6 +6,14 @@ import org.springframework.stereotype.Component;
 import lombok.Getter;
 import lombok.Setter;
 
+
+/**
+ * Clase que recupera la configuración de las carpeta de backup para las fotografías
+ * de los álbumes, y para los vídeos de una videoteca
+ * 
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
+ *
+ */
 @Getter
 @Setter
 @Component

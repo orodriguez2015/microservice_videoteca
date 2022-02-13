@@ -9,6 +9,8 @@ import FileList from '../../common/Filelist';
 import ModalProgressBar from '../../common/ModalProgressBar';
 import AreaMensajes from '../../../mensajes/AreaMensajes';
 import FileUtil from '../../../../util/FileUtil';
+import {AlbumFacade} from '../../../../facade/AlbumFacade';
+import {AlmacenFacade} from '../../../../store/AlmacenFacade';
 
 /**
  * Componente a través del cual se puede adjuntar fotografías a una álbum
@@ -117,48 +119,52 @@ class AdjuntarFoto extends ComponenteAutenticado {
     onSubmitFile(evt) {
         
         const ficheros = document.getElementById('fichero').files;
+
+        console.log("ficheros  = " + JSON.stringify(ficheros));
         
         // Cambios en el fichero
         //this.verifyImageFormat(ficheros);
-      //  this.showProgressBar();
+        this.showProgressBar();
 
 
-        // AlbumFacade.submitFotos(this.props.match.params.p_videoteca_id,AlmacenFacade.getUser().id,ficheros)
-        // .then(resultado=>{       
+        AlbumFacade.submitFotos(this.props.match.params.p_album_id,AlmacenFacade.getUser(),ficheros)
+        .then(resultado=>{       
             
-        //     this.hideProgressBar();
-        //     switch(resultado.status) {
-        //         case 0: {
-        //             this.setState({
-        //                 mostrarAreaMensajes: true,
-        //                 mostrarListaFicheros:false,
-        //                 mensajeAreaMensajes:"Se ha subido el vídeo correctamente",
-        //                 tipoAreaMensajes: "success"
-        //             });
-        //             break;
-        //         }
+            console.log("resultado = " + JSON.stringify(resultado));
 
-        //         case 1: {
-        //             this.setState({
-        //                 mostrarAreaMensajes: true,
-        //                 mensajeAreaMensajes:"Ya un vídeo con el mismo nombre en el servidor. Modifica el nombre y subelo de nuevo",
-        //                 tipoAreaMensajes: "error"
-        //             });
-        //             break;
-        //         }
+            this.hideProgressBar();
+            switch(resultado.status) {
+                case 0: {
+                    this.setState({
+                        mostrarAreaMensajes: true,
+                        mostrarListaFicheros:false,
+                        mensajeAreaMensajes:"Se ha subido el vídeo correctamente",
+                        tipoAreaMensajes: "success"
+                    });
+                    break;
+                }
 
-        //         default: {
-        //             break;
-        //         }
-        //     }
+                case 1: {
+                    this.setState({
+                        mostrarAreaMensajes: true,
+                        mensajeAreaMensajes:"Ya un vídeo con el mismo nombre en el servidor. Modifica el nombre y subelo de nuevo",
+                        tipoAreaMensajes: "error"
+                    });
+                    break;
+                }
 
-        // }).catch(err=>{
-        //     this.setState({
-        //         mostrarAreaMensajes: true,
-        //         mensajeAreaMensajes:"Se ha producido un error al subir el vídeo al servidor. Inténtalo de nuevo.",
-        //         tipoAreaMensajes: "error"
-        //     });
-        // });
+                default: {
+                    break;
+                }
+            }
+
+        }).catch(err=>{
+            this.setState({
+                mostrarAreaMensajes: true,
+                mensajeAreaMensajes:"Se ha producido un error al subir el vídeo al servidor. Inténtalo de nuevo.",
+                tipoAreaMensajes: "error"
+            });
+        });
     } 
 
 

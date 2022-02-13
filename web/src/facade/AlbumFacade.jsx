@@ -1,4 +1,4 @@
-import {ALBUM_DETAIL_API,FOTO_ALBUM_PUBLICO_API,ALBUMES_PUBLICO_API,ALBUM_PRIVATE_API,ALBUMES_USUARIO_ADMIN_API ,PR_FOTO_API,PUBLICAR_FOTO_API,FOTO_ALBUM_ADMIN,URL_ATTACH_PHOTOS} from '../constantes/ConfiguracionAlbumes';
+import {ALBUM_DETAIL_API,FOTO_ALBUM_PUBLICO_API,ALBUMES_PUBLICO_API,ALBUM_PRIVATE_API,ALBUMES_USUARIO_ADMIN_API ,PR_FOTO_API,PUBLICAR_FOTO_API,FOTO_ALBUM_ADMIN} from '../constantes/ConfiguracionAlbumes';
 
 /**
  * ,
@@ -383,23 +383,25 @@ export class AlbumFacade {
      * Se envía una petición al servidor para adjuntar varias fotografías a un 
      * determinado álbum
      * @param {Integer} idAlbum: Id del álbum
-     * @param {Integer} idUsuario: Id del usuario que ejecuta la operación
+     * @param {Object} user: Usuario que adjunta fotos al álbum
      * @param {File} ficheros: Ficheros a enviar al servidor
      * @return Una promesa
      */
-     static submitFotos(idAlbum,idUsuario,ficheros) {
+     static submitFotos(idAlbum,user,ficheros) {
         let headers =  {
             "Access-Control-Request-Headers": "*",
-            "Access-Control-Request-Method": "*"
+            "Access-Control-Request-Method": "*",
+            "Authorization" : user.authenticationToken
         }
 
         var formData = new FormData();
-        formData.append("idUsuario",idUsuario);
+        formData.append("idUsuario",user.idUsuario);
+        
         
         if(ficheros!==undefined) {
             let indice = 0;
-            ficheros.forEach(element => {
-                formData.append("fichero" + indice,element);
+            Object.values(ficheros).forEach(element => {
+                formData.append("ficheros",element);
                 indice++;
             });
         }
@@ -412,7 +414,7 @@ export class AlbumFacade {
         };
 
         return new Promise((resolver, rechazar) => {
-            fetch(URL_ATTACH_PHOTOS + "/" + idAlbum,opciones)
+            fetch(ALBUM_PRIVATE_API + "/" + idAlbum + "/" + user.id,opciones)
             .then((response) => {
                 return response.json()
             })
