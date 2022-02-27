@@ -2,9 +2,11 @@ package com.oscar.videoteca.rest.util;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
-import org.springframework.web.multipart.MultipartFile;
+import com.oscar.videoteca.rest.exception.SaveFileException;
 
 /**
  * Clase FileUtil con operaciones de utilidad para el manejo/trabajo con fichero
@@ -12,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
  *
  */
 public class FileUtil {
+	
+	private static final int BUFFER_SIZE = 1024*1024;
 
 	/**
 	 * Da de alta una carpeta/directorio en disco siempre y cuando no exista
@@ -21,7 +25,7 @@ public class FileUtil {
 		Boolean exito = Boolean.FALSE;
 		try {
 			File f = new File(folder);
-			if(Boolean.TRUE.equals(f.isDirectory()) && Boolean.FALSE.equals(f.exists())) {
+			if(Boolean.FALSE.equals(f.exists())) {
 				f.mkdir();
 			}
 			
@@ -39,35 +43,67 @@ public class FileUtil {
 	
 	/**
 	 * Permite almacenar un ficheor subido al servidor en una determinada ruta
-	 * @param multipartFile MultipartFile
-	 * @param path String
+	 * @param inputStream InputStream
+	 * @param filePath Ruta del fichero en disco
 	 * @return Boolean
+	 * @throws SaveFileException si ocurre algún error
 	 */
-	public static Boolean saveFile(MultipartFile multipartFile,String path) {
-
+	public static Boolean saveFile(InputStream inputStream,String filePath) throws SaveFileException {
 		Boolean exito = Boolean.FALSE;
+		
 		try {
+						
+			File f = new File(filePath);
+			f.createNewFile();
 			
-			String fileName = multipartFile.getName();
-			String originalFileName = multipartFile.getOriginalFilename();
-			InputStream is = multipartFile.getInputStream();
-			
-			System.out.println("filename = " + fileName);
-			System.out.println("oringal filename = " + originalFileName);
-			
-			
-			File f = new File(path);
-			FileOutputStream fos = new FileOutputStream(f);
-			if(Boolean.FALSE.equals(f.exists())) {
-				f.mkdir();
-			}
-			
+		    OutputStream ficheroSalida = new FileOutputStream(new File(filePath));
+            byte[] buf = new byte[BUFFER_SIZE];
+            int cantidadLeida;
+            while ((cantidadLeida = inputStream.read(buf, 0,BUFFER_SIZE)) > 0){
+                ficheroSalida.write(buf, 0, cantidadLeida);
+            }
+            inputStream.close();
+            ficheroSalida.close();
+		
 			exito =Boolean.TRUE;
+			
 		}catch(Exception e) {
 			exito =Boolean.FALSE;
+			throw new SaveFileException("Error al grabar fichero en disco",e);
+		}finally {
+			close(inputStream);
 		}
-		
 		return exito;		
+	}
+	
+
+	/**
+	 * Cierra un InputStream
+	 * @param is InputStream
+	 */
+	public static void close(InputStream is) {
+		try {
+			if(is!=null) {
+				is.close();
+			}
+		}catch(IOException e) {
+			
+		}
+	}
+	
+	
+	/**
+	 * Cierra un FileOutputStream
+	 * @param fos FileOutputStream
+	 */
+	public static void close(FileOutputStream fos) {
+		try {
+			if(fos!=null) {
+				fos.close();
+			}
+		}catch(IOException e) {
+			
+		}		
 	}
 	
 }

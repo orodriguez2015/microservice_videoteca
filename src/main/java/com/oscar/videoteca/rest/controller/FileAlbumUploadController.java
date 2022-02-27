@@ -1,5 +1,6 @@
 package com.oscar.videoteca.rest.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.oscar.videoteca.rest.exception.SaveFileException;
 import com.oscar.videoteca.rest.exception.api.ResponseOperation;
 import com.oscar.videoteca.rest.manager.AlbumManager;
 
@@ -35,7 +37,14 @@ public class FileAlbumUploadController {
             Arrays.asList(files).stream().forEach(file->{
             	
             	System.out.println("Nombre = " + file.getName() + ", size= " + file.getSize());
-            	albumManager.saveFoto(file,Long.parseLong(idAlbum),Long.parseLong(idUsuario));
+            	
+            	try {
+            		albumManager.saveFoto(file,Long.parseLong(idAlbum),Long.parseLong(idUsuario));
+            	}catch(IOException e) {
+            		
+            	}catch(SaveFileException e) {
+            		
+            	}
                 fileNames.add(file.getOriginalFilename());
             });
 
