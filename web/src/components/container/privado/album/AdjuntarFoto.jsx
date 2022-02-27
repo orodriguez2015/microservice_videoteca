@@ -120,12 +120,9 @@ class AdjuntarFoto extends ComponenteAutenticado {
         
         const ficheros = document.getElementById('fichero').files;
 
-        console.log("ficheros  = " + JSON.stringify(ficheros));
-        
         // Cambios en el fichero
         //this.verifyImageFormat(ficheros);
         this.showProgressBar();
-
 
         AlbumFacade.submitFotos(this.props.match.params.p_album_id,AlmacenFacade.getUser(),ficheros)
         .then(resultado=>{       
