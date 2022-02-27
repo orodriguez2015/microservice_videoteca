@@ -395,9 +395,9 @@ export class AlbumFacade {
         }
 
         var formData = new FormData();
-        formData.append("idUsuario",user.idUsuario);
-        
-        
+        formData.append("idAlbum",idAlbum);
+        formData.append("idUsuario",user.id);   
+
         if(ficheros!==undefined) {
             let indice = 0;
             Object.values(ficheros).forEach(element => {

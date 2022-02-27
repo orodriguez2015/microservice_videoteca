@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,19 +13,29 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.oscar.videoteca.rest.exception.api.ResponseOperation;
+import com.oscar.videoteca.rest.manager.AlbumManager;
 
+/**
+ * Controller que recibe peticiones de upload de fotografías para un determinado álbum fotográfico
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
+ *
+ */
 @RestController
 public class FileAlbumUploadController {
+	
+	@Autowired
+	private AlbumManager albumManager;
 
 	  @PostMapping("/private/album/{idAlbum}/{idUsuario}")
-	  public ResponseEntity<?> uploadFiles(@RequestParam("ficheros")MultipartFile[] files){
+	  public ResponseEntity<?> uploadFiles(@RequestParam("ficheros")MultipartFile[] files,@RequestParam("idAlbum") String idAlbum,@RequestParam("idUsuario") String idUsuario){
         try{
             List<String> fileNames = new ArrayList<>();
-
+           System.out.println("idAlbum = " + idAlbum + ", idUsuario = " + idUsuario);
+            
             Arrays.asList(files).stream().forEach(file->{
             	
             	System.out.println("Nombre = " + file.getName() + ", size= " + file.getSize());
-                //fileService.save(file);
+            	albumManager.saveFoto(file,Long.parseLong(idAlbum),Long.parseLong(idUsuario));
                 fileNames.add(file.getOriginalFilename());
             });
 

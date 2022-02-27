@@ -29,7 +29,7 @@ import io.swagger.annotations.ApiResponses;
 
 /**
  * Controller para el tratamiento de los álbumes fotográficos
- * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez Brea</a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */ 
 @RestController
@@ -53,7 +53,7 @@ public class AlbumesController {
 	public ResponseEntity<?> getAlbumesPublicos() {
 
 		List<AlbumDTO> albumes = manager.getAlbumesPublicos();
-
+R
 		if(albumes==null || Boolean.TRUE.equals(albumes.isEmpty())) {
 			//Si no hay álbumes se devuelve un Http 400 - Not Found
 			return ResponseEntity.notFound().build();

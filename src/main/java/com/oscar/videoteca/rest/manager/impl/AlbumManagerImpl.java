@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.oscar.videoteca.rest.config.BackupConfiguration;
 import com.oscar.videoteca.rest.dto.AlbumDTO;
@@ -26,7 +27,7 @@ import com.oscar.videoteca.rest.util.FileUtil;
 
 /**
  * Implementación de AlbumManager
- * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez Brea</a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
 @Service
@@ -194,6 +195,23 @@ public class AlbumManagerImpl implements AlbumManager {
 			
 		}
 		return nuevo;
+	}
+
+
+	@Override
+	public void saveFoto(MultipartFile foto, Long idAlbum, Long idUsuario) {
+			
+		StringBuilder path = new StringBuilder();
+		path.append(backupConfiguration.getAlbum());
+		path.append(File.separatorChar);
+		path.append(idUsuario);
+		path.append(File.separatorChar);
+		path.append(idAlbum);
+				
+		if(Boolean.TRUE.equals(FileUtil.createFolder(path.toString()))) {
+			// Si se ha creado el 
+		}
+		
 	}
 
 }

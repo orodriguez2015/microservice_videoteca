@@ -130,30 +130,24 @@ class AdjuntarFoto extends ComponenteAutenticado {
             console.log("resultado = " + JSON.stringify(resultado));
 
             this.hideProgressBar();
-            switch(resultado.status) {
-                case 0: {
-                    this.setState({
-                        mostrarAreaMensajes: true,
-                        mostrarListaFicheros:false,
-                        mensajeAreaMensajes:"Se ha subido el vídeo correctamente",
-                        tipoAreaMensajes: "success"
-                    });
-                    break;
-                }
 
-                case 1: {
-                    this.setState({
-                        mostrarAreaMensajes: true,
-                        mensajeAreaMensajes:"Ya un vídeo con el mismo nombre en el servidor. Modifica el nombre y subelo de nuevo",
-                        tipoAreaMensajes: "error"
-                    });
-                    break;
-                }
 
-                default: {
-                    break;
-                }
+            if(resultado.status!=="OK") {
+                this.setState({
+                    mostrarAreaMensajes: true,
+                    mostrarListaFicheros:false,
+                    mensajeAreaMensajes:"Se ha producido un error al subir las fotografías al servidor",
+                    tipoAreaMensajes: "error"
+                });
+            } else {
+                this.setState({
+                    mostrarAreaMensajes: true,
+                    mostrarListaFicheros:false,
+                    mensajeAreaMensajes:"Se ha subido el vídeo correctamente",
+                    tipoAreaMensajes: "success"
+                });            
             }
+
 
         }).catch(err=>{
             this.setState({

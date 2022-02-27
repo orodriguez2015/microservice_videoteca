@@ -6,7 +6,7 @@ import com.oscar.videoteca.rest.model.entity.Videoteca;
 
 /**
  * Repository para la entidad Videoteca
- * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez Brea</a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
 public interface VideotecaRepository extends JpaRepository<Videoteca, Long> {
