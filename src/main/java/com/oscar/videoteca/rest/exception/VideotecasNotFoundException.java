@@ -2,7 +2,7 @@ package com.oscar.videoteca.rest.exception;
 
 /**
  * Excepción lanzada cuando no se han recuperado videotecas
- * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez Brea</a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
 public class VideotecasNotFoundException extends Exception {

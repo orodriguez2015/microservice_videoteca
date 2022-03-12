@@ -10,7 +10,7 @@ import com.oscar.videoteca.rest.exception.UserNotFoundException;
 
 /**
  * Interface UserManager
- * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez Brea</a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
 public interface UserManager {

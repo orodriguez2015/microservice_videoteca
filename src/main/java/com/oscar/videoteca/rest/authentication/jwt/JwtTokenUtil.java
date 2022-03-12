@@ -20,7 +20,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 /**
  * Clase JWTUtil con operaciones de utilidad para la autenticación JWT (JSON WEB TOKEN)
- * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez Brea</a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
 @Component

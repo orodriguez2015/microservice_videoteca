@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiResponses;
 
 /**
  * Controlador para la gestión de usuarios
- * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez Brea</a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
 @RestController

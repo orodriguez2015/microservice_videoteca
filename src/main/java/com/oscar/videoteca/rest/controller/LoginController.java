@@ -19,7 +19,7 @@ import io.swagger.annotations.ApiResponses;
 
 /**
  * Clase LoginController que se encarga del login de un usuario en el sistema
- * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez Brea</a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
 @RestController

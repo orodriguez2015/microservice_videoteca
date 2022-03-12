@@ -2,7 +2,7 @@ package com.oscar.videoteca.rest.exception;
 
 /**
  * Excepción que se lanza cuando no existe un Album
- * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez Brea</a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
 public class AlbumNotFoundException extends RuntimeException {

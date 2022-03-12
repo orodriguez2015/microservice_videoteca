@@ -17,7 +17,7 @@ import com.oscar.videoteca.rest.model.repository.VideotecaRepository;
 
 /**
  * Clase VideotecaManagerImpl
- * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez Brea</a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
 @Service

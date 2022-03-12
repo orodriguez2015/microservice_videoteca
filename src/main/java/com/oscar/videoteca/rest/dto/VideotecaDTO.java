@@ -8,7 +8,7 @@ import lombok.Setter;
 
 /**
  * Clase VideotecaDTO que contiene información sobre una determinada videoteca
- * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez Brea</a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
 @Getter

@@ -18,7 +18,7 @@ import lombok.Setter;
 
 /**
  * Representa un registro de la tabla users de la BBDD
- * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez</a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez</a>
  *
  */
 @Getter @Setter

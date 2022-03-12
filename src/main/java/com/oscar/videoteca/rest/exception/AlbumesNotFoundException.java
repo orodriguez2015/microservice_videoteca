@@ -3,7 +3,7 @@ package com.oscar.videoteca.rest.exception;
 
 /**
  * Excepción que se lanza en el caso de no haya álbumes fotográficos
- * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez Brea</a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
 public class AlbumesNotFoundException extends Exception {

@@ -2,7 +2,7 @@ package com.oscar.videoteca.constants;
 
 /**
  * Clase con constantes relacionadas con la autenticacion
- * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez Brea</a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
 public class ConstantsAuthentication {

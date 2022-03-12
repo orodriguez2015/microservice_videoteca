@@ -9,7 +9,7 @@ import lombok.Setter;
 /**
  * Clase LoginDTO que alberga el login y password de un usuario a la hora 
  * de autenticarse
- * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez Brea</a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
 @Getter

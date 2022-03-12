@@ -27,7 +27,7 @@ import io.jsonwebtoken.UnsupportedJwtException;
 /**
  * Filtro de Spring que comprueba que en cada petición a un operación de un servicio, se haya incluido
  * el token JWT en la cabecera de la petición
- * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez Brea</a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
 @Component

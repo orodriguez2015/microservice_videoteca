@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * Excepción que se lanza cuando no se encuentra un usuario
- * @author <a href="mailto:oscarrbr@ext.inditex.com> </a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com> </a>
  */
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class UserNotFoundException extends RuntimeException{

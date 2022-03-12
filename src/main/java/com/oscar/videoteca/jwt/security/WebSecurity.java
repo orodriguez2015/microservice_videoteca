@@ -20,7 +20,7 @@ import com.oscar.videoteca.rest.config.ConfigurationListaBlancaUrl;
 /**
  * Clase WebSecurity dedicada a la configuración de seguridad.
  * Configura cors y la url's de los servicios a los que se puede
- * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez Brea</a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
 @Configuration

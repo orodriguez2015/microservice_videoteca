@@ -3,7 +3,7 @@ package com.oscar.videoteca.rest.exception;
 /**
  * Excepción que se lanza si ha ocurrido algún error al 
  * eliminar un álbum fotográfico
- * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez Brea</a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
 public class ErrorDeleteAlbumException extends Exception {

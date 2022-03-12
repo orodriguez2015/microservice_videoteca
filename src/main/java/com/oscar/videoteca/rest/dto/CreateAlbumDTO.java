@@ -7,7 +7,7 @@ import lombok.Setter;
 
 /**
  * Clase con los datos necesarios para que se pueda dar de alta un álbum 
- * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez Brea</a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
 @Getter

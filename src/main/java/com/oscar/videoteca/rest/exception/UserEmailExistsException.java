@@ -3,7 +3,7 @@ package com.oscar.videoteca.rest.exception;
 /**
  * Excepción UserEmailExistsException que se lanza si existe algún usuario con un 
  * determinado email
- * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez Brea</a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
 public class UserEmailExistsException extends RuntimeException{

@@ -15,7 +15,7 @@ import lombok.Setter;
  * Clase ParentResponse que representa la clase padre que se utiliza para la respuesta correcta o por error que se
  * utilizará para la respuesta de una operación de un microservicio
  * 
- * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez Brea</a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
 @Getter

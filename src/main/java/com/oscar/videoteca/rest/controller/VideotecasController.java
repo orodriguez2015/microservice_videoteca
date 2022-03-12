@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiResponses;
 
 /**
  * Controller para el manejo de videotecas
- * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez Brea</a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
 @RestController
