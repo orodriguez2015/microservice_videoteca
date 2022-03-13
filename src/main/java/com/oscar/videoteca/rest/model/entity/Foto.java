@@ -18,7 +18,7 @@ import lombok.Setter;
 
 /**
  * Clase de tipo Entity que representa a un registro de la tabla foto de BBDD
- * @author oscar
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
 @Getter @Setter
@@ -35,10 +35,7 @@ public class Foto {
     
     @Column(nullable = false,name = "ruta")
     private String ruta;
-    
-    @Column(nullable = false,name = "rutaMiniatura")
-    private String rutaMiniatura;
-     
+         
     @Column(nullable = false,name = "publico")
     private Boolean publico;
         
@@ -48,13 +45,13 @@ public class Foto {
     @Column(nullable = false,name = "ancho")
     private Integer ancho;
     
-    @Column(nullable = true,name = "numeroVisualizaciones")
+    @Column(nullable = true,name = "numero_visualizaciones")
     private Integer numeroVisualizaciones;
     
-    @Column(nullable = true,name = "tipoMime")
+    @Column(nullable = true,name = "tipomime")
     private String tipoMime;
     
-    @Column(nullable = false, updatable = false,name="fechaAlta")
+    @Column(nullable = false, updatable = false,name="fecha_alta")
     @CreationTimestamp
     private Date fechaAlta;
         
@@ -62,7 +59,7 @@ public class Foto {
     @ManyToOne
     private User usuario;
     
-    @JoinColumn(name="id_album")
+    @JoinColumn(name="id_album",nullable=false,updatable=false)
     @ManyToOne
     private Album album;
     

@@ -7,9 +7,6 @@ package com.oscar.videoteca.rest.exception;
  */
 public class SaveFileException extends Exception{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1989911098649984844L;
 
 	/**

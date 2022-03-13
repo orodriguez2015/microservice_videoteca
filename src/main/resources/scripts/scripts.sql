@@ -40,7 +40,6 @@ CREATE TABLE videoteca.`foto` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
   `ruta` varchar(225) NOT NULL,
-  `rutaMiniatura` varchar(225) NOT NULL,
   `alto` int(11) NOT NULL,
   `ancho` int(11) NOT NULL,
   `tipomime` varchar(45) DEFAULT NULL,

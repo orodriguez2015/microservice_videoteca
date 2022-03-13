@@ -41,6 +41,9 @@ public class AlbumManagerImpl implements AlbumManager {
 	@Autowired
 	private BackupConfiguration backupConfiguration;
 	
+	@Autowired
+	private FileUtil fileUtil;
+	
 	@Override
 	public List<AlbumDTO> getAlbumesPublicos() {
 	
@@ -86,7 +89,7 @@ public class AlbumManagerImpl implements AlbumManager {
 		String folderBackupAlbum = backupConfiguration.getAlbum();
 		if(StringUtils.isNotEmpty(folderBackupAlbum)) {
 			// Se crea la carpeta raíz de backup de álbumes sino existe
-			FileUtil.createFolder(folderBackupAlbum);	
+			fileUtil.createFolder(folderBackupAlbum);	
 		} 	
 		
 		// Se da de alta el álbum en BBDD	
@@ -94,7 +97,7 @@ public class AlbumManagerImpl implements AlbumManager {
 		
 		// Se crea la subcarpeta propia del álbum en la que se almacenaránsus fotos
 		String folderBackupAlbumDetail = folderBackupAlbum + File.separator + created.getId();
-		FileUtil.createFolder(folderBackupAlbumDetail);
+		fileUtil.createFolder(folderBackupAlbumDetail);
 
 		salida = converter.convertTo(created); 
 	

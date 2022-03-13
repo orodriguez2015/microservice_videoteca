@@ -127,11 +127,6 @@ class AdjuntarFoto extends ComponenteAutenticado {
         AlbumFacade.submitFotos(this.props.match.params.p_album_id,AlmacenFacade.getUser(),ficheros)
         .then(resultado=>{       
             
-            console.log("resultado = " + JSON.stringify(resultado));
-
-
-        
-
             if(resultado.status!=="OK") {
                 this.hideProgressBar();
 

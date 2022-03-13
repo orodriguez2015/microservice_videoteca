@@ -1,7 +1,9 @@
 package com.oscar.videoteca.rest.model.entity;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -54,5 +57,9 @@ public class Album {
     @ManyToOne
     @JoinColumn(name="id_usuario_mod")
     private User usuarioModificacion;
+    
+    // Relación OneToMany con la entidad fotos. La propiedad mappedBy se mapea el parámetro album en la entidad foto
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "album")
+    private List<Foto> fotos;
 	
 }

@@ -5,7 +5,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Iterator;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.oscar.videoteca.rest.config.BackupConfiguration;
 import com.oscar.videoteca.rest.exception.SaveFileException;
 
 import lombok.Getter;
@@ -16,15 +25,19 @@ import lombok.Setter;
  * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
+@Component
 public class FileUtil {
 	
-	private static final int BUFFER_SIZE = 1024*1024;
+	@Autowired
+	private BackupConfiguration backupConfiguration;
+	
+	private final int BUFFER_SIZE = 1024*1024;
 
 	/**
 	 * Da de alta una carpeta/directorio en disco siempre y cuando no exista
 	 * @param folder Ruta de la carpeta/directorio en disco
 	 */
-	public static Boolean createFolder(String folder) {
+	public Boolean createFolder(String folder) {
 		Boolean exito = Boolean.FALSE;
 		try {
 			File f = new File(folder);
@@ -51,7 +64,7 @@ public class FileUtil {
 	 * @return Boolean
 	 * @throws SaveFileException si ocurre algún error
 	 */
-	public static Boolean saveFile(InputStream inputStream,String filePath) throws SaveFileException {
+	public Boolean saveFile(InputStream inputStream,String filePath) throws SaveFileException {
 		Boolean exito = Boolean.FALSE;
 		
 		try {
@@ -80,12 +93,26 @@ public class FileUtil {
 	}
 	
 	
+	/**
+	 * Borra un fichero de disco
+	 * @param f File
+	 * @return True si se ha borrado y false en caso contrario
+	 */
+	public Boolean deleteFile(File f) {
+		Boolean exito = Boolean.FALSE;
+		if(f!=null) {
+			exito = f.delete();
+		}
+		
+		return exito;
+	}
+	
 
 	/**
 	 * Cierra un InputStream
 	 * @param is InputStream
 	 */
-	public static void close(InputStream is) {
+	public void close(InputStream is) {
 		try {
 			if(is!=null) {
 				is.close();
@@ -100,7 +127,7 @@ public class FileUtil {
 	 * Cierra un FileOutputStream
 	 * @param fos FileOutputStream
 	 */
-	public static void close(FileOutputStream fos) {
+	public void close(FileOutputStream fos) {
 		try {
 			if(fos!=null) {
 				fos.close();
@@ -111,13 +138,84 @@ public class FileUtil {
 	}
 
 
+	/**
+	 * Devuelve un objeto instancia de PhotoSize con el tamaño
+	 * @param f File
+	 * @return FileUtil.PhotoSize
+	 * @throws IOException
+	 */
 	
-	public static PhotoSize getPhotoSize(File f) {
+	public PhotoSize getPhotoSize(File f) throws IOException {
 		PhotoSize ps = new PhotoSize();
+			
+		Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName("jpeg");
+		ImageReader reader = (ImageReader)readers.next();
+		ImageInputStream iis = ImageIO.createImageInputStream(f);
+		reader.setInput(iis, true);
+
+		ps.setHeight(reader.getHeight(0));
+		ps.setWidth(reader.getWidth(0));
 		
 		return ps;
 	}
 
+	
+
+	/**
+	 * Devuelve un String con la ruta de backup de un álbum de un usuario 
+	 * @param idUsuario Long
+	 * @return String
+	 */
+	public String getBackupUserDirectory(Long idUsuario) {
+		StringBuilder path = new StringBuilder();
+		path.append(backupConfiguration.getAlbum());
+		path.append(File.separatorChar);
+		path.append(idUsuario);
+		
+		return path.toString();
+	}
+
+	
+	
+	
+	/**
+	 * Devuelve un String con la ruta de backup de un álbum de un usuario 
+	 * @param idAlbum Long
+	 * @param idUsuario Long
+	 * @return String
+	 */
+	public String getBackupAlbumDirectory(Long idAlbum,Long idUsuario) {
+		StringBuilder path = new StringBuilder();
+		path.append(backupConfiguration.getAlbum());
+		path.append(File.separatorChar);
+		path.append(idUsuario);
+		
+		path.append(File.separatorChar);
+		path.append(idAlbum);
+		
+		return path.toString();
+	}
+
+	
+	/**
+	 * Devuelve la ruta de backup de una fotografía de un álbum en disco
+	 * @param idAlbum Id del álbum
+	 * @param idUsuario Id del usuario
+	 * @param fileName Nombre de la fotografía
+	 * @return String
+	 */
+	public String getBackupPhoto(Long idAlbum,Long idUsuario,String fileName) {
+		StringBuilder path = new StringBuilder();
+		path.append(getBackupAlbumDirectory(idAlbum, idUsuario));
+		path.append(File.separatorChar);
+		path.append(fileName);
+
+		return path.toString();
+		
+	}
+	
+	
+	
 	/**
 	 * Clase PhotoSize
 	 * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>

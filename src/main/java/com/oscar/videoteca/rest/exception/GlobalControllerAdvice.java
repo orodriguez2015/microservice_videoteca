@@ -131,4 +131,31 @@ public class GlobalControllerAdvice {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
 	
+	
+	/**
+	 * Se controla cuando se ha producido un error al persistir una archivo subido al servidor en disco
+	 * @param e SaveFileException
+	 * @return ResponseEntity<ResponseError>
+	 */
+	@ExceptionHandler(SaveFileException.class)
+	public ResponseEntity<ResponseError> handleSaveFileException(SaveFileException e) {
+		ResponseError error = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
+
+	/**
+	 * Se controla cuando se ha producido un error al subir una fotografía a un álbum
+	 * @param e SavePhotoException
+	 * @return ResponseEntity<ResponseError>
+	 */
+	@ExceptionHandler(SavePhotoException.class)
+	public ResponseEntity<ResponseError> handleSavePhotoException(SavePhotoException e) {
+		ResponseError error = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
+	
+	
+	
 }
