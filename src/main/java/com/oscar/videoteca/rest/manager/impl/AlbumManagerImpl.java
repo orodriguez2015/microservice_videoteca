@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -122,7 +121,6 @@ public class AlbumManagerImpl implements AlbumManager {
 		Boolean exito  = Boolean.FALSE;
 		
 		try {
-			String folderBackupAlbum = backupConfiguration.getAlbum();
 				
 			ExampleMatcher exampleMatcher = ExampleMatcher.matchingAll()
 				      .withMatcher("id", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase())
@@ -142,9 +140,7 @@ public class AlbumManagerImpl implements AlbumManager {
 			if(opt.isPresent()) {
 					
 				// Se elimina la subcarpeta que contiene las fotos del álbumm
-				String folderBackupAlbumDetail = folderBackupAlbum + File.separator + id;
-				
-				FileUtils.deleteDirectory(new File(folderBackupAlbumDetail));
+				fileUtil.deleteDirectory(new File(fileUtil.getBackupAlbumDirectory(id, idUsuario)));
 				albumRepository.delete(opt.get());
 				exito = Boolean.TRUE;	
 			

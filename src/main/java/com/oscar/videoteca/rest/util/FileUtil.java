@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
@@ -102,6 +103,38 @@ public class FileUtil {
 		Boolean exito = Boolean.FALSE;
 		if(f!=null) {
 			exito = f.delete();
+		}
+		
+		return exito;
+	}
+	
+	
+	/**
+	 * Borra un directorio y todo su contenido
+	 * @param f File que representa un directorio
+	 * @return True si se ha eliminado y false en caso contrario
+	 */
+	public Boolean deleteDirectory(File f) {
+		Boolean exito  =Boolean.FALSE;
+		if(f!=null && f.exists() && Boolean.TRUE.equals(f.isDirectory())) {
+			File[] files = f.listFiles();
+			
+			if(files!=null && files.length>0) {
+				
+				Arrays.asList(files).stream().forEach(file ->{
+					
+					if(Boolean.TRUE.equals(file.isFile())) {
+						this.deleteFile(file);
+					} else {
+						deleteDirectory(file);
+					}
+					
+				});
+			} else  {
+				f.delete();
+				exito = Boolean.TRUE;
+			}
+			
 		}
 		
 		return exito;

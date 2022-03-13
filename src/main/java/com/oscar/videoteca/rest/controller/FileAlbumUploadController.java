@@ -37,7 +37,6 @@ public class FileAlbumUploadController {
             Arrays.asList(files).stream().forEach(file->{
             	 	
             	try { 	
-            		System.out.println("Nombre = " + file.getName() + ", size= " + file.getSize());
                 
             		fotoManager.saveFoto(file,Long.parseLong(idAlbum),Long.parseLong(idUsuario));
             		
