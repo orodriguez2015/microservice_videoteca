@@ -32,7 +32,7 @@ export const FOTO_ALBUM_ADMIN = URL_BACKEND + "/pr_album/";
 /*
  * GET /p_videotecas URL a la que se envía una petición por GET para recuperar las videotecas públicas
  */
-export const VIDEOTECAS_PUBLICO_API = URL_BACKEND +  "/p_videotecas";
+export const VIDEOTECAS_PUBLICO_API = URL_BACKEND +  "/public/videotecas";
 
 /*
  * GET /p_videos URL a la que se envía una petición por GET para recuperar las vídeos de una videoteca

@@ -37,7 +37,7 @@ public class VideotecasController {
 	 * @param id Id del usuario
 	 * @return UserDTO
 	 */
-	@GetMapping(value="/p_videotecas")
+	@GetMapping(value="/public/videotecas")
 	@ApiOperation(value="Recupera las videotecas públicas",notes="Provee un mecanismo para recuperar las videotecas públicas")
 	@ApiResponses(value={
 		@ApiResponse(code=200,message="OK",response=VideotecaDTO.class),

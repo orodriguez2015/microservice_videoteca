@@ -8,6 +8,9 @@ import java.io.OutputStream;
 
 import com.oscar.videoteca.rest.exception.SaveFileException;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Clase FileUtil con operaciones de utilidad para el manejo/trabajo con fichero
  * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
@@ -76,6 +79,7 @@ public class FileUtil {
 		return exito;		
 	}
 	
+	
 
 	/**
 	 * Cierra un InputStream
@@ -105,5 +109,27 @@ public class FileUtil {
 			
 		}		
 	}
+
+
+	
+	public static PhotoSize getPhotoSize(File f) {
+		PhotoSize ps = new PhotoSize();
+		
+		return ps;
+	}
+
+	/**
+	 * Clase PhotoSize
+	 * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
+	 *
+	 */
+	@Getter
+	@Setter
+	public static class PhotoSize {
+		private Integer height;
+		private Integer width;
+		
+	}
+	
 	
 }

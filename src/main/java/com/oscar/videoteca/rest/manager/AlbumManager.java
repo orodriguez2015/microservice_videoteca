@@ -1,16 +1,12 @@
 package com.oscar.videoteca.rest.manager;
 
-import java.io.IOException;
 import java.util.List;
-
-import org.springframework.web.multipart.MultipartFile;
 
 import com.oscar.videoteca.rest.dto.AlbumDTO;
 import com.oscar.videoteca.rest.dto.CreateAlbumDTO;
 import com.oscar.videoteca.rest.exception.AlbumNotFoundException;
 import com.oscar.videoteca.rest.exception.AlbumesNotFoundException;
 import com.oscar.videoteca.rest.exception.ErrorDeleteAlbumException;
-import com.oscar.videoteca.rest.exception.SaveFileException;
 
 /**
  * Interface AlbumManager
@@ -77,10 +73,4 @@ public interface AlbumManager {
 	 */
 	Boolean existsById(Long id);
 	
-	/**
-	 * Almacena las fotos asociadas a un determinado álbum fotográfico
-	 * @param foto MultipartFile
-	 * @throws SaveFileException si ocurre algún error 
-	 */
-	void saveFoto(MultipartFile foto,Long idAlbum,Long idUsuario) throws IOException,SaveFileException;
 }

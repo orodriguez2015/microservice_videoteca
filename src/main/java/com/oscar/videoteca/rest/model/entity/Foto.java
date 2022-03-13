@@ -40,7 +40,7 @@ public class Foto {
     private String rutaMiniatura;
      
     @Column(nullable = false,name = "publico")
-    private String publico;
+    private Boolean publico;
         
     @Column(nullable = false,name = "alto")
     private Integer alto;

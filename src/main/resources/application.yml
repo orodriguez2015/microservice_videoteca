@@ -14,8 +14,8 @@ authentication:
         "/v3/api-docs/**",
         "/swagger-ui/**",
         "/login",
-        "/p_videotecas",
-        "/public/album"
+        "/public/videotecas",
+        "/public/albumes"
   ]
 # Propiedades configuración carpeta de backup de fotos y videos
 backup:

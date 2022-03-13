@@ -1,7 +1,6 @@
 package com.oscar.videoteca.rest.manager.impl;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.oscar.videoteca.rest.config.BackupConfiguration;
 import com.oscar.videoteca.rest.dto.AlbumDTO;
@@ -20,7 +18,6 @@ import com.oscar.videoteca.rest.dto.mapping.AlbumConverter;
 import com.oscar.videoteca.rest.exception.AlbumNotFoundException;
 import com.oscar.videoteca.rest.exception.AlbumesNotFoundException;
 import com.oscar.videoteca.rest.exception.ErrorDeleteAlbumException;
-import com.oscar.videoteca.rest.exception.SaveFileException;
 import com.oscar.videoteca.rest.manager.AlbumManager;
 import com.oscar.videoteca.rest.model.entity.Album;
 import com.oscar.videoteca.rest.model.entity.User;
@@ -200,32 +197,5 @@ public class AlbumManagerImpl implements AlbumManager {
 	}
 
 
-	@Override
-	public void saveFoto(MultipartFile foto, Long idAlbum, Long idUsuario) throws IOException,SaveFileException {
-		
-		Boolean userPathCreated  = Boolean.FALSE;
-		Boolean albumPathCreated  = Boolean.TRUE;
-		
-		StringBuilder path = new StringBuilder();
-		path.append(backupConfiguration.getAlbum());
-		path.append(File.separatorChar);
-		path.append(idUsuario);
-		
-		userPathCreated = FileUtil.createFolder(path.toString());
-		
-		path.append(File.separatorChar);
-		path.append(idAlbum);
-		
-		albumPathCreated = FileUtil.createFolder(path.toString());
-				
-		if(Boolean.TRUE.equals(albumPathCreated) && Boolean.TRUE.equals(userPathCreated)) {
-			// Si se ha creado el directorio o ya existe, se persiste la foto			
-			path.append(File.separatorChar);
-			path.append(foto.getOriginalFilename());
-			
-			FileUtil.saveFile(foto.getInputStream(),path.toString());
-		}
-		
-	}
 
 }

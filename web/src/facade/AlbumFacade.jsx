@@ -401,6 +401,8 @@ export class AlbumFacade {
         if(ficheros!==undefined) {
             let indice = 0;
             Object.values(ficheros).forEach(element => {
+
+                console.log("  foto seleccionada = " + element.name + ", size = " + element.size);
                 formData.append("ficheros",element);
                 indice++;
             });

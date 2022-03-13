@@ -27,7 +27,7 @@ export const ALBUM_ADMIN_API = URL_BACKEND +  "/pr_album/";
  * GET /p_albumes: URL a la que se envía una petición por GET para recuperar los álbumes fotográficos
  * marcados como público que se pueden mostrar en la parte pública de la web
  */
-export const ALBUMES_PUBLICO_API = URL_BACKEND +  "/public/album";
+export const ALBUMES_PUBLICO_API = URL_BACKEND +  "/public/albumes";
 
 /*
  * POST /p_album URL a la que se envía una petición por GET para recuperar las fotografías

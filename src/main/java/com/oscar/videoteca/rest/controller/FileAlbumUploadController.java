@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.oscar.videoteca.rest.exception.SaveFileException;
 import com.oscar.videoteca.rest.exception.api.ResponseOperation;
-import com.oscar.videoteca.rest.manager.AlbumManager;
+import com.oscar.videoteca.rest.manager.FotoManager;
 
 /**
  * Controller que recibe peticiones de upload de fotografías para un determinado álbum fotográfico
@@ -26,20 +26,21 @@ import com.oscar.videoteca.rest.manager.AlbumManager;
 public class FileAlbumUploadController {
 	
 	@Autowired
-	private AlbumManager albumManager;
+	private FotoManager fotoManager;
 
 	  @PostMapping("/private/album/{idAlbum}/{idUsuario}")
 	  public ResponseEntity<?> uploadFiles(@RequestParam("ficheros")MultipartFile[] files,@RequestParam("idAlbum") String idAlbum,@RequestParam("idUsuario") String idUsuario){
         try{
             List<String> fileNames = new ArrayList<>();
-           System.out.println("idAlbum = " + idAlbum + ", idUsuario = " + idUsuario);
-            
+           
+           
             Arrays.asList(files).stream().forEach(file->{
-            	
-            	System.out.println("Nombre = " + file.getName() + ", size= " + file.getSize());
-            	
-            	try {
-            		albumManager.saveFoto(file,Long.parseLong(idAlbum),Long.parseLong(idUsuario));
+            	 	
+            	try { 	
+            		System.out.println("Nombre = " + file.getName() + ", size= " + file.getSize());
+                
+            		fotoManager.saveFoto(file,Long.parseLong(idAlbum),Long.parseLong(idUsuario));
+            		
             	}catch(IOException e) {
             		
             	}catch(SaveFileException e) {
@@ -59,7 +60,7 @@ public class FileAlbumUploadController {
         }catch (Exception e){   
             ResponseOperation<Object> response = new ResponseOperation<Object>();
 			response.setStatus(HttpStatus.EXPECTATION_FAILED);
-			response.setDescStatus("Error al subir fotografías al servidor");
+			response.setDescStatus("Error al subir fotografías al servidor: " + e.getMessage());
          
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(response);
         }

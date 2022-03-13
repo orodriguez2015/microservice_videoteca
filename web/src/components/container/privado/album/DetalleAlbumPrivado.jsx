@@ -45,6 +45,8 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
 
             // Se recupera el id del álbum de la url
             var idAlbum = this.props.match.params.p_album_id;
+
+            console.log("DetalleAlbum")
             
             if(this.props.match.params===null || this.props.match.params.p_album_id===undefined) {
                 // Se comprueba si está definido el state en la llamada a este componente que llega a través de un "a href", como 

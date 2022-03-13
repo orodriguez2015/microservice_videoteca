@@ -166,11 +166,11 @@ class AlbumesPrivados extends ComponenteAutenticado {
                         let publico = (value.publico===true)?'SI':'NO';
                          return (
                             <tr key={value.id}>
-                                <td><a className="visorMultimedia" href={'/pr_album/' + value.ID}>{value.id}</a></td>
-                                <td><a className="visorMultimedia" href={'/pr_album/' + value.ID}>{value.nombre}</a></td>
-                                <td><a className="visorMultimedia" href={'/pr_album/' + value.ID}>{value.descripcion}</a></td>
-                                <td><a className="visorMultimedia" href={'/pr_album/' + value.ID}>{publico}</a></td>
-                                <td><a className="visorMultimedia" href={'/pr_album/' + value.ID}>{value.fechaAlta}</a></td>
+                                <td><a className="visorMultimedia" href={'/pr_album/' + value.id}>{value.id}</a></td>
+                                <td><a className="visorMultimedia" href={'/pr_album/' + value.id}>{value.nombre}</a></td>
+                                <td><a className="visorMultimedia" href={'/pr_album/' + value.id}>{value.descripcion}</a></td>
+                                <td><a className="visorMultimedia" href={'/pr_album/' + value.id}>{publico}</a></td>
+                                <td><a className="visorMultimedia" href={'/pr_album/' + value.id}>{value.fechaAlta}</a></td>
                                 <td>
                                     <img src="/images/pencil2.png" width="22" onClick={()=>this.handleEditarAlbum(value.id)} alt="Editar álbum" title="Editar álbum"/>
                                     &nbsp;                                    

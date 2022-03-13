@@ -43,7 +43,7 @@ public class AlbumesController {
 	 * @param id Id del usuario
 	 * @return UserDTO
 	 */
-	@GetMapping(value="/public/album")
+	@GetMapping(value="/public/albumes")
 	@ApiOperation(value="Recupera las álbumes públicos",notes="Provee un mecanismo para recuperar los álbumes públicas")
 	@ApiResponses(value={
 		@ApiResponse(code=200,message="OK",response=AlbumDTO.class),
@@ -65,9 +65,9 @@ public class AlbumesController {
 	
 	
 	/**
-	 * Recupera los álbumes fotográficos públicos
+	 * Recupera los álbumes fotográficos de un determinado usuario
 	 * @param id Id del usuario
-	 * @return UserDTO
+	 * @return ResponseEntity<List<AlbumDTO>>
 	 * @throws AlbumesNotFoundException si no hay álbumes fotográficos
 	 */
 	@PostMapping(value="/private/albumes/{id}")
