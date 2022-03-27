@@ -4,7 +4,7 @@ import Spinner from 'react-bootstrap/Spinner'
 
 /**
  * Componente que muestra en una ventana modal de bootstrap, una barra de progreso
- * @author <a href="mailto:oscarrbr@ext.inditex.com">Óscar Rodríguez</a>
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez</a>
  */
 class ModalProgressBar extends React.Component {
 
