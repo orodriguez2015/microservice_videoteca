@@ -300,7 +300,7 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
                             return <div key={value.id} className="col-3">
                 
                                         <a href={`${imgOriginal}`} data-attribute="SRL">
-                                            <img src={`${imgMiniatura}`} alt={`${imgMiniatura}`} width="250" height="250"/>
+                                            <img src={`${imgMiniatura}`} alt={`${imgMiniatura}`} width="200" height="150"/>
                                         </a>                
                                         <p className="nombreVideoFoto">{value.nombre}</p>                        
                                         <p className="idVideoFoto">{value.descripcionN}</p>                                        

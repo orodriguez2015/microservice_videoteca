@@ -48,6 +48,7 @@ CREATE TABLE videoteca.`foto` (
   `id_usuario` int(11) DEFAULT NULL,
   `publico` int(11) NOT NULL DEFAULT '1',
   `numero_visualizaciones` int(11) DEFAULT '0',
+  `ruta_relativa` varchar(100)  NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idAlbumFk1` (`id_album`),
   KEY `fkIdUsuario_idx` (`id_usuario`),
