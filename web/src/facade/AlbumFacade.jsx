@@ -1,4 +1,4 @@
-import {ALBUM_DETAIL_API,FOTO_ALBUM_PUBLICO_API,ALBUMES_PUBLICO_API,ALBUM_PRIVATE_API,ALBUMES_USUARIO_ADMIN_API ,PR_FOTO_API,PUBLICAR_FOTO_API,FOTO_ALBUM_ADMIN} from '../constantes/ConfiguracionAlbumes';
+import {ALBUM_DETAIL_API,FOTO_ALBUM_PUBLICO_API,ALBUMES_PUBLICO_API,ALBUM_PRIVATE_API,ALBUMES_USUARIO_ADMIN_API ,PR_FOTO_API,PUBLICAR_FOTO_API} from '../constantes/ConfiguracionAlbumes';
 
 /**
  * ,
@@ -77,13 +77,15 @@ export class AlbumFacade {
    /**
      * Se envía una petición al servidor para recuperar las fotos de un álbum, esté o no marcadas como publicadas
      * @param idAlbum: Id del álbum
+     * @param user Usuario autenticado
      * @return Una promesa
      */
-    static getFotosAlbumPrivado(idAlbum) {
+    static getFotosAlbumPrivado(idAlbum,user) {
         let headers =  {
             "Content-Type": "application/json",
             "Access-Control-Request-Headers": "*",
-            "Access-Control-Request-Method": "*"
+            "Access-Control-Request-Method": "*",
+            "Authorization" : user.authenticationToken
         }
 
         var opciones = {
@@ -93,7 +95,7 @@ export class AlbumFacade {
         }
 
         return new Promise((resolver, rechazar) => {
-            fetch(FOTO_ALBUM_ADMIN + idAlbum,opciones)
+            fetch(ALBUM_DETAIL_API + idAlbum + "/" + user.id,opciones)
             .then((response) => {
                 return response.json()
             })
@@ -399,12 +401,8 @@ export class AlbumFacade {
         formData.append("idUsuario",user.id);   
 
         if(ficheros!==undefined) {
-            let indice = 0;
             Object.values(ficheros).forEach(element => {
-
-                console.log("  foto seleccionada = " + element.name + ", size = " + element.size);
                 formData.append("ficheros",element);
-                indice++;
             });
         }
 

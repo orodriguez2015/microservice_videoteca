@@ -2,7 +2,9 @@
  * URL base de acceso al servidor en la que está instalado los servicios de tipo REST
  */
 export const URL_BACKEND = "http://localhost:8080/videoteca";
-//export const URL_BACKEND = "http://192.168.1.11:5000";
+
+/** URL para mostrar los recursos en forma de imágenes */
+export const URL_BACKEND_IMAGES = URL_BACKEND + "/images";
 
 /*
  * POST /login: URL a la que se envía una petición por POST para comprobar si un usuario está autenticado

@@ -243,8 +243,28 @@ public class FileUtil {
 		path.append(File.separatorChar);
 		path.append(fileName);
 
-		return path.toString();
+		return path.toString();	
+	}
+	
+	
+	/**
+	 * Devuelve la ruta relativa de una fotografía en disco y que se utilizará para poder
+	 * mostrar la fotografía
+	 * @param fileName Nombre de la fotografía
+	 * @param idAlbum Id del álbum
+	 * @param idUsuario Id del usuario
+	 * @return String
+	 */
+	public String getRelativePathPhoto(String fileName,Long idAlbum,Long idUsuario) {
+		StringBuilder path = new StringBuilder();
+		path.append(File.separatorChar);
+		path.append(idUsuario);
+		path.append(File.separatorChar);
+		path.append(idAlbum);
+		path.append(File.separatorChar);
+		path.append(fileName);
 		
+		return path.toString();	
 	}
 	
 	

@@ -14,7 +14,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.oscar.videoteca.rest.config.ConfigurationListaBlancaUrl;
+import com.oscar.videoteca.rest.config.UrlWhitelistConfiguration;
 
 
 /**
@@ -28,7 +28,7 @@ import com.oscar.videoteca.rest.config.ConfigurationListaBlancaUrl;
 public class WebSecurity extends WebSecurityConfigurerAdapter {	
 	
 	@Autowired
-	private ConfigurationListaBlancaUrl urlWhiteList;
+	private UrlWhitelistConfiguration urlWhiteList;
 	
 	 
 	 /**

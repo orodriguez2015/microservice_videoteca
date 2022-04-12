@@ -2,6 +2,9 @@ package com.oscar.videoteca.rest.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
+import com.oscar.videoteca.rest.controller.FotoDTO;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -36,6 +39,9 @@ public class AlbumDTO implements Serializable {
     private String apellido1UsuarioAlta;
 
     private String apellido2UsuarioAlta;
+    
+    private List<FotoDTO> fotos;
+    
        
 }
 

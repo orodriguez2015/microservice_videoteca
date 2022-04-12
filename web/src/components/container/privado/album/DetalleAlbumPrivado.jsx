@@ -2,7 +2,7 @@ import React from 'react';
 import {AlbumFacade} from '../../../../facade/AlbumFacade';
 import {StringUtil} from '../../../../util/StringUtil';
 import ErrorMessage from '../../../error/ErrorMessage';
-import {URL_BACKEND} from '../../../../constantes/Configuracion';
+import {URL_BACKEND_IMAGES} from '../../../../constantes/Configuracion';
 import { SRLWrapper} from 'simple-react-lightbox'; 
 import ComponenteAutenticado from '../autenticacion/ComponenteAutenticado';
 import ModalConfirmation from '../../../modal/ModalConfirmation';
@@ -62,12 +62,18 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
 
                 if(StringUtil.isNotEmpty(idAlbum)) { 
 
-                    AlbumFacade.getFotosAlbumPrivado(idAlbum)
+                    let user = AlmacenFacade.getUser();
+                    AlbumFacade.getFotosAlbumPrivado(idAlbum,user)
                     .then(resultado=>{
-                        this.setState({
-                            fotos: resultado.fotos,
-                            nombreAlbum: resultado.nombreAlbum
-                        });
+
+                        if(resultado.status==="OK") {
+                            this.setState({
+                                fotos: resultado.data.fotos,
+                                nombreAlbum: resultado.data.nombreA
+                            });
+                        }
+
+                        
 
                     }).catch(err=>{
                         console.log("error= " + err.message);
@@ -285,25 +291,25 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
                     <div className="row">
                         {this.state.fotos.map((value, index) => {
                             // Se construye la ruta de la miniatura en el servidor
-                            let imgMiniatura = URL_BACKEND + value.RUTAMINIATURA;
-                            let imgOriginal  = URL_BACKEND + value.RUTA;
-                            let imagen = value.PUBLICO===1?'/images/ojo_abierto.png':'/images/ojo_cerrado.png';
-                            let keyImage = value.ID + "_img";
-                            let key = value.ID + "_publico";
+                            let imgMiniatura = URL_BACKEND_IMAGES + value.rutaRelativa;
+                            let imgOriginal  = URL_BACKEND_IMAGES + value.rutaRelativa;
+                            let imagen = value.publico===1?'/images/ojo_abierto.png':'/images/ojo_cerrado.png';
+                            let keyImage = value.id + "_img";
+                            let key = value.id + "_publico";
                             
-                            return <div key={value.ID} className="col-3">
+                            return <div key={value.id} className="col-3">
                 
                                         <a href={`${imgOriginal}`} data-attribute="SRL">
-                                            <img src={`${imgMiniatura}`} alt={`${imgMiniatura}`}/>
+                                            <img src={`${imgMiniatura}`} alt={`${imgMiniatura}`} width="250" height="250"/>
                                         </a>                
-                                        <p className="nombreVideoFoto">{value.NOMBRE}</p>                        
-                                        <p className="idVideoFoto">{value.DESCRIPCION}</p>                                        
-                                        <p className="idVideoFoto">Alta el {value.FECHA_ALTA}</p>
-                                        <p className="idVideoFoto">Visto { value.NUMEROVISUALIZACIONES }  veces</p>
-                                        <p className="idVideoFoto">ID # {value.ID}</p>
-                                        <img src={imagen} id={keyImage} name={keyImage} border="0" width="26" height="26" title="" alt="" onClick={()=>this.handleOcultarFoto(value.ID)}/>
-                                        <img src="/images/full_trash.png" border="0" width="20" height="20" title="Eliminar" alt="Eliminar" onClick={()=>this.handleEliminar(value.ID)}/>
-                                        <input type="hidden" id={key} name={key} value={value.PUBLICO}/>
+                                        <p className="nombreVideoFoto">{value.nombre}</p>                        
+                                        <p className="idVideoFoto">{value.descripcionN}</p>                                        
+                                        <p className="idVideoFoto">Alta el {value.fechaAlta}</p>
+                                        <p className="idVideoFoto">Visto { value.numeroVisualizaciones }  veces</p>
+                                        <p className="idVideoFoto">ID # {value.id}</p>
+                                        <img src={imagen} id={keyImage} name={keyImage} border="0" width="26" height="26" title="" alt="" onClick={()=>this.handleOcultarFoto(value.id)}/>
+                                        <img src="/images/full_trash.png" border="0" width="20" height="20" title="Eliminar" alt="Eliminar" onClick={()=>this.handleEliminar(value.id)}/>
+                                        <input type="hidden" id={key} name={key} value={value.publico}/>
                                         <p></p>
                                 </div>
                         })}

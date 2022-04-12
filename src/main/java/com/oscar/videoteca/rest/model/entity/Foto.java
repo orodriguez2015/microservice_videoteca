@@ -35,6 +35,9 @@ public class Foto {
     
     @Column(nullable = false,name = "ruta")
     private String ruta;
+    
+    @Column(nullable = false,name = "ruta_relativa")
+    private String rutaRelativa;
          
     @Column(nullable = false,name = "publico")
     private Boolean publico;

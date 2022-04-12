@@ -22,7 +22,7 @@ import lombok.Getter;
 @Getter
 @Setter
 @ConfigurationProperties(prefix = "authentication")
-public class ConfigurationListaBlancaUrl {
+public class UrlWhitelistConfiguration {
 
 	private List<String> urlWhiteListByGet;
 	

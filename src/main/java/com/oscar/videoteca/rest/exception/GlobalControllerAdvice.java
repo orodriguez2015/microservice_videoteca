@@ -156,6 +156,17 @@ public class GlobalControllerAdvice {
 	}
 	
 	
+	/**
+	 * Se controla cuando se ha producido un error al recuperar una fotografía
+	 * @param e PhotoNotFoundException
+	 * @return ResponseEntity<ResponseError>
+	 */
+	@ExceptionHandler(FotoNotFoundException.class)
+	public ResponseEntity<ResponseError> handlePhotoNotFoundException(FotoNotFoundException e) {
+		ResponseError error = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
 	
 	
 }

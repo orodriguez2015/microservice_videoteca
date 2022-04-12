@@ -43,7 +43,7 @@ export const URL_ATTACH_PHOTOS = URL_BACKEND + "/pr_album/adjuntar/";
  * POST /pr_album URL a la que se envía una petición por GET para recuperar las fotografías
  * que componen el álbum desde la pantalla de administración de un álbum
  */
-export const FOTO_ALBUM_ADMIN = URL_BACKEND + "/pr_album/";
+//export const FOTO_ALBUM_ADMIN = URL_BACKEND + "/pr_album/";
 
 /**
  * Constante que representa la url para manejo de un recurso de tipo foto
