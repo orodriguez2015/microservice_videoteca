@@ -1,4 +1,4 @@
-import {ALBUM_DETAIL_API,FOTO_ALBUM_PUBLICO_API,ALBUMES_PUBLICO_API,ALBUM_PRIVATE_API,ALBUMES_USUARIO_ADMIN_API ,PR_FOTO_API,PUBLICAR_FOTO_API} from '../constantes/ConfiguracionAlbumes';
+import {ALBUM_DETAIL_API,ALBUM_PUBLICO_DETAIL_API,ALBUMES_PUBLICO_API,ALBUM_PRIVATE_API,ALBUMES_USUARIO_ADMIN_API ,PR_FOTO_API,PUBLICAR_FOTO_API} from '../constantes/ConfiguracionAlbumes';
 
 /**
  * ,
@@ -45,9 +45,10 @@ export class AlbumFacade {
      * Se envía una petición al servidor para comprobar si un usuario existe 
      * en el sistema. 
      * @param idAlbum: Id del álbum
+     * @param user Usuario que realiza la petición
      * @return Una promesa
      */
-    static getFotosAlbumPublico(idAlbum) {
+    static getFotosAlbumPublico(idAlbum,user) {
         let headers =  {
             "Content-Type": "application/json",
             "Access-Control-Request-Headers": "*",
@@ -61,7 +62,7 @@ export class AlbumFacade {
         }
 
         return new Promise((resolver, rechazar) => {
-            fetch(FOTO_ALBUM_PUBLICO_API + "/" + idAlbum,opciones)
+            fetch(ALBUM_PUBLICO_DETAIL_API + idAlbum,opciones)
             .then((response) => {
                 return response.json()
             })

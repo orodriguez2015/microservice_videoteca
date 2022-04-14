@@ -90,9 +90,6 @@ public class AlbumesController {
 	}
 	
 
-	
-	
-	
 	/**
 	 * Recupera un determinado álbum fotográfico de un detemlos álbumes fotográficos públicos
 	 * @param id Id del usuario
@@ -120,8 +117,35 @@ public class AlbumesController {
 	}
 	
 	
+
+	/**
+	 * Recupera un determinado álbum fotográfico junto con sus fotografías
+	 * @param idAlbum Id del álbum
+	 * @return ResponseEntity<ResponseOperationDTO>
+	 * @throws AlbumNotFoundException si no se ha podido recuperar el álbum
+	 */
+	@GetMapping(value="/public/album/detail/{idAlbum}")
+	@ApiOperation(value="Recupera un determinado álbum",notes="Provee un mecanismo para recuperar un álbum fotográfico")
+	@ApiResponses(value={
+		@ApiResponse(code=200,message="OK",response=AlbumDTO.class),
+		@ApiResponse(code=401,message="Not Found",response=ResponseError.class),
+		@ApiResponse(code=403,message="Not Found",response=ResponseError.class),
+		@ApiResponse(code=404,message="Not Found",response=ResponseError.class),
+		@ApiResponse(code=500,message="Internal Server Error",response=ResponseError.class)
+	})
+	public ResponseEntity<?> getAlbum(@PathVariable Long idAlbum) throws AlbumNotFoundException {
+		
+		AlbumDTO album = manager.getAlbum(idAlbum,null);
+			
+		ResponseOperation<AlbumDTO> respuesta = new ResponseOperation<AlbumDTO>();
+		respuesta.setStatus(HttpStatus.OK);
+		respuesta.setData(album);
+			
+		return ResponseEntity.status(HttpStatus.OK).body(respuesta);
+	}
 	
 	
+
 	/**
 	 * Persiste un álbum en BBDD 
 	 * @param album AlbumDTO que contiene la info básica del álbum

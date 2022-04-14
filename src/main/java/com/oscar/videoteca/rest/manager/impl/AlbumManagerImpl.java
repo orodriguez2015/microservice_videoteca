@@ -156,16 +156,21 @@ public class AlbumManagerImpl implements AlbumManager {
 	@Override
 	public AlbumDTO getAlbum(Long idAlbum, Long idUsuario) throws AlbumNotFoundException {
 		ExampleMatcher publicMatcher = ExampleMatcher.matchingAll()
-				  .withMatcher("id",ExampleMatcher.GenericPropertyMatchers.exact())
-			      .withMatcher("idUsuarioAlta", ExampleMatcher.GenericPropertyMatchers.exact());	
+				  .withMatcher("id",ExampleMatcher.GenericPropertyMatchers.exact());
 		
-		User user = new User();
-		user.setId(idUsuario);
-		
+		if(idUsuario!=null) {
+			publicMatcher.withMatcher("idUsuarioAlta", ExampleMatcher.GenericPropertyMatchers.exact());
+		}
+				
 		Album a = new Album();
 		a.setId(idAlbum);
-		a.setUsuarioAlta(user);
 		
+		if(idUsuario!=null) {
+			User user = new User();
+			user.setId(idUsuario);
+			a.setUsuarioAlta(user);		
+		}
+
 		Example<Album> example = Example.of(a,publicMatcher);
 
 		Optional<Album> opt = albumRepository.findOne(example);

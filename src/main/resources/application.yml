@@ -17,7 +17,8 @@ authentication:
         "/public/videotecas",
         "/public/albumes",
         "/images/**",
-        "/public/**"
+        "/public/album/**",
+        
   ]
 # Propiedades configuración carpeta de backup de fotos y videos
 backup:

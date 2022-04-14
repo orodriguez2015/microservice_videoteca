@@ -2,7 +2,7 @@ import React from 'react';
 import {AlbumFacade} from '../../../facade/AlbumFacade';
 import {StringUtil} from '../../../util/StringUtil';
 import ErrorMessage from '../../error/ErrorMessage';
-import {URL_BACKEND} from '../../../constantes/Configuracion';
+import {URL_BACKEND_IMAGES} from '../../../constantes/Configuracion';
 import { SRLWrapper} from 'simple-react-lightbox'; 
 
 /**
@@ -42,16 +42,18 @@ class DetalleAlbumPublico extends React.Component {
             // Se recupera el id del álbum pasado como parámetro
             var idAlbum = this.props.match.params.p_album_id;
             var nombreAlbum = this.props.location.state.nombre;
-
+            
             if(StringUtil.isNotEmpty(idAlbum)) { 
-
                 AlbumFacade.getFotosAlbumPublico(idAlbum)
                 .then(resultado=>{
 
-                    this.setState({
-                        fotos: resultado.fotos,
-                        nombreAlbum: nombreAlbum
-                    });
+                    if(resultado.status==="OK") {
+                        this.setState({
+                            fotos: resultado.data.fotos,
+                            nombreAlbum: nombreAlbum
+                        });
+                    }
+
 
                 }).catch(err=>{
                     console.log("error= " + err.message);
@@ -95,19 +97,19 @@ class DetalleAlbumPublico extends React.Component {
                     <div className="row">
                         {this.state.fotos.map((value, index) => {
                             // Se construye la ruta de la miniatura en el servidor
-                            let imgMiniatura = URL_BACKEND + value.RUTAMINIATURA;
-                            let imgOriginal  = URL_BACKEND + value.RUTA;
+                            //let imgMiniatura = URL_BACKEND_IMAGES + value.rutaRelativa;
+                            let imgOriginal  = URL_BACKEND_IMAGES + value.rutaRelativa;
                             
-                            return <div key={value.ID} className="col-3">
+                            return <div key={value.id} className="col-3">
                 
                                         <a href={`${imgOriginal}`} data-attribute="SRL">
-                                            <img src={`${imgMiniatura}`} alt={`${imgMiniatura}`}/>
+                                            <img src={`${imgOriginal}`} alt={`${imgOriginal}`} width="200" height="150"/>
                                         </a>
-                                        <p className="nombreVideoFoto">{value.NOMBRE}</p>                        
-                                        <p className="idVideoFoto">{value.DESCRIPCION}</p>
-                                        <p className="idVideoFoto">Alta el {value.FECHA_ALTA}</p>
-                                        <p className="idVideoFoto">Visto { value.NUMEROVISUALIZACIONES }  veces</p>
-                                        <p className="idVideoFoto">ID # {value.ID}</p>
+                                        <p className="nombreVideoFoto">{value.nombre}</p>                        
+                                        <p className="idVideoFoto">{value.descripcion}</p>
+                                        <p className="idVideoFoto">Alta el {value.fechaAlta}</p>
+                                        <p className="idVideoFoto">Visto { value.numeroVisualizaciones }  veces</p>
+                                        <p className="idVideoFoto">ID # {value.id}</p>
                                 </div>
                         })}
                     </div>

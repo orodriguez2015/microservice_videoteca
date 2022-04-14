@@ -33,8 +33,10 @@ export const ALBUMES_PUBLICO_API = URL_BACKEND +  "/public/albumes";
  * POST /p_album URL a la que se envía una petición por GET para recuperar las fotografías
  * que componen el álbum
  */
-export const FOTO_ALBUM_PUBLICO_API = URL_BACKEND + "/p_album";
+//export const FOTO_ALBUM_PUBLICO_API = URL_BACKEND + "/p_album";
 
+
+export const ALBUM_PUBLICO_DETAIL_API = URL_BACKEND + "/public/album/detail/";
 
 // URL para el envío de fotografías al servidor
 export const URL_ATTACH_PHOTOS = URL_BACKEND + "/pr_album/adjuntar/";

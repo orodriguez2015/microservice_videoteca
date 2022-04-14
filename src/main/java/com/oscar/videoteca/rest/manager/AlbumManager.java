@@ -33,8 +33,8 @@ public interface AlbumManager {
 	
 	/**
 	 * Recupera un álbum fotográfico determinado de un determinado usuario
-	 * @param idAlbum Id del álbum
-	 * @param idUsuario Id del usuario
+	 * @param idAlbum Id del álbum. Parámetro obligatorio
+	 * @param idUsuario Id del usuario. Puede estar a nulo, por tanto sólo se filtraría por el parámetro idAlbum
 	 * @return AlbumDTO
 	 * @throws AlbumNotFoundException
 	 */

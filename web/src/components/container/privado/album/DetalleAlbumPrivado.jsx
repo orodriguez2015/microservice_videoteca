@@ -303,7 +303,7 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
                                             <img src={`${imgMiniatura}`} alt={`${imgMiniatura}`} width="200" height="150"/>
                                         </a>                
                                         <p className="nombreVideoFoto">{value.nombre}</p>                        
-                                        <p className="idVideoFoto">{value.descripcionN}</p>                                        
+                                        <p className="idVideoFoto">{value.descripcion}</p>                                        
                                         <p className="idVideoFoto">Alta el {value.fechaAlta}</p>
                                         <p className="idVideoFoto">Visto { value.numeroVisualizaciones }  veces</p>
                                         <p className="idVideoFoto">ID # {value.id}</p>
