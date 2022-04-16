@@ -2,8 +2,6 @@ package com.oscar.videoteca.rest.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,10 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.io.Files;
-import com.oscar.videoteca.rest.exception.FotoNotFoundException;
+import com.oscar.videoteca.rest.dto.FotoDTO;
+import com.oscar.videoteca.rest.exception.PhotoNotFoundException;
 import com.oscar.videoteca.rest.exception.SaveFileException;
 import com.oscar.videoteca.rest.exception.api.ResponseOperation;
-import com.oscar.videoteca.rest.manager.FotoManager;
+import com.oscar.videoteca.rest.manager.PhotoManager;
 
 /**
  * Controller que recibe peticiones de upload de fotografías para un determinado álbum fotográfico
@@ -37,7 +36,7 @@ import com.oscar.videoteca.rest.manager.FotoManager;
 public class FileAlbumUploadController {
 	
 	@Autowired
-	private FotoManager fotoManager;
+	private PhotoManager fotoManager;
 	
 	
 	@PostMapping("/private/album/{idAlbum}/{idUsuario}")
@@ -47,7 +46,7 @@ public class FileAlbumUploadController {
         
             Arrays.asList(files).stream().forEach(file->{            	 	
             	try { 	                
-            		fotoManager.saveFoto(file,Long.parseLong(idAlbum),Long.parseLong(idUsuario));
+            		fotoManager.savePhoto(file,Long.parseLong(idAlbum),Long.parseLong(idUsuario));
             		
             	}catch(IOException e) {
             		
@@ -81,9 +80,9 @@ public class FileAlbumUploadController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/download/photo/{idPhoto}", method = RequestMethod.GET,produces = { MediaType.APPLICATION_OCTET_STREAM_VALUE})
-	public ResponseEntity<Resource> downloadPhoto(@RequestParam Long idPhoto) throws IOException, FotoNotFoundException {
+	public ResponseEntity<Resource> downloadPhoto(@RequestParam Long idPhoto) throws IOException, PhotoNotFoundException {
 		
-		FotoDTO fotoDTO = fotoManager.getFoto(idPhoto);
+		FotoDTO fotoDTO = fotoManager.getPhoto(idPhoto);
 		if(fotoDTO!=null) {
 		      File file = new File(fotoDTO.getRuta());
 		      HttpHeaders headers = new HttpHeaders();

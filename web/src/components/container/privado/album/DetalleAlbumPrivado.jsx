@@ -59,32 +59,36 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
                 });
             } else {
                 // Se recupera el id del álbum pasado como parámetro
+                this.reloadPhotos(idAlbum);
 
-                if(StringUtil.isNotEmpty(idAlbum)) { 
+                // if(StringUtil.isNotEmpty(idAlbum)) { 
 
-                    let user = AlmacenFacade.getUser();
-                    AlbumFacade.getFotosAlbumPrivado(idAlbum,user)
-                    .then(resultado=>{
+                //     let user = AlmacenFacade.getUser();
+                //     AlbumFacade.getFotosAlbumPrivado(idAlbum,user)
+                //     .then(resultado=>{
 
-                        if(resultado.status==="OK") {
-                            this.setState({
-                                fotos: resultado.data.fotos,
-                                nombreAlbum: resultado.data.nombreA
-                            });
-                        }
+                //         if(resultado.status==="OK") {
+                //             this.setState({
+                //                 fotos: resultado.data.fotos,
+                //                 nombreAlbum: resultado.data.nombre
+                //             });
+                //         }
 
                         
 
-                    }).catch(err=>{
-                        console.log("error= " + err.message);
-                    });
+                //     }).catch(err=>{
+                //         console.log("error= " + err.message);
+                //     });
                     
-                } else {
-                    console.log("no se ha recuperado el idAlbum = " + idAlbum);
-                }
+                // } else {
+                //     console.log("no se ha recuperado el idAlbum = " + idAlbum);
+                // }
             }
         }
     }
+    
+
+
     
 
     /**
@@ -99,32 +103,54 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
     }
 
 
+
+    /**
+     * Recarga las fotos del álbum
+     * @param {Integer} idAlbum 
+     */
+    reloadPhotos(idAlbum) {
+        if(StringUtil.isNotEmpty(idAlbum)) { 
+
+            let user = AlmacenFacade.getUser();
+            AlbumFacade.getFotosAlbumPrivado(idAlbum,user)
+            .then(resultado=>{
+
+                if(resultado.status==="OK") {
+                    this.setState({
+                        fotos: resultado.data.fotos,
+                        nombreAlbum: resultado.data.nombre
+                    });
+                }
+
+            }).catch(err=>{
+                console.log("error= " + err.message);
+            });
+            
+        } else {
+            console.log("no se ha recuperado el idAlbum = " + idAlbum);
+        }
+     }
+
+
+
+
     /**
      * Envío de la petición de borrado de la fotografía al servidor
      * @param {Integer} Id de la fotografía 
      */
     onConfirmEliminarFoto(id) {
-        AlbumFacade.deleteFoto(id,AlmacenFacade.getUser().id)
+        AlbumFacade.deleteFoto(id,AlmacenFacade.getUser())
         .then(resultado=>{
-            switch(resultado.status) {
-                case 0: {
-                    window.location.reload();
-                    break;
-                }
 
-                case 2: {
-                    this.mostrarMensajeError("Se ha producido un error técnico al eliminar la fotografía");
-                    break;
-                }
-
-                default:{
-                    break;
-                }
+            
+            if(resultado.status==="OK"){
+               this.reloadPhotos(this.props.match.params.p_album_id);
+            } else {
+                this.mostrarMensajeError("Se ha producido un error técnico al eliminar la fotografía");
             }
-
-
+                    
         }).catch(error=>{
-            console.log("error = " + error.message);
+            this.mostrarMensajeError("Se ha producido un error genérico al eliminar la fotografía");
         });
     }
 
@@ -299,7 +325,7 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
                             
                             return <div key={value.id} className="col-3">
                 
-                                        <a href={`${imgOriginal}`} data-attribute="SRL">
+                                        <a href={`${imgOriginal}`} data-attribute="{value.id}">
                                             <img src={`${imgMiniatura}`} alt={`${imgMiniatura}`} width="200" height="150"/>
                                         </a>                
                                         <p className="nombreVideoFoto">{value.nombre}</p>                        
@@ -307,8 +333,8 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
                                         <p className="idVideoFoto">Alta el {value.fechaAlta}</p>
                                         <p className="idVideoFoto">Visto { value.numeroVisualizaciones }  veces</p>
                                         <p className="idVideoFoto">ID # {value.id}</p>
-                                        <img src={imagen} id={keyImage} name={keyImage} border="0" width="26" height="26" title="" alt="" onClick={()=>this.handleOcultarFoto(value.id)}/>
-                                        <img src="/images/full_trash.png" border="0" width="20" height="20" title="Eliminar" alt="Eliminar" onClick={()=>this.handleEliminar(value.id)}/>
+                                        <img src={imagen} id={keyImage} name={keyImage}  border="0" width="26" height="26" title="" alt="" onClick={()=>this.handleOcultarFoto(value.id)}/>
+                                        <img src="/images/full_trash.png"  border="0" width="20" height="20" title="Eliminar" alt="Eliminar" onClick={()=>this.handleEliminar(value.id)}/>
                                         <input type="hidden" id={key} name={key} value={value.publico}/>
                                         <p></p>
                                 </div>

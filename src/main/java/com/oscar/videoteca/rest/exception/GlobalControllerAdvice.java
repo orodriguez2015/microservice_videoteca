@@ -161,8 +161,8 @@ public class GlobalControllerAdvice {
 	 * @param e PhotoNotFoundException
 	 * @return ResponseEntity<ResponseError>
 	 */
-	@ExceptionHandler(FotoNotFoundException.class)
-	public ResponseEntity<ResponseError> handlePhotoNotFoundException(FotoNotFoundException e) {
+	@ExceptionHandler(PhotoNotFoundException.class)
+	public ResponseEntity<ResponseError> handlePhotoNotFoundException(PhotoNotFoundException e) {
 		ResponseError error = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}

@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import com.oscar.videoteca.rest.controller.FotoDTO;
-
 import lombok.Getter;
 import lombok.Setter;
 

@@ -60,6 +60,6 @@ public class Album {
     
     // Relación OneToMany con la entidad fotos. La propiedad mappedBy se mapea el parámetro album en la entidad foto
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "album")
-    private List<Foto> fotos;
+    private List<Photo> fotos;
 	
 }

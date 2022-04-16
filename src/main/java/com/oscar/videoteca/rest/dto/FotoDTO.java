@@ -1,4 +1,4 @@
-package com.oscar.videoteca.rest.controller;
+package com.oscar.videoteca.rest.dto;
 
 import java.io.Serializable;
 import java.util.Date;

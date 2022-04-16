@@ -1,4 +1,4 @@
-import {ALBUM_DETAIL_API,ALBUM_PUBLICO_DETAIL_API,ALBUMES_PUBLICO_API,ALBUM_PRIVATE_API,ALBUMES_USUARIO_ADMIN_API ,PR_FOTO_API,PUBLICAR_FOTO_API} from '../constantes/ConfiguracionAlbumes';
+import {ALBUM_DETAIL_API,ALBUM_PUBLICO_DETAIL_API,ALBUMES_PUBLICO_API,ALBUM_PRIVATE_API,ALBUMES_USUARIO_ADMIN_API ,PRIVATE_PHOTO_API,PUBLICAR_FOTO_API} from '../constantes/ConfiguracionAlbumes';
 
 /**
  * ,
@@ -307,27 +307,25 @@ export class AlbumFacade {
    /**
      * Se envía una petición al servidor para eliminar una fotografía de un álbum y del servidor
      * @param {Integer} idFoto: Id de la foto
-     * @param {Integer} idUsuario : Id del usuario
+     * @param {Object} user : Objectonn con la info del usuario autenticado
      * @return Una promesa
      */
-    static deleteFoto(idFoto,idUsuario) {
+    static deleteFoto(idFoto,user) {
         let headers =  {
             "Content-Type": "application/json",
             "Access-Control-Request-Headers": "*",
-            "Access-Control-Request-Method": "*"
+            "Access-Control-Request-Method": "*",
+            "Authorization" : user.authenticationToken
         }
 
         var opciones = {
             method: 'DELETE',
             mode: 'cors',
-            headers: headers,
-            body: JSON.stringify({
-                idUsuario: idUsuario
-            })
+            headers: headers
         };
 
         return new Promise((resolver, rechazar) => {
-            fetch(PR_FOTO_API + idFoto,opciones)
+            fetch(PRIVATE_PHOTO_API + idFoto + "/" + user.id,opciones)
             .then((response) => {
                 return response.json()
             })

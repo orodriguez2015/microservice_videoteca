@@ -1,23 +1,26 @@
-package com.oscar.videoteca.rest.manager;
+package com.oscar.videoteca.rest.manager.impl;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.oscar.videoteca.rest.controller.FotoDTO;
+import com.oscar.videoteca.rest.dto.FotoDTO;
 import com.oscar.videoteca.rest.dto.mapping.FotoConverter;
-import com.oscar.videoteca.rest.exception.FotoNotFoundException;
+import com.oscar.videoteca.rest.exception.ErrorDeletePhotoException;
+import com.oscar.videoteca.rest.exception.PhotoNotFoundException;
 import com.oscar.videoteca.rest.exception.SaveFileException;
 import com.oscar.videoteca.rest.exception.SavePhotoException;
+import com.oscar.videoteca.rest.manager.PhotoManager;
 import com.oscar.videoteca.rest.model.entity.Album;
-import com.oscar.videoteca.rest.model.entity.Foto;
+import com.oscar.videoteca.rest.model.entity.Photo;
 import com.oscar.videoteca.rest.model.entity.User;
-import com.oscar.videoteca.rest.model.repository.FotoRepository;
+import com.oscar.videoteca.rest.model.repository.PhotoRepository;
 import com.oscar.videoteca.rest.util.FileUtil;
 
 /**
@@ -26,10 +29,10 @@ import com.oscar.videoteca.rest.util.FileUtil;
  *
  */
 @Service
-public class FotoManagerImpl implements FotoManager {
+public class PhotoManagerImpl implements PhotoManager {
 
 	@Autowired
-	private FotoRepository fotoRepository;
+	private PhotoRepository photoRepository;
 		
 	@Autowired
 	private FotoConverter fotoConverter;
@@ -38,7 +41,7 @@ public class FotoManagerImpl implements FotoManager {
 	private FileUtil fileUtil;
 
 	@Override
-	public void saveFoto(MultipartFile foto, Long idAlbum, Long idUsuario) throws IOException,SaveFileException, SavePhotoException {
+	public void savePhoto(MultipartFile foto, Long idAlbum, Long idUsuario) throws IOException,SaveFileException, SavePhotoException {
 		
 		Boolean userPathCreated = fileUtil.createFolder(fileUtil.getBackupUserDirectory(idUsuario));		
 		Boolean albumPathCreated = fileUtil.createFolder(fileUtil.getBackupAlbumDirectory(idAlbum, idUsuario));
@@ -65,7 +68,7 @@ public class FotoManagerImpl implements FotoManager {
 				Album album = new Album();
 				album.setId(idAlbum);
 				
-				Foto f = new Foto();
+				Photo f = new Photo();
 				f.setNombre(foto.getOriginalFilename());
 				f.setTipoMime(foto.getContentType());
 				f.setRuta(path);
@@ -82,7 +85,7 @@ public class FotoManagerImpl implements FotoManager {
 				f.setUsuario(user);
 				f.setAlbum(album);
 				try {
-					fotoRepository.saveAndFlush(f);
+					photoRepository.saveAndFlush(f);
 				}catch(Exception e) {
 					e.printStackTrace();
 					
@@ -97,19 +100,53 @@ public class FotoManagerImpl implements FotoManager {
 	}
 
 	@Override
-	public FotoDTO getFoto(Long idFoto) throws FotoNotFoundException {
+	public FotoDTO getPhoto(Long idFoto) throws PhotoNotFoundException {
 		FotoDTO foto = null;
 		
-		if(Boolean.TRUE.equals(fotoRepository.existsById(idFoto))){
-			Optional<Foto> opt = fotoRepository.findById(idFoto);
+		if(Boolean.TRUE.equals(photoRepository.existsById(idFoto))){
+			Optional<Photo> opt = photoRepository.findById(idFoto);
 			if(opt.isPresent()) {
 				foto = fotoConverter.convertTo(opt.get());
 			}
 			
 		} else {
-			throw new FotoNotFoundException("No existe la fotografía");
+			throw new PhotoNotFoundException("No existe la fotografía");
 		}
 		return foto;
+	}
+
+	@Override
+	public Boolean deletePhoto(Long idPhoto, Long idUsuario) throws PhotoNotFoundException, ErrorDeletePhotoException {
+		Boolean exito  = Boolean.FALSE;
+		try {
+			ExampleMatcher exampleMatcher = ExampleMatcher.matchingAll()
+				      .withMatcher("id", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase())
+				      .withMatcher("idUsuarioAlta", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase());
+	
+			Photo photo = new Photo();
+			photo.setId(idPhoto);
+			
+			User user = new User();
+			user.setId(idUsuario);		
+			photo.setUsuario(user);
+			
+			Example<Photo> example = Example.of(photo,exampleMatcher);		
+			Optional<Photo> opt = photoRepository.findOne(example);
+			
+			if(opt.isPresent()) {
+				// Se elimina el fichero del disco y, a posteriori, se elimina de la BBDD	
+				File file = new File(opt.get().getRuta());
+				
+				if(Boolean.TRUE.equals(fileUtil.deleteFile(file))) {
+					photoRepository.delete(opt.get());
+					exito = Boolean.TRUE;	
+				}	
+			}
+		}catch(Exception e) {
+			throw new ErrorDeletePhotoException("Error al eliminar la fotografía",e);
+		}
+		return exito;
+		
 	}
 
 }

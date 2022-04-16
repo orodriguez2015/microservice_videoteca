@@ -6,7 +6,7 @@ package com.oscar.videoteca.rest.exception;
  * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
-public class FotoNotFoundException extends Exception {
+public class PhotoNotFoundException extends Exception {
 	
 	
 	/*
@@ -18,7 +18,7 @@ public class FotoNotFoundException extends Exception {
 	 * Constructor
 	 * @param message String
 	 */
-	public FotoNotFoundException(String message) {
+	public PhotoNotFoundException(String message) {
 		super(message);
 	}
 	
@@ -27,7 +27,7 @@ public class FotoNotFoundException extends Exception {
 	 * @param message String
 	 * @param e Exception
 	 */
-	public FotoNotFoundException(String message,Exception e) {
+	public PhotoNotFoundException(String message,Exception e) {
 		super(message,e);
 	}
 

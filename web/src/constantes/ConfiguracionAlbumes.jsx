@@ -59,3 +59,10 @@ export const URL_ATTACH_PHOTOS = URL_BACKEND + "/pr_album/adjuntar/";
 export const PUBLICAR_FOTO_API = URL_BACKEND + "/pr_foto/publicar/";
 
 
+/**
+ * Constante que representa la url para manejo de un recurso de tipo foto desde la pantalla de administración
+ */
+ export const PRIVATE_PHOTO_API = URL_BACKEND + "/private/photo/";
+
+
+

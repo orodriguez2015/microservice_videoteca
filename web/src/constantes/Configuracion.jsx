@@ -98,10 +98,6 @@ export const PR_VIDEOS_API = URL_BACKEND  +  "/pr_videos/";
 export const PUBLICAR_VIDEO_API = URL_BACKEND + "/pr_video/publicar";
 
 
-/**
- * Constante que representa la url para manejo de un recurso de tipo foto
- */
-export const PR_FOTO_API = URL_BACKEND + "/pr_foto/";
 
 
 /**

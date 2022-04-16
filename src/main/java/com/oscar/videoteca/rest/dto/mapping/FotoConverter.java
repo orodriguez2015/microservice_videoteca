@@ -4,8 +4,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.oscar.videoteca.rest.controller.FotoDTO;
-import com.oscar.videoteca.rest.model.entity.Foto;
+import com.oscar.videoteca.rest.dto.FotoDTO;
+import com.oscar.videoteca.rest.model.entity.Photo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +26,7 @@ public class FotoConverter {
 	 * @param foto Foto
 	 * @return FotoDTO
 	 */
-	public FotoDTO convertTo(Foto foto) {
+	public FotoDTO convertTo(Photo foto) {
 		return this.mapper.map(foto,FotoDTO.class);
 	}
 	
