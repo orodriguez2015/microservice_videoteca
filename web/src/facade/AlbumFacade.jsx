@@ -345,13 +345,15 @@ export class AlbumFacade {
      * @param {Integer} idFoto: Id de la foto
      * @param {Integer} idUsuario: Id del usuario que tiene que ser el propietario de la foto
      * @param {Integer} value  : Id del usuario
+     * @param {Object} user: Objeto con la info del usuario
      * @return Una promesa
      */
-    static publicarFoto(idFoto,idUsuario,value) {
+    static publicarFoto(idFoto,idUsuario,value,user) {
         let headers =  {
             "Content-Type": "application/json",
             "Access-Control-Request-Headers": "*",
-            "Access-Control-Request-Method": "*"
+            "Access-Control-Request-Method": "*",
+            "Authorization" : user.authenticationToken
         }
 
         var opciones = {

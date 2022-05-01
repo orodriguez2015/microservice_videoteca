@@ -3,6 +3,7 @@ import {AlbumFacade} from '../../../../facade/AlbumFacade';
 import {StringUtil} from '../../../../util/StringUtil';
 import ErrorMessage from '../../../error/ErrorMessage';
 import {URL_BACKEND_IMAGES} from '../../../../constantes/Configuracion';
+import SimpleReactLightbox from "simple-react-lightbox"; 
 import { SRLWrapper} from 'simple-react-lightbox'; 
 import ComponenteAutenticado from '../autenticacion/ComponenteAutenticado';
 import ModalConfirmation from '../../../modal/ModalConfirmation';
@@ -46,7 +47,7 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
             // Se recupera el id del álbum de la url
             var idAlbum = this.props.match.params.p_album_id;
 
-            console.log("DetalleAlbum")
+            console.log("DetalleAlbumPrivado")
             
             if(this.props.match.params===null || this.props.match.params.p_album_id===undefined) {
                 // Se comprueba si está definido el state en la llamada a este componente que llega a través de un "a href", como 
@@ -61,28 +62,6 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
                 // Se recupera el id del álbum pasado como parámetro
                 this.reloadPhotos(idAlbum);
 
-                // if(StringUtil.isNotEmpty(idAlbum)) { 
-
-                //     let user = AlmacenFacade.getUser();
-                //     AlbumFacade.getFotosAlbumPrivado(idAlbum,user)
-                //     .then(resultado=>{
-
-                //         if(resultado.status==="OK") {
-                //             this.setState({
-                //                 fotos: resultado.data.fotos,
-                //                 nombreAlbum: resultado.data.nombre
-                //             });
-                //         }
-
-                        
-
-                //     }).catch(err=>{
-                //         console.log("error= " + err.message);
-                //     });
-                    
-                // } else {
-                //     console.log("no se ha recuperado el idAlbum = " + idAlbum);
-                // }
             }
         }
     }
@@ -132,8 +111,6 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
      }
 
 
-
-
     /**
      * Envío de la petición de borrado de la fotografía al servidor
      * @param {Integer} Id de la fotografía 
@@ -141,7 +118,6 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
     onConfirmEliminarFoto(id) {
         AlbumFacade.deleteFoto(id,AlmacenFacade.getUser())
         .then(resultado=>{
-
             
             if(resultado.status==="OK"){
                this.reloadPhotos(this.props.match.params.p_album_id);
@@ -160,11 +136,11 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
      * @param {Integer} id 
      */
     getEtiquetaTextoConfirmacionPublicacion(id) {
-        var mensaje = "";
-        var key = id + "_publico";
+        let mensaje = "";
+        const key = id + "_publico";
 
         if(id!==undefined && document.getElementById(key).value!==undefined) {
-            mensaje = (document.getElementById(key).value===1)?"¿Deseas despublicar la foto con id #" + id + "?":"¿Deseas publicar la foto con id #" + id + "?";
+            mensaje = (document.getElementById(key).value==="true")?"¿Deseas despublicar la foto con id #" + id + "?":"¿Deseas publicar la foto con id #" + id + "?";
         } 
         return mensaje;
     }
@@ -175,7 +151,7 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
      * @param {Integer} Id de la fotografía
      */
     handleOcultarFoto(id) {
-        var mensaje = this.getEtiquetaTextoConfirmacionPublicacion(id);
+        const mensaje = this.getEtiquetaTextoConfirmacionPublicacion(id);
         this.borrarMensajeError();
         // Se renderiza el componente WindowModalLogin indicando en la propiedad que se debe mostrar
         ReactDOM.render(<ModalConfirmation show={true} title="Atención" onConfirm={()=>this.onConfirmPublicarFoto(id)} message={mensaje} textButtonConfirm="Aceptar" textButtonCancel="Cancelar"/>, document.getElementById('ventanaModal'));
@@ -191,7 +167,7 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
         let keyImage = id + "_img";
         var value = document.getElementById(key).value;
 
-        AlbumFacade.publicarFoto(id,AlmacenFacade.getUser().id,this.getValorPublicar(value))
+        AlbumFacade.publicarFoto(id,AlmacenFacade.getUser().id,this.getValorPublicar(value),AlmacenFacade.getUser())
         .then(resultado=>{
         
             switch(resultado.status) {
@@ -239,7 +215,7 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
      */
     getValorPublicar(publico) {
         let salida = 1;
-        if(publico!==undefined && publico!==null && publico==='1') {
+        if(publico!==undefined && publico!==null && publico==='false') {
             salida = 0;
         }
         return salida;
@@ -275,17 +251,20 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
         } else {
 
             const options = {
-                overlayColor: "rgb(0, 0, 0.9)",
-                showCaption: false,
-                buttonsBackgroundColor: "rgba(0, 0, 0, 0.9)",   
-                buttonsIconColor: "rgba(219, 219, 219, 0.7)",
-                showThumbnails: true,
-                transitionSpeed: 200,
-                transitionTimingFunction: "linear"
+                settings: {
+                    overlayColor: "rgb(0, 0, 0.9)",
+                    showCaption: false,
+                    buttonsBackgroundColor: "rgba(0, 0, 0, 0.9)",   
+                    buttonsIconColor: "rgba(219, 219, 219, 0.7)",
+                    showThumbnails: true,
+                    showControls: true,
+                    transitionSpeed: 200,
+                    transitionTimingFunction: "linear"
+                }
             };
 
             return (
-                <SRLWrapper options={options}>
+                
                 <div className="container">
                     <div className="subtitulo">
                         <h2>Fotografías del álbum {this.state.nombreAlbum}</h2>
@@ -314,34 +293,41 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
                         <div ref={this.areaMensajeError} className="mensajeError"/>
                     </div>
                 
+                    <SimpleReactLightbox>
+                    <SRLWrapper options={options}>
+
                     <div className="row">
                         {this.state.fotos.map((value, index) => {
                             // Se construye la ruta de la miniatura en el servidor
-                            let imgMiniatura = URL_BACKEND_IMAGES + value.rutaRelativa;
+                        
                             let imgOriginal  = URL_BACKEND_IMAGES + value.rutaRelativa;
-                            let imagen = value.publico===1?'/images/ojo_abierto.png':'/images/ojo_cerrado.png';
-                            let keyImage = value.id + "_img";
+                            let imagen = value.publico===true?'/images/ojo_abierto.png':'/images/ojo_cerrado.png';
                             let key = value.id + "_publico";
                             
                             return <div key={value.id} className="col-3">
-                
-                                        <a href={`${imgOriginal}`} data-attribute="{value.id}">
-                                            <img src={`${imgMiniatura}`} alt={`${imgMiniatura}`} width="200" height="150"/>
-                                        </a>                
-                                        <p className="nombreVideoFoto">{value.nombre}</p>                        
-                                        <p className="idVideoFoto">{value.descripcion}</p>                                        
-                                        <p className="idVideoFoto">Alta el {value.fechaAlta}</p>
-                                        <p className="idVideoFoto">Visto { value.numeroVisualizaciones }  veces</p>
-                                        <p className="idVideoFoto">ID # {value.id}</p>
-                                        <img src={imagen} id={keyImage} name={keyImage}  border="0" width="26" height="26" title="" alt="" onClick={()=>this.handleOcultarFoto(value.id)}/>
-                                        <img src="/images/full_trash.png"  border="0" width="20" height="20" title="Eliminar" alt="Eliminar" onClick={()=>this.handleEliminar(value.id)}/>
-                                        <input type="hidden" id={key} name={key} value={value.publico}/>
-                                        <p></p>
+                    
+                                    <a href={`${imgOriginal}`} data-attribute="SRL">
+                                        <img src={`${imgOriginal}`} id={`${imgOriginal}`} alt={`${imgOriginal}`} srl_gallery_image='true' width="200" height="150"/>
+                                    </a>                
+                                    
+                                    <p className="nombreVideoFoto">{value.nombre}</p>                        
+                                    <p className="idVideoFoto">{value.descripcion}</p>                                        
+                                    <p className="idVideoFoto">Alta el {value.fechaAlta}</p>
+                                    <p className="idVideoFoto">Visto { value.numeroVisualizaciones }  veces</p>
+                                    <p className="idVideoFoto">ID # {value.id}</p>
+                                                    
+                                    <img src={imagen} border="0" width="26" height="26" title="Mostrar/Ocultar" alt="Mostrar/Ocultar"  onClick={()=>this.handleOcultarFoto(value.id)}/>
+                                    <img src="/images/full_trash.png"  border="0" width="20" height="20" title="Eliminar" alt="Eliminar" onClick={()=>this.handleEliminar(value.id)}/>
+                                    <input type="hidden" id={key} name={key} value={value.publico}/>
+                                    <p></p>
                                 </div>
                         })}
                     </div>
+                    </SRLWrapper>
+                    </SimpleReactLightbox>
+                    
                 </div>
-                </SRLWrapper>
+                
               );
         }
     }

@@ -96,8 +96,7 @@ class DetalleAlbumPublico extends React.Component {
                 
                     <div className="row">
                         {this.state.fotos.map((value, index) => {
-                            // Se construye la ruta de la miniatura en el servidor
-                            //let imgMiniatura = URL_BACKEND_IMAGES + value.rutaRelativa;
+                        
                             let imgOriginal  = URL_BACKEND_IMAGES + value.rutaRelativa;
                             
                             return <div key={value.id} className="col-3">
