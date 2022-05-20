@@ -56,7 +56,7 @@ export const URL_ATTACH_PHOTOS = URL_BACKEND + "/pr_album/adjuntar/";
  /**
  * Constante que contiene la url de publicación/despublicación de una fotografía
  */
-export const PUBLICAR_FOTO_API = URL_BACKEND + "/pr_foto/publicar/";
+export const PUBLICAR_FOTO_API = URL_BACKEND + "/private/photo/publish/";
 
 
 /**

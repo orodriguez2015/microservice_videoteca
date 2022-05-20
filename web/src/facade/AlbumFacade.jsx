@@ -357,17 +357,13 @@ export class AlbumFacade {
         }
 
         var opciones = {
-            method: 'POST',
+            method: 'PUT',
             mode: 'cors',
-            headers: headers,
-            body: JSON.stringify({
-                publico: value,
-                idUsuario: idUsuario
-            })
+            headers: headers
         };
 
         return new Promise((resolver, rechazar) => {
-            fetch(PUBLICAR_FOTO_API + idFoto,opciones)
+            fetch(PUBLICAR_FOTO_API + idFoto + "/" + user.id + "/" + value,opciones)
             .then((response) => {
                 return response.json()
             })

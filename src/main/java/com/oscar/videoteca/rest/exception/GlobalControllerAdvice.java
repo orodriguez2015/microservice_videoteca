@@ -115,7 +115,7 @@ public class GlobalControllerAdvice {
 	@ExceptionHandler(ErrorDeleteAlbumException.class)
 	public ResponseEntity<ResponseError> handleErrorDeleteAlbumException(ErrorDeleteAlbumException e) {
 		ResponseError error = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
 	}
 
 	
@@ -127,7 +127,7 @@ public class GlobalControllerAdvice {
 	 */
 	@ExceptionHandler(VideotecasNotFoundException.class)
 	public ResponseEntity<ResponseError> handleVideotecasNotFoundException(VideotecasNotFoundException e) {
-		ResponseError error = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
+		ResponseError error = new ResponseError(HttpStatus.NOT_FOUND,e.getMessage());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
 	
@@ -140,7 +140,7 @@ public class GlobalControllerAdvice {
 	@ExceptionHandler(SaveFileException.class)
 	public ResponseEntity<ResponseError> handleSaveFileException(SaveFileException e) {
 		ResponseError error = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
 	}
 	
 
@@ -152,7 +152,7 @@ public class GlobalControllerAdvice {
 	@ExceptionHandler(SavePhotoException.class)
 	public ResponseEntity<ResponseError> handleSavePhotoException(SavePhotoException e) {
 		ResponseError error = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
 	}
 	
 	
@@ -167,6 +167,16 @@ public class GlobalControllerAdvice {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	}
 	
+	/**
+	 * Se controla cuando se ha producido un error al recuperar una fotografía
+	 * @param e PhotoNotFoundException
+	 * @return ResponseEntity<ResponseError>
+	 */
+	@ExceptionHandler(ErrorPublishPhotoException.class)
+	public ResponseEntity<ResponseError> handleErrorPublishPhotoException(ErrorPublishPhotoException e) {
+		ResponseError error = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+	}
 	
 	
 }

@@ -167,6 +167,8 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
         let keyImage = id + "_img";
         var value = document.getElementById(key).value;
 
+        console.log("value = " + value);
+
         AlbumFacade.publicarFoto(id,AlmacenFacade.getUser().id,this.getValorPublicar(value),AlmacenFacade.getUser())
         .then(resultado=>{
         
@@ -191,6 +193,7 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
         }).catch(error=>{
             this.mostrarMensajeError("Se ha producido un error técnico al publicar/despublicar la fotografía");
         });
+        
     }
 
 
@@ -210,12 +213,12 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
 
     /**
      * Devuelve el valor distinto al valor del parámetro público.
-     * @param {String} publico Si valor='0' => se devuelve '1' y si tiene valor=1 => Se devuelve 0
+     * @param {String} publico Si valor='true' => se devuelve '0' y si tiene valor=false => Se devuelve 1
      * @return Integer
      */
     getValorPublicar(publico) {
         let salida = 1;
-        if(publico!==undefined && publico!==null && publico==='false') {
+        if(publico!==undefined && publico!==null && publico==='true') {
             salida = 0;
         }
         return salida;

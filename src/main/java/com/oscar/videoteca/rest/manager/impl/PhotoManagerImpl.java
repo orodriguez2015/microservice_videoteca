@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.oscar.videoteca.rest.dto.FotoDTO;
 import com.oscar.videoteca.rest.dto.mapping.FotoConverter;
 import com.oscar.videoteca.rest.exception.ErrorDeletePhotoException;
+import com.oscar.videoteca.rest.exception.ErrorPublishPhotoException;
 import com.oscar.videoteca.rest.exception.PhotoNotFoundException;
 import com.oscar.videoteca.rest.exception.SaveFileException;
 import com.oscar.videoteca.rest.exception.SavePhotoException;
@@ -146,6 +147,58 @@ public class PhotoManagerImpl implements PhotoManager {
 			throw new ErrorDeletePhotoException("Error al eliminar la fotografía",e);
 		}
 		return exito;
+		
+	}
+
+	@Override
+	public Boolean publishPhoto(Long idPhoto, Long idUser, Long value) throws ErrorPublishPhotoException, PhotoNotFoundException {
+		Boolean exito = Boolean.FALSE;
+		
+		Photo p = this.getPhoto(idPhoto, idUser);
+		if(p==null) {
+			throw new PhotoNotFoundException("No se ha encontrado la fotografía");
+		}
+		
+		try {
+			p.setPublico(Boolean.FALSE);
+			if(value.equals(1L)) {
+				p.setPublico(Boolean.TRUE);
+			}
+			
+			// Se actualiza la fotografía
+			this.photoRepository.saveAndFlush(p);
+			exito =Boolean.TRUE;
+		}catch(Exception e) {
+			throw new ErrorPublishPhotoException("Se ha producido un error al publicar una fotografía",e);
+		}
+		
+		return exito;
+		
+	}
+
+	@Override
+	public Photo getPhoto(Long idPhoto, Long idUser) throws PhotoNotFoundException {
+		ExampleMatcher exampleMatcher = ExampleMatcher.matchingAll()
+			      .withMatcher("id", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase())
+			      .withMatcher("idUsuarioAlta", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase());
+		
+		Photo p = new Photo();
+		p.setId( idPhoto);
+	
+		User user = new User();
+		user.setId(idUser);
+		p.setUsuario(user);
+		
+		Example<Photo> example = Example.of(p,exampleMatcher);
+		Optional<Photo> opt = this.photoRepository.findOne(example);
+		if(Boolean.FALSE.equals(opt.isPresent())) {
+			throw new PhotoNotFoundException("No existe la fotografía"); 
+		} else {
+			p = opt.get();
+		}
+		
+		return p;
+			
 		
 	}
 

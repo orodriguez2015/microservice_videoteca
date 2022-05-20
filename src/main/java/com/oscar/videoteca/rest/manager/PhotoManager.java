@@ -6,9 +6,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.oscar.videoteca.rest.dto.FotoDTO;
 import com.oscar.videoteca.rest.exception.ErrorDeletePhotoException;
+import com.oscar.videoteca.rest.exception.ErrorPublishPhotoException;
 import com.oscar.videoteca.rest.exception.PhotoNotFoundException;
 import com.oscar.videoteca.rest.exception.SaveFileException;
 import com.oscar.videoteca.rest.exception.SavePhotoException;
+import com.oscar.videoteca.rest.model.entity.Photo;
 
 /**
  * Manager PhotoManager
@@ -35,6 +37,16 @@ public interface PhotoManager {
 	
 	
 	/**
+	 * Recupera una determinada fotografía de BBDD dada de alta por un determinado usuario
+	 * @param idFoto Id de la fotografía
+	 * @param idUser Id del usuario 
+	 * @return Photo
+	 * @throws PhotoNotFoundException sino se ha podido recuperar la fotografía
+	 */
+	Photo getPhoto(Long idFoto,Long idUser) throws PhotoNotFoundException;
+	
+	
+	/**
 	 * Elimina una fotografía fisicamente de la BBDD y del disco
 	 * @param idPhoto Id de la fotografía
 	 * @param idUsuario Id del usuario
@@ -43,5 +55,17 @@ public interface PhotoManager {
 	 * @throws ErrorDeletePhotoException Si no se ha podido eliminar la fotografía
 	 */
 	Boolean deletePhoto(Long idPhoto,Long idUsuario) throws PhotoNotFoundException,ErrorDeletePhotoException;
+	
+	
+	/**
+	 * Permite publicar/despublicar una determinada fotografía
+	 * @param idPhoto Id de la foto
+	 * @param idUser Id del usuario
+	 * @param value 1 si se publica y 0 en caso contrario
+	 * @return True si se ha cambiado el valor de publicación de la fotografía
+	 * @throws ErrorPublishPhotoException si ocurre algún error al publicar
+	 *         PhotoNotFoundException si no se ha podido recuperar la fotografía
+	 */
+	Boolean publishPhoto(Long idPhoto,Long idUser,Long value) throws ErrorPublishPhotoException,PhotoNotFoundException;
 
 }
