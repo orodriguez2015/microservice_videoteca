@@ -174,6 +174,10 @@ public class AlbumManagerImpl implements AlbumManager {
 		Example<Album> example = Example.of(a,publicMatcher);
 
 		Optional<Album> opt = albumRepository.findOne(example);
+	
+		/** Se recuperan las fotos pública del álbum */
+		
+		
 		if(Boolean.TRUE.equals(opt.isPresent())) {
 			return converter.convertTo(opt.get());
 		} else {

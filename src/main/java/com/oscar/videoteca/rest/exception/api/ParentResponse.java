@@ -32,4 +32,16 @@ public class ParentResponse implements Serializable {
 	@NonNull
 	private HttpStatus status;
 	
+	/**
+	 * Devuelve el código 
+	 * @return
+	 */
+	public Integer getCodStatus() {
+		Integer salida = Integer.valueOf(0);
+		if(status!=null) {
+			salida = status.value();
+		}
+		return salida;
+	}
+	
 }

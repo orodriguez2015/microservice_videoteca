@@ -3,6 +3,7 @@ import {AlbumFacade} from '../../../../facade/AlbumFacade';
 import {StringUtil} from '../../../../util/StringUtil';
 import ErrorMessage from '../../../error/ErrorMessage';
 import {URL_BACKEND_IMAGES} from '../../../../constantes/Configuracion';
+import {ESTADO_PUBLICACION_FOTO,ESTADO_DESPUBLICACION_FOTO} from '../../../../constantes/Constantes';
 import SimpleReactLightbox from "simple-react-lightbox"; 
 import { SRLWrapper} from 'simple-react-lightbox'; 
 import ComponenteAutenticado from '../autenticacion/ComponenteAutenticado';
@@ -46,9 +47,7 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
 
             // Se recupera el id del álbum de la url
             var idAlbum = this.props.match.params.p_album_id;
-
-            console.log("DetalleAlbumPrivado")
-            
+    
             if(this.props.match.params===null || this.props.match.params.p_album_id===undefined) {
                 // Se comprueba si está definido el state en la llamada a este componente que llega a través de un "a href", como 
                 // no lo está habrá que mostrar un error
@@ -67,8 +66,6 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
     }
     
 
-
-    
 
     /**
      * Manejador para el borrado de una foto
@@ -139,8 +136,10 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
         let mensaje = "";
         const key = id + "_publico";
 
+        console.log("etiquetaTexto value = " + document.getElementById(key).value + ",tipo = " + typeof(document.getElementById(key).value));
+
         if(id!==undefined && document.getElementById(key).value!==undefined) {
-            mensaje = (document.getElementById(key).value==="true")?"¿Deseas despublicar la foto con id #" + id + "?":"¿Deseas publicar la foto con id #" + id + "?";
+            mensaje = (document.getElementById(key).value===ESTADO_PUBLICACION_FOTO)?"¿Deseas despublicar la foto con id #" + id + "?":"¿Deseas publicar la foto con id #" + id + "?";
         } 
         return mensaje;
     }
@@ -164,7 +163,7 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
      */
     onConfirmPublicarFoto(id) {
         let key = id + "_publico";
-        let keyImage = id + "_img";
+        let keyImage = id + "_image";
         var value = document.getElementById(key).value;
 
         console.log("value = " + value);
@@ -172,25 +171,28 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
         AlbumFacade.publicarFoto(id,AlmacenFacade.getUser().id,this.getValorPublicar(value),AlmacenFacade.getUser())
         .then(resultado=>{
         
-            switch(resultado.status) {
-                case 0: {
+            console.log("resultado = " + JSON.stringify(resultado));
+            console.log("Actualmente estado publicacion = " + value);
+            switch(resultado.codStatus) {
+                case 200: {
                     // Actualizar imagens
-                    document.getElementById(key).value = resultado.publico;
-                    document.getElementById(keyImage).src   = this.getImagenPublicar(resultado.publico);
+
+                    document.getElementById(key).value = (value===ESTADO_PUBLICACION_FOTO)?ESTADO_DESPUBLICACION_FOTO:ESTADO_PUBLICACION_FOTO;
+
+                    console.log("Nuevo estado publicacion = " + document.getElementById(key).value);
+                    document.getElementById(keyImage).src   = this.getImagenPublicar(document.getElementById(key).value);
                     break;
                 }
 
-                case 2: {
-                    this.mostrarMensajeError("Se ha producido un error técnico al eliminar la fotografía");
+                default: {
+                    this.mostrarMensajeError("Se ha producido un error técnico al publicar/despublicar la fotografía");
                     break;
                 }
 
-                default:{
-                    break;
-                }
             }
 
         }).catch(error=>{
+            console.log(error.message);
             this.mostrarMensajeError("Se ha producido un error técnico al publicar/despublicar la fotografía");
         });
         
@@ -204,9 +206,14 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
      */
     getImagenPublicar(publico) {
         let salida = "/images/ojo_cerrado.png";
-        if(publico!==undefined && publico!==null && publico===1) {
+
+        console.log("getImagePublicar entrada = " + typeof(publico) + ", valor = " + publico);
+
+        if(publico!==undefined && publico!==null && publico===ESTADO_PUBLICACION_FOTO) {
             salida = "/images/ojo_abierto.png";
         }
+
+        console.log("getImagePublicar salida = " + salida );
         return salida;
     }
 
@@ -217,9 +224,10 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
      * @return Integer
      */
     getValorPublicar(publico) {
-        let salida = 1;
-        if(publico!==undefined && publico!==null && publico==='true') {
-            salida = 0;
+        let salida = ESTADO_PUBLICACION_FOTO;
+        
+        if(publico!==undefined && publico!==null && publico===ESTADO_PUBLICACION_FOTO) {
+            salida = ESTADO_DESPUBLICACION_FOTO;
         }
         return salida;
     }
@@ -304,8 +312,9 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
                             // Se construye la ruta de la miniatura en el servidor
                         
                             let imgOriginal  = URL_BACKEND_IMAGES + value.rutaRelativa;
-                            let imagen = value.publico===true?'/images/ojo_abierto.png':'/images/ojo_cerrado.png';
+                            let imagen = value.publico===1?'/images/ojo_abierto.png':'/images/ojo_cerrado.png';
                             let key = value.id + "_publico";
+                            let keyImage = value.id + "_image";
                             
                             return <div key={value.id} className="col-3">
                     
@@ -319,7 +328,7 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
                                     <p className="idVideoFoto">Visto { value.numeroVisualizaciones }  veces</p>
                                     <p className="idVideoFoto">ID # {value.id}</p>
                                                     
-                                    <img src={imagen} border="0" width="26" height="26" title="Mostrar/Ocultar" alt="Mostrar/Ocultar"  onClick={()=>this.handleOcultarFoto(value.id)}/>
+                                    <img src={imagen} id={keyImage} name={keyImage} border="0" width="26" height="26" title="Mostrar/Ocultar" alt="Mostrar/Ocultar"  onClick={()=>this.handleOcultarFoto(value.id)}/>
                                     <img src="/images/full_trash.png"  border="0" width="20" height="20" title="Eliminar" alt="Eliminar" onClick={()=>this.handleEliminar(value.id)}/>
                                     <input type="hidden" id={key} name={key} value={value.publico}/>
                                     <p></p>

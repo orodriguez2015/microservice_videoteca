@@ -99,6 +99,7 @@ public class PhotoController {
 			throw new ErrorPublishPhotoException("Error al publicar/despublicar la fotografía");	
 		} else {
 			ResponseOperation<Object> response = new ResponseOperation<Object>();
+			
 			response.setStatus(HttpStatus.OK);
 			response.setDescStatus("OK");
 			response.setData(null);

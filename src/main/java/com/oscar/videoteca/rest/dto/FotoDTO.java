@@ -26,7 +26,7 @@ public class FotoDTO implements Serializable {
     
     private String rutaRelativa;
          
-    private Boolean publico;
+    private Integer publico;
         
     private Integer alto;
     

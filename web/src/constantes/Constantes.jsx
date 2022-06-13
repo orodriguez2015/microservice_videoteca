@@ -12,3 +12,9 @@ export const ESTADO_USUARIO_INICIAL = {
     login:'',
     admin:''
 }
+
+
+/** Estado de publicación de una fotografía */
+export const ESTADO_PUBLICACION_FOTO    = "1";
+/** Estado de despublicación de una fotografía */
+export const ESTADO_DESPUBLICACION_FOTO = "0";
