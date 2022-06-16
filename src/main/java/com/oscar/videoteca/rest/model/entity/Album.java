@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -59,7 +60,8 @@ public class Album {
     private User usuarioModificacion;
     
     // Relación OneToMany con la entidad fotos. La propiedad mappedBy se mapea el parámetro album en la entidad foto
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "album")
-    private List<Photo> fotos;
+    //@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "album")
+    //@OneToMany(cascade = CascadeType.ALL,mappedBy = "album")
+    //private List<Photo> fotos;
 	
 }

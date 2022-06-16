@@ -14,14 +14,20 @@ import com.oscar.videoteca.rest.config.BackupConfiguration;
 import com.oscar.videoteca.rest.dto.AlbumDTO;
 import com.oscar.videoteca.rest.dto.CreateAlbumDTO;
 import com.oscar.videoteca.rest.dto.mapping.AlbumConverter;
+import com.oscar.videoteca.rest.dto.mapping.PhotoConverter;
 import com.oscar.videoteca.rest.exception.AlbumNotFoundException;
 import com.oscar.videoteca.rest.exception.AlbumesNotFoundException;
 import com.oscar.videoteca.rest.exception.ErrorDeleteAlbumException;
+import com.oscar.videoteca.rest.exception.ErrorGetPhotosAlbumException;
+import com.oscar.videoteca.rest.exception.PhotoNotFoundException;
 import com.oscar.videoteca.rest.manager.AlbumManager;
+import com.oscar.videoteca.rest.manager.PhotoManager;
 import com.oscar.videoteca.rest.model.entity.Album;
+import com.oscar.videoteca.rest.model.entity.Photo;
 import com.oscar.videoteca.rest.model.entity.User;
 import com.oscar.videoteca.rest.model.repository.AlbumRepository;
 import com.oscar.videoteca.rest.util.FileUtil;
+import com.oscar.videoteca.rest.util.PhotoVisibilityEnum;
 
 /**
  * Implementación de AlbumManager
@@ -35,7 +41,14 @@ public class AlbumManagerImpl implements AlbumManager {
 	private AlbumRepository albumRepository;
 	
 	@Autowired
+	private PhotoManager photoManager;
+	
+	@Autowired
 	private AlbumConverter converter;
+	
+	@Autowired
+	private PhotoConverter photoConverter;
+	
 	
 	@Autowired
 	private BackupConfiguration backupConfiguration;
@@ -154,7 +167,8 @@ public class AlbumManagerImpl implements AlbumManager {
 
 
 	@Override
-	public AlbumDTO getAlbum(Long idAlbum, Long idUsuario) throws AlbumNotFoundException {
+	public AlbumDTO getAlbum(Long idAlbum, Long idUsuario,PhotoVisibilityEnum visibility) throws AlbumNotFoundException, ErrorGetPhotosAlbumException {
+		AlbumDTO album = null;
 		ExampleMatcher publicMatcher = ExampleMatcher.matchingAll()
 				  .withMatcher("id",ExampleMatcher.GenericPropertyMatchers.exact());
 		
@@ -172,17 +186,26 @@ public class AlbumManagerImpl implements AlbumManager {
 		}
 
 		Example<Album> example = Example.of(a,publicMatcher);
-
 		Optional<Album> opt = albumRepository.findOne(example);
-	
-		/** Se recuperan las fotos pública del álbum */
 		
 		
-		if(Boolean.TRUE.equals(opt.isPresent())) {
-			return converter.convertTo(opt.get());
-		} else {
+		if(Boolean.FALSE.equals(opt.isPresent())) {
 			throw new AlbumNotFoundException("No existe el álbum fotográfico");
+		} else {
+			// Se recuperan las fotografías del album que tienen una determinada visibilidad
+			try {
+				
+				/** Se recuperan las fotos pública del álbum */
+				List<Photo> photos = photoManager.getPhotos(idAlbum,visibility);
+				
+				album = converter.convertTo(opt.get());
+				album.setFotos(photoConverter.convertTo(photos));
+								
+			}catch(PhotoNotFoundException e) {
+				throw new ErrorGetPhotosAlbumException("Error al recuperar fotos de un álbum");
+			}	
 		}
+		return album;
 		
 	}
 

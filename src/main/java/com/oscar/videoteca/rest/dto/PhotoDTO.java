@@ -14,7 +14,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class FotoDTO implements Serializable {
+public class PhotoDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

@@ -38,7 +38,7 @@ public class AlbumDTO implements Serializable {
 
     private String apellido2UsuarioAlta;
     
-    private List<FotoDTO> fotos;
+    private List<PhotoDTO> fotos;
     
        
 }

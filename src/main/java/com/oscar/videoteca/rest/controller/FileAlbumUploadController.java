@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.io.Files;
-import com.oscar.videoteca.rest.dto.FotoDTO;
+import com.oscar.videoteca.rest.dto.PhotoDTO;
 import com.oscar.videoteca.rest.exception.PhotoNotFoundException;
 import com.oscar.videoteca.rest.exception.SaveFileException;
 import com.oscar.videoteca.rest.exception.api.ResponseOperation;
@@ -82,7 +82,7 @@ public class FileAlbumUploadController {
 	@RequestMapping(value = "/download/photo/{idPhoto}", method = RequestMethod.GET,produces = { MediaType.APPLICATION_OCTET_STREAM_VALUE})
 	public ResponseEntity<Resource> downloadPhoto(@RequestParam Long idPhoto) throws IOException, PhotoNotFoundException {
 		
-		FotoDTO fotoDTO = fotoManager.getPhoto(idPhoto);
+		PhotoDTO fotoDTO = fotoManager.getPhoto(idPhoto);
 		if(fotoDTO!=null) {
 		      File file = new File(fotoDTO.getRuta());
 		      HttpHeaders headers = new HttpHeaders();

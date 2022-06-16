@@ -2,6 +2,7 @@ package com.oscar.videoteca.rest.manager.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,8 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.oscar.videoteca.rest.dto.FotoDTO;
-import com.oscar.videoteca.rest.dto.mapping.FotoConverter;
+import com.oscar.videoteca.rest.dto.PhotoDTO;
+import com.oscar.videoteca.rest.dto.mapping.PhotoConverter;
 import com.oscar.videoteca.rest.exception.ErrorDeletePhotoException;
 import com.oscar.videoteca.rest.exception.ErrorPublishPhotoException;
 import com.oscar.videoteca.rest.exception.PhotoNotFoundException;
@@ -23,6 +24,8 @@ import com.oscar.videoteca.rest.model.entity.Photo;
 import com.oscar.videoteca.rest.model.entity.User;
 import com.oscar.videoteca.rest.model.repository.PhotoRepository;
 import com.oscar.videoteca.rest.util.FileUtil;
+import com.oscar.videoteca.rest.util.PhotoVisibilityEnum;
+import com.oscar.videoteca.rest.util.PhotoVisibilityFactory;
 
 /**
  * Clase FotoManagerImpl
@@ -36,7 +39,7 @@ public class PhotoManagerImpl implements PhotoManager {
 	private PhotoRepository photoRepository;
 		
 	@Autowired
-	private FotoConverter fotoConverter;
+	private PhotoConverter fotoConverter;
 	
 	@Autowired
 	private FileUtil fileUtil;
@@ -101,8 +104,8 @@ public class PhotoManagerImpl implements PhotoManager {
 	}
 
 	@Override
-	public FotoDTO getPhoto(Long idFoto) throws PhotoNotFoundException {
-		FotoDTO foto = null;
+	public PhotoDTO getPhoto(Long idFoto) throws PhotoNotFoundException {
+		PhotoDTO foto = null;
 		
 		if(Boolean.TRUE.equals(photoRepository.existsById(idFoto))){
 			Optional<Photo> opt = photoRepository.findById(idFoto);
@@ -200,6 +203,30 @@ public class PhotoManagerImpl implements PhotoManager {
 		return p;
 			
 		
+	}
+
+	@Override
+	public List<Photo> getPhotos(Long idAlbum, PhotoVisibilityEnum visibility) throws PhotoNotFoundException {
+		
+		ExampleMatcher photoMatcher = ExampleMatcher.matchingAll()
+			      .withMatcher("idAlbum", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase());
+			      
+		if(!visibility.equals(PhotoVisibilityEnum.ALL_PHOTOS))  {	      
+			photoMatcher.withMatcher("publico", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase());
+		}
+		
+		Album album = new Album();
+		album.setId(idAlbum);
+		
+		// Se buscan las fotos de un determinado álbum y con un determinado tipo de visibilidad
+		Photo photo = new Photo();
+		photo.setAlbum(album);
+		
+		// Se establece la visibilidad de la fotografía
+		PhotoVisibilityFactory.establishVisibilityPhotography(photo, visibility);
+		
+		Example<Photo> example = Example.of(photo,photoMatcher);
+		return photoRepository.findAll(example);
 	}
 
 }

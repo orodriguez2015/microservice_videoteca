@@ -65,7 +65,5 @@ public class Photo {
     @JoinColumn(name="id_album",nullable=false,updatable=false)
     @ManyToOne
     private Album album;
-    
-    
-	
+    	
 }

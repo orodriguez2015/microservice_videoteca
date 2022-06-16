@@ -7,6 +7,7 @@ import com.oscar.videoteca.rest.dto.CreateAlbumDTO;
 import com.oscar.videoteca.rest.exception.AlbumNotFoundException;
 import com.oscar.videoteca.rest.exception.AlbumesNotFoundException;
 import com.oscar.videoteca.rest.exception.ErrorDeleteAlbumException;
+import com.oscar.videoteca.rest.util.PhotoVisibilityEnum;
 
 /**
  * Interface AlbumManager
@@ -35,10 +36,11 @@ public interface AlbumManager {
 	 * Recupera un álbum fotográfico determinado de un determinado usuario
 	 * @param idAlbum Id del álbum. Parámetro obligatorio
 	 * @param idUsuario Id del usuario. Puede estar a nulo, por tanto sólo se filtraría por el parámetro idAlbum
+	 * @param visibility PhotoVisibilityEnum
 	 * @return AlbumDTO
-	 * @throws AlbumNotFoundException
+	 * @throws AlbumNotFoundException si no se ha podido recuperar el álbum
 	 */
-	AlbumDTO getAlbum(Long idAlbum,Long idUsuario) throws AlbumNotFoundException;
+	AlbumDTO getAlbum(Long idAlbum,Long idUsuario,PhotoVisibilityEnum visibility) throws AlbumNotFoundException;
 	
 	
 	/**

@@ -1,10 +1,13 @@
 package com.oscar.videoteca.rest.dto.mapping;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.oscar.videoteca.rest.dto.FotoDTO;
+import com.oscar.videoteca.rest.dto.PhotoDTO;
 import com.oscar.videoteca.rest.model.entity.Photo;
 
 import lombok.RequiredArgsConstructor;
@@ -16,7 +19,7 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 @Component
-public class FotoConverter {
+public class PhotoConverter {
 
 	@Autowired
 	private ModelMapper mapper;
@@ -26,10 +29,18 @@ public class FotoConverter {
 	 * @param foto Foto
 	 * @return FotoDTO
 	 */
-	public FotoDTO convertTo(Photo foto) {
-		return this.mapper.map(foto,FotoDTO.class);
+	public PhotoDTO convertTo(Photo foto) {
+		return this.mapper.map(foto,PhotoDTO.class);
 	}
 	
+	/**
+	 * Convierte una colección de List<Photo> en un List<PhotoDTO>
+	 * @param photos
+	 * @return
+	 */
+	public List<PhotoDTO> convertTo(List<Photo> photos) {
+		return photos.stream().map(p->convertTo(p)).collect(Collectors.toList());
+	}
 	
 	
 }

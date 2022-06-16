@@ -1,16 +1,18 @@
 package com.oscar.videoteca.rest.manager;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.oscar.videoteca.rest.dto.FotoDTO;
+import com.oscar.videoteca.rest.dto.PhotoDTO;
 import com.oscar.videoteca.rest.exception.ErrorDeletePhotoException;
 import com.oscar.videoteca.rest.exception.ErrorPublishPhotoException;
 import com.oscar.videoteca.rest.exception.PhotoNotFoundException;
 import com.oscar.videoteca.rest.exception.SaveFileException;
 import com.oscar.videoteca.rest.exception.SavePhotoException;
 import com.oscar.videoteca.rest.model.entity.Photo;
+import com.oscar.videoteca.rest.util.PhotoVisibilityEnum;
 
 /**
  * Manager PhotoManager
@@ -33,7 +35,7 @@ public interface PhotoManager {
 	 * @return
 	 * @throws PhotoNotFoundException sino se ha podido recuperar la fotografía
 	 */
-	FotoDTO getPhoto(Long idFoto) throws PhotoNotFoundException;
+	PhotoDTO getPhoto(Long idFoto) throws PhotoNotFoundException;
 	
 	
 	/**
@@ -67,5 +69,13 @@ public interface PhotoManager {
 	 *         PhotoNotFoundException si no se ha podido recuperar la fotografía
 	 */
 	Boolean publishPhoto(Long idPhoto,Long idUser,Long value) throws ErrorPublishPhotoException,PhotoNotFoundException;
-
+	
+	/**
+	 * Recupera las fotografías de un album
+	 * @param idAlbum Id del álbum
+	 * @param visibility Visibilidad de las fotografías
+	 * @return List<Photo>
+	 * @throws PhotoNotFoundException si ocurre algún error
+	 */
+	List<Photo> getPhotos(Long idAlbum,PhotoVisibilityEnum visibility) throws PhotoNotFoundException; 
 }

@@ -177,6 +177,18 @@ public class GlobalControllerAdvice {
 		ResponseError error = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
 	}
+
+	
+	/**
+	 * Se controla cuando se ha producido un error al recuperar las fotografías de un álbum
+	 * @param e ErrorGetPhotosAlbumException
+	 * @return ResponseEntity<ResponseError>
+	 */
+	@ExceptionHandler(ErrorGetPhotosAlbumException.class)
+	public ResponseEntity<ResponseError> handleErrorPublishPhotoException(ErrorGetPhotosAlbumException e) {
+		ResponseError error = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+	}
 	
 	
 }
