@@ -99,11 +99,11 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
                 }
 
             }).catch(err=>{
-                console.log("error= " + err.message);
+                this.mostrarMensajeError("Se ha producido un error al recuperar las fotografías del álbum");
             });
             
         } else {
-            console.log("no se ha recuperado el idAlbum = " + idAlbum);
+            this.mostrarMensajeError("Se ha producido un error al recuperar el álbum");
         }
      }
 
@@ -136,8 +136,6 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
         let mensaje = "";
         const key = id + "_publico";
 
-        console.log("etiquetaTexto value = " + document.getElementById(key).value + ",tipo = " + typeof(document.getElementById(key).value));
-
         if(id!==undefined && document.getElementById(key).value!==undefined) {
             mensaje = (document.getElementById(key).value===ESTADO_PUBLICACION_FOTO)?"¿Deseas despublicar la foto con id #" + id + "?":"¿Deseas publicar la foto con id #" + id + "?";
         } 
@@ -166,20 +164,13 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
         let keyImage = id + "_image";
         var value = document.getElementById(key).value;
 
-        console.log("value = " + value);
-
         AlbumFacade.publicarFoto(id,AlmacenFacade.getUser().id,this.getValorPublicar(value),AlmacenFacade.getUser())
         .then(resultado=>{
         
-            console.log("resultado = " + JSON.stringify(resultado));
-            console.log("Actualmente estado publicacion = " + value);
             switch(resultado.codStatus) {
                 case 200: {
-                    // Actualizar imagens
-
+                    // Actualizar imagen y estado de visibilidad de la fotografía
                     document.getElementById(key).value = (value===ESTADO_PUBLICACION_FOTO)?ESTADO_DESPUBLICACION_FOTO:ESTADO_PUBLICACION_FOTO;
-
-                    console.log("Nuevo estado publicacion = " + document.getElementById(key).value);
                     document.getElementById(keyImage).src   = this.getImagenPublicar(document.getElementById(key).value);
                     break;
                 }
@@ -192,7 +183,6 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
             }
 
         }).catch(error=>{
-            console.log(error.message);
             this.mostrarMensajeError("Se ha producido un error técnico al publicar/despublicar la fotografía");
         });
         
@@ -207,13 +197,10 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
     getImagenPublicar(publico) {
         let salida = "/images/ojo_cerrado.png";
 
-        console.log("getImagePublicar entrada = " + typeof(publico) + ", valor = " + publico);
-
         if(publico!==undefined && publico!==null && publico===ESTADO_PUBLICACION_FOTO) {
             salida = "/images/ojo_abierto.png";
         }
 
-        console.log("getImagePublicar salida = " + salida );
         return salida;
     }
 
