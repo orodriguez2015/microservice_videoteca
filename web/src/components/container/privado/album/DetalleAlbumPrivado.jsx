@@ -306,7 +306,7 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
                             return <div key={value.id} className="col-3">
                     
                                     <a href={`${imgOriginal}`} data-attribute="SRL">
-                                        <img src={`${imgOriginal}`} id={`${imgOriginal}`} alt={`${imgOriginal}`} srl_gallery_image='true' width="200" height="150"/>
+                                        <img src={`${imgOriginal}`} id={`${imgOriginal}`} alt={`${imgOriginal}`} srl_gallery_image='true' width="200" height="150" onClick={()=>this.handleOnClickPhoto(value.id)}/>
                                     </a>                
                                     
                                     <p className="nombreVideoFoto">{value.nombre}</p>                        
@@ -315,7 +315,7 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
                                     <p className="idVideoFoto">Visto { value.numeroVisualizaciones }  veces</p>
                                     <p className="idVideoFoto">ID # {value.id}</p>
                                                     
-                                    <img src={imagen} id={keyImage} name={keyImage} border="0" width="26" height="26" title="Mostrar/Ocultar" alt="Mostrar/Ocultar"  onClick={()=>this.handleOcultarFoto(value.id)}/>
+                                    <img src={imagen} id={keyImage} name={keyImage} border="0" width="26" height="26" title="Mostrar/Ocultar" alt="Mostrar/Ocultar" onClick={()=>this.handleOcultarFoto(value.id)}/>
                                     <img src="/images/full_trash.png"  border="0" width="20" height="20" title="Eliminar" alt="Eliminar" onClick={()=>this.handleEliminar(value.id)}/>
                                     <input type="hidden" id={key} name={key} value={value.publico}/>
                                     <p></p>

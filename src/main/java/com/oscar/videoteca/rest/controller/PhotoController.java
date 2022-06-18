@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -108,4 +109,40 @@ public class PhotoController {
 		
 	}
 
+	
+	/**
+	 * Permite incrementar el contador de visualización de una fotografía
+	 * @param idPhoto Id de la fotografía a eliminar
+	 * @param idUsuario Id del usuario al que pertenece el álbum
+	 * @param 
+	 * @return ResponseEntity<?>
+	 */
+	@PostMapping(value="/public/photo/visualization/increase/{idPhoto}")
+	@ApiOperation(value="Permite incrementar el contador de visualización de una fotografía",notes="Permite incrementar el contador de visualización de una fotografía")
+	@ApiResponses(value={
+			@ApiResponse(code=200,message="OK",response=ResponseError.class),
+			@ApiResponse(code=401,message="Not Found",response=ResponseError.class),
+			@ApiResponse(code=403,message="Not Found",response=ResponseError.class),
+			@ApiResponse(code=404,message="Not Found",response=ResponseError.class),
+			@ApiResponse(code=500,message="Internal Server Error",response=ResponseError.class)
+		})
+	public ResponseEntity<?> increasePhotoDisplayCounter(@PathVariable Long idPhoto) throws PhotoNotFoundException,ErrorPublishPhotoException {
+		
+		if(this.manager.getPhoto(idPhoto)==null) {
+			// No existe el id del álbum a eliminar
+			throw new PhotoNotFoundException("No existe la fotografía");	
+		}
+		
+		if(Boolean.FALSE.equals(this.manager.increasePhotoDisplayCounter(idPhoto))) {
+			throw new ErrorPublishPhotoException("Error al incrementar contador de visualización de la fotografía");	
+		} else {
+			ResponseOperation<Object> response = new ResponseOperation<Object>();
+			
+			response.setStatus(HttpStatus.OK);
+			response.setDescStatus("OK");
+			response.setData(null);
+			return ResponseEntity.status(HttpStatus.OK).body(response);		
+		}
+		
+	}
 }

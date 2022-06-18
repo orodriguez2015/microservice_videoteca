@@ -18,3 +18,5 @@ export const ESTADO_USUARIO_INICIAL = {
 export const ESTADO_PUBLICACION_FOTO    = "1";
 /** Estado de despublicación de una fotografía */
 export const ESTADO_DESPUBLICACION_FOTO = "0";
+/** Constante ELEMENT */
+export const ELEMENT = "element";

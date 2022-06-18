@@ -78,4 +78,12 @@ public interface PhotoManager {
 	 * @throws PhotoNotFoundException si ocurre algún error
 	 */
 	List<Photo> getPhotos(Long idAlbum,PhotoVisibilityEnum visibility) throws PhotoNotFoundException; 
+	
+	/**
+	 * Incrementa el contador de visualización de una fotografía
+	 * @param idPhoto Long
+	 * @return Boolean
+	 * @throws PhotoNotFoundException si ocurre algún error
+	 */
+	Boolean increasePhotoDisplayCounter(Long idPhoto) throws PhotoNotFoundException;
 }

@@ -3,6 +3,7 @@ import {AlbumFacade} from '../../../facade/AlbumFacade';
 import {StringUtil} from '../../../util/StringUtil';
 import ErrorMessage from '../../error/ErrorMessage';
 import {URL_BACKEND_IMAGES} from '../../../constantes/Configuracion';
+import {ELEMENT} from '../../../constantes/Constantes';
 import { SRLWrapper} from 'simple-react-lightbox'; 
 
 /**
@@ -65,6 +66,44 @@ class DetalleAlbumPublico extends React.Component {
         }
     }
 
+
+
+    /**
+     * Función invocada cuando se cambia de foto a través del lightbox
+     * @param {Object} object 
+     */
+    onHandleDisplayPhoto(object) {
+
+        if(object!==undefined) {
+            let selectedPhotoId = this.state.fotos[object.index].id;
+            console.log("id foto seleccionada = " + selectedPhotoId);
+        }
+    }
+
+
+    /**
+     * Función invocada cuando se abre el lightbox
+     * @param {Object} object 
+     */
+    onLightboxOpened(object) {
+        if(object!==undefined) {
+            
+            // Se obtiene la posición de la foto en la lista de fotos
+            var position = String(object.currentSlide.id);
+            position = position.replace(ELEMENT,'');
+            // Se recupera la foto en base a la posición para recuperar el id de la foto
+            let selectedPhotoId = this.state.fotos[position].id;
+
+            console.log("id foto seleccionada = " + selectedPhotoId);
+            
+            /**
+             * TODO enviar
+             */
+        }
+    }
+
+   
+
     /**
      * Método que renderiza la vista
      */
@@ -86,8 +125,15 @@ class DetalleAlbumPublico extends React.Component {
                 transitionTimingFunction: "linear"
             };
 
+
+            const callbacks = {
+                onSlideChange: object => this.onHandleDisplayPhoto(object),
+                onLightboxOpened: object => this.onLightboxOpened(object)
+               
+            };
+
             return (
-                <SRLWrapper options={options}>
+                <SRLWrapper options={options} callbacks={callbacks}>
                 <div className="container">
                     <div className="subtitulo">
                         <h2>Fotografías del álbum {this.state.nombreAlbum}</h2>
