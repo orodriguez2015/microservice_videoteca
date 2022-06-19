@@ -82,8 +82,8 @@ public interface PhotoManager {
 	/**
 	 * Incrementa el contador de visualización de una fotografía
 	 * @param idPhoto Long
-	 * @return Boolean
+	 * @return Photo
 	 * @throws PhotoNotFoundException si ocurre algún error
 	 */
-	Boolean increasePhotoDisplayCounter(Long idPhoto) throws PhotoNotFoundException;
+	Photo increasePhotoDisplayCounter(Long idPhoto) throws PhotoNotFoundException;
 }

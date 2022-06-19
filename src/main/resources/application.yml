@@ -1,7 +1,8 @@
 # Lista blanca de urls que no necesitan autenticación JWT por GET y por POST
 authentication:
    urlWhiteListByPost: [
-        "/login"
+        "/login",
+         "/public/photo/**"
    ]
    urlWhiteListByGet: [
         "/v2/api-docs",
@@ -17,7 +18,7 @@ authentication:
         "/public/videotecas",
         "/public/albumes",
         "/images/**",
-        "/public/album/**",
+        "/public/album/**"
         
   ]
 # Propiedades configuración carpeta de backup de fotos y videos

@@ -15,6 +15,7 @@ import com.oscar.videoteca.rest.exception.PhotoNotFoundException;
 import com.oscar.videoteca.rest.exception.api.ResponseError;
 import com.oscar.videoteca.rest.exception.api.ResponseOperation;
 import com.oscar.videoteca.rest.manager.PhotoManager;
+import com.oscar.videoteca.rest.model.entity.Photo;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -133,14 +134,15 @@ public class PhotoController {
 			throw new PhotoNotFoundException("No existe la fotografía");	
 		}
 		
-		if(Boolean.FALSE.equals(this.manager.increasePhotoDisplayCounter(idPhoto))) {
+		Photo p = this.manager.increasePhotoDisplayCounter(idPhoto);
+		if(p==null) {
 			throw new ErrorPublishPhotoException("Error al incrementar contador de visualización de la fotografía");	
 		} else {
 			ResponseOperation<Object> response = new ResponseOperation<Object>();
 			
 			response.setStatus(HttpStatus.OK);
 			response.setDescStatus("OK");
-			response.setData(null);
+			response.setData(p);
 			return ResponseEntity.status(HttpStatus.OK).body(response);		
 		}
 		

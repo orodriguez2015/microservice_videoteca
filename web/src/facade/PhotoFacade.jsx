@@ -1,3 +1,4 @@
+import {INCREASE_PHOTO_DISPLAY_COUNTER_API} from '../constantes/ConfigurationPhoto';
 
 /**
  * Clase PhotoFacade
@@ -23,7 +24,7 @@ export class PhotoFacade {
         }
 
         return new Promise((resolver, rechazar) => {
-            fetch(ALBUM_DETAIL_API + idAlbum + "/" + user.id,opciones)
+            fetch(INCREASE_PHOTO_DISPLAY_COUNTER_API + id,opciones)
             .then((response) => {
                 return response.json()
             })
@@ -33,7 +34,5 @@ export class PhotoFacade {
                 rechazar(err);
             });
         });
-
     }
-
 }

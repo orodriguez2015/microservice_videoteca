@@ -231,9 +231,8 @@ public class PhotoManagerImpl implements PhotoManager {
 
 	
 	@Override
-	public Boolean increasePhotoDisplayCounter(Long idPhoto) throws PhotoNotFoundException {
-		Boolean exito = Boolean.FALSE;
-		
+	public Photo increasePhotoDisplayCounter(Long idPhoto) throws PhotoNotFoundException {
+		Photo p = null;
 		ExampleMatcher photoMatcher = ExampleMatcher.matchingAll()
 			      .withMatcher("id", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase());
 		
@@ -245,14 +244,12 @@ public class PhotoManagerImpl implements PhotoManager {
 		if(Boolean.FALSE.equals(opt.isPresent())) {
 			throw new PhotoNotFoundException("No se ha encontrado la fotografía");
 		} else {
-			Photo p = opt.get();
+			p = opt.get();
 			p.setNumeroVisualizaciones(p.getNumeroVisualizaciones()+1);
-			
-			photoRepository.saveAndFlush(p);
-			exito = Boolean.TRUE;
+			p = photoRepository.saveAndFlush(p);
 		}
 		
-		return exito;
+		return p;
 	}
 
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import {AlbumFacade} from '../../../facade/AlbumFacade';
+import {PhotoFacade} from '../../../facade/PhotoFacade';
 import {StringUtil} from '../../../util/StringUtil';
 import ErrorMessage from '../../error/ErrorMessage';
 import {URL_BACKEND_IMAGES} from '../../../constantes/Configuracion';
@@ -76,7 +77,8 @@ class DetalleAlbumPublico extends React.Component {
 
         if(object!==undefined) {
             let selectedPhotoId = this.state.fotos[object.index].id;
-            console.log("id foto seleccionada = " + selectedPhotoId);
+            
+            this.increasePhotoDisplayCounter(selectedPhotoId);
         }
     }
 
@@ -92,14 +94,28 @@ class DetalleAlbumPublico extends React.Component {
             var position = String(object.currentSlide.id);
             position = position.replace(ELEMENT,'');
             // Se recupera la foto en base a la posición para recuperar el id de la foto
-            let selectedPhotoId = this.state.fotos[position].id;
-
-            console.log("id foto seleccionada = " + selectedPhotoId);
-            
-            /**
-             * TODO enviar
-             */
+            //let selectedPhotoId = this.state.fotos[position].id;
+            this.increasePhotoDisplayCounter(this.state.fotos[position].id);
+           
         }
+    }
+
+
+    /**
+     * 
+     * @param {Integer} id 
+     */
+    increasePhotoDisplayCounter(id) {
+        PhotoFacade.increasePhotoDisplayCounter(id).then(resultado=>{
+
+            if(resultado.codStatus==200) {
+                // Se ha incrementa el contador de visualizaciones de la foto => Se actualiza el contador en pantalla
+                document.getElementById(id).innerHTML = resultado.data.numeroVisualizaciones;
+            }
+
+        }).catch(err=>{
+            console.log("error = " + err.message);
+        })
     }
 
    
@@ -152,9 +168,11 @@ class DetalleAlbumPublico extends React.Component {
                                         </a>
                                         <p className="nombreVideoFoto">{value.nombre}</p>                        
                                         <p className="idVideoFoto">{value.descripcion}</p>
-                                        <p className="idVideoFoto">Alta el {value.fechaAlta}</p>
-                                        <p className="idVideoFoto">Visto { value.numeroVisualizaciones }  veces</p>
                                         <p className="idVideoFoto">ID # {value.id}</p>
+                                        <p className="idVideoFoto">Visto <span id={value.id} name={value.id}>{ value.numeroVisualizaciones }</span>  veces</p>
+                                        <p className="idVideoFoto">Alta el {value.fechaAlta}</p>
+                                        
+                                        
                                 </div>
                         })}
                     </div>
