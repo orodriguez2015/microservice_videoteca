@@ -24,7 +24,8 @@ class DetalleAlbumPublico extends React.Component {
         this.state = {
             fotos :[],
             nombreAlbum:'',
-            errorAlbumDesconocido: false
+            descErrorAlbum:'',
+            error: false
         }
     }
 
@@ -38,7 +39,8 @@ class DetalleAlbumPublico extends React.Component {
             this.setState({
                 fotos:[],
                 nombreAlbum:'',
-                errorAlbumDesconocido:true
+                descErrorAlbum:'Álbum desconocido',
+                error: true
             });
         } else {
             // Se recupera el id del álbum pasado como parámetro
@@ -49,24 +51,40 @@ class DetalleAlbumPublico extends React.Component {
                 AlbumFacade.getFotosAlbumPublico(idAlbum)
                 .then(resultado=>{
 
-                    if(resultado.status==="OK") {
+                    if(resultado.codStatus===200) {
                         this.setState({
                             fotos: resultado.data.fotos,
                             nombreAlbum: nombreAlbum
                         });
+                    } else {
+                        this.showErrorMessage('No se ha podido recuperar las fotografías del álbum');
                     }
 
 
                 }).catch(err=>{
-                    console.log("error= " + err.message);
+                    this.showErrorMessage('No se ha podido recuperar las fotografías del álbum');
                 });
                 
             } else {
-                console.log("no se ha recuperado el idAlbum = " + idAlbum);
+                //console.log("no se ha recuperado el idAlbum = " + idAlbum);
+                this.showErrorMessage('No se ha podido recuperar las fotografías del álbum');
             }
         }
     }
 
+
+    /**
+     * Muestra un mensaje de error
+     * @param {String} message 
+     */
+    showErrorMessage(message) {
+        this.setState({
+            fotos:[],
+            nombreAlbum:'',
+            descError: message,
+            error: true
+        });
+    }
 
 
     /**
@@ -84,7 +102,7 @@ class DetalleAlbumPublico extends React.Component {
 
 
     /**
-     * Función invocada cuando se abre el lightbox
+     * Función invocada cuando se abre el lightbox seleccionando una fotografía
      * @param {Object} object 
      */
     onLightboxOpened(object) {
@@ -108,7 +126,7 @@ class DetalleAlbumPublico extends React.Component {
     increasePhotoDisplayCounter(id) {
         PhotoFacade.increasePhotoDisplayCounter(id).then(resultado=>{
 
-            if(resultado.codStatus==200) {
+            if(resultado.codStatus===200) {
                 // Se ha incrementa el contador de visualizaciones de la foto => Se actualiza el contador en pantalla
                 document.getElementById(id).innerHTML = resultado.data.numeroVisualizaciones;
             }
@@ -124,10 +142,10 @@ class DetalleAlbumPublico extends React.Component {
      * Método que renderiza la vista
      */
     render() { 
-        if(this.state.errorAlbumDesconocido===true) {
+        if(this.state.error===true) {
             // Sino se ha comunicado un idAlbum => Entonces se muestra la pantalla de error
             return (
-                <ErrorMessage mensaje={"Álbum desconocido"}/>
+                <ErrorMessage mensaje={this.state.descError}/>
             );
         } else {
 
