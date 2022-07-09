@@ -321,7 +321,7 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
                                     <p className="idVideoFoto">{value.descripcion}</p>                                        
                                     <p className="idVideoFoto">ID # {value.id}</p>
                                     <p className="idVideoFoto">Visto { value.numeroVisualizaciones } veces</p>
-                                    <p className="idVideoFoto">Alta el {value.fechaAlta}</p>            
+                                    <p className="idVideoFoto">Alta el {value.fechaAltaFormato}</p>            
                                                     
                                     <img src={imagen} id={keyImage} name={keyImage} border="0" width="26" height="26" title="Mostrar/Ocultar" alt="Mostrar/Ocultar" onClick={()=>this.handleOcultarFoto(value.id)}/>
                                     <img src="/images/full_trash.png"  border="0" width="20" height="20" title="Eliminar" alt="Eliminar" onClick={()=>this.handleEliminar(value.id)}/>

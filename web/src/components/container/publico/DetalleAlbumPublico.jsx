@@ -120,8 +120,9 @@ class DetalleAlbumPublico extends React.Component {
 
 
     /**
-     * 
-     * @param {Integer} id 
+     * Incrementa el contador de visualizaciones de una fotografía invocando al servidor, y actualiza el número de visualizaciones
+     * en pantalla
+     * @param {Integer} Id de la fotografía
      */
     increasePhotoDisplayCounter(id) {
         PhotoFacade.increasePhotoDisplayCounter(id).then(resultado=>{
@@ -188,7 +189,7 @@ class DetalleAlbumPublico extends React.Component {
                                         <p className="idVideoFoto">{value.descripcion}</p>
                                         <p className="idVideoFoto">ID # {value.id}</p>
                                         <p className="idVideoFoto">Visto <span id={value.id} name={value.id}>{ value.numeroVisualizaciones }</span>  veces</p>
-                                        <p className="idVideoFoto">Alta el {value.fechaAlta}</p>
+                                        <p className="idVideoFoto">Alta el {value.fechaAltaFormato}</p>
                                         
                                         
                                 </div>

@@ -1,7 +1,10 @@
 package com.oscar.videoteca.rest.dto;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import com.oscar.videoteca.constants.Constants;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -40,5 +43,17 @@ public class PhotoDTO implements Serializable {
     
     private Long idAlbum;
     
+    /**
+     * Devuelve la fecha de alta en un formato dd/MM/yyyy HH:mm:ss
+     * @return String
+     */
+    public String getFechaAltaFormato() {
+    	String date = "";
+    	if(this.fechaAlta!=null) {
+    		SimpleDateFormat sf = new SimpleDateFormat(Constants.PATTERN_DD_MM_YYYY);
+    		date = sf.format(this.fechaAlta);
+    	}
+    	return date;
+    }
   
 }
