@@ -62,4 +62,27 @@ public class VideotecaManagerImpl implements VideotecaManager {
 		return videotecaConverter.convertTo(videotecas);
 	}
 
+	@Override
+	public Boolean checkVideoteca(Long idUsuario, String folder) {
+		
+		ExampleMatcher publicMatcher =  ExampleMatcher.matchingAll().withMatcher("idUsuario",ExampleMatcher.GenericPropertyMatchers.exact()).
+		withMatcher("rutaCarpetaRelativa",ExampleMatcher.GenericPropertyMatchers.exact());
+		
+		User user = new User();
+		user.setId(idUsuario);
+		
+		Videoteca v = new Videoteca();
+		v.setRuta(folder);
+		v.setUsuario(user);
+		
+		Example<Videoteca> example = Example.of(v,publicMatcher);
+		List<Videoteca> list = videotecaRepository.findAll(example);
+		
+		if(Boolean.TRUE.equals(list.isEmpty())) {
+			return Boolean.FALSE;
+		}
+		
+		return Boolean.TRUE;
+	}
+
 }

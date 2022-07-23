@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Form} from "react-bootstrap";
 import {VideotecasFacade} from '../../../../facade/VideotecasFacade';
-import {AlmacenFacade} from '../../../../store/AlmacenFacade';
 import {StringUtil} from '../../../../util/StringUtil';
 import ErrorMessage from '../../../error/ErrorMessage';
 import ComponenteAutenticado from '../autenticacion/ComponenteAutenticado';
@@ -41,34 +40,17 @@ class VideotecaForm extends ComponenteAutenticado {
      */
     handleAceptar(evt) { 
         evt.preventDefault();
-        let user = AlmacenFacade.getUser();
-
-        VideotecasFacade.comprobarRutaExistenciaVideoteca(this.carpeta.current.value,user.id)
+        
+        VideotecasFacade.comprobarRutaExistenciaVideoteca(this.carpeta.current.value)
         .then(resultado =>{
-            switch(resultado.status) {
-                case 0: {
-                    // Se procede a dar de alta la videoteca
-                    this.guardarVideoteca();
-                    break;
-                }
-                case 1: {
-                    this.mostrarMensajeError("La carpeta ya existe en disco y está asociada a otra videoteca. Prueba con otro nombre e intentelo de nuevo");
-                    break;
-                }
+            console.log("resu = " + JSON.stringify(resultado));
 
-                case 2: {
-                    this.mostrarMensajeError("Se ha producido un error al comprobar la existencia de la carpeta");
-                    break;
-                }
-
-                case 3: {
-                    this.guardarVideoteca();
-                    break;
-                }
-                default: {
-                    this.mostrarMensajeError("Se ha producido un error al guardar la videoteca. Intentelo de nuevo");
-                    break;
-                }
+            console.log("status = " + resultado.status);
+            if(resultado.status === "OK" && resultado.data===false) {  
+                console.log("palante")
+                this.guardarVideoteca();
+            }else {
+                this.mostrarMensajeError("La carpeta ya existe en disco y está asociada a otra videoteca. Prueba con otro nombre e intentelo de nuevo");
             }
 
         }).catch(err=>{
@@ -82,9 +64,9 @@ class VideotecaForm extends ComponenteAutenticado {
      * Método/Función que se invoca cuando se procede a guardar una videoteca
      */
     guardarVideoteca() {
-        let user = AlmacenFacade.getUser();
+        //let user = AlmacenFacade.getUser();
 
-        VideotecasFacade.save(this.nombre.current.value,this.carpeta.current.value,this.publico.current.checked,user.id)
+        VideotecasFacade.save(this.nombre.current.value,this.carpeta.current.value,this.publico.current.checked)
         .then(resultado=>{
             switch(resultado.status) {
                 case 0: {

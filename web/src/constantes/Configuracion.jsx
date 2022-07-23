@@ -81,13 +81,13 @@ export const VIDEO_API = URL_BACKEND + "/pr_video";
 /**
  * URL para comprobar la existencia de una carpeta asociada a alguna videoteca de un determinado usuario
  */
-export const VIDEOTECA_COMPRUEBA_RUTA = URL_BACKEND + "/pr_videoteca/comprobar/ruta";
+export const VIDEOTECA_CHECK_RUTA = URL_BACKEND + "/private/videoteca/check/";
 
 /**
  * URL para comprobar la existencia de una carpeta asociada a una videoteca de un determinado usuario, pero 
  * que dicha videoteca no tenga como identificador, un determinado idVideoteca
  */
-export const COMPROBAR_RUTA_OTRA_VIDEOTECA_USUARIO = URL_BACKEND + "/pr_videoteca/comprobarRutaOtraVideotecaUsuario";
+export default URL_BACKEND + "/pr_videoteca/comprobarRutaOtraVideotecaUsuario";
 
 
 export const PR_VIDEOS_API = URL_BACKEND  +  "/pr_videos/";

@@ -26,4 +26,13 @@ public interface VideotecaManager {
 	 */
 	List<VideotecaDTO> getVideotecasUsuario(Long id) throws VideotecasNotFoundException;
 	
+	
+	/**
+	 * Comprueba si un determinado usuario ya tiene una videoteca asociada a una determinada carpeta
+	 * @param idUsuario Long
+	 * @param folder String
+	 * @return True si existe y false en caso contrario
+	 */
+	Boolean checkVideoteca(Long idUsuario,String folder);
+	
 }

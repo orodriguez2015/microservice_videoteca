@@ -1,5 +1,9 @@
-import { VIDEOTECAS_PUBLICO_API, VIDEOS_VIDEOTECA_PUBLICO_API, VIDEOTECA_API ,VIDEOTECAS_API, VIDEO_API,VIDEOTECA_GET_API,
-    VIDEOTECA_COMPRUEBA_RUTA,COMPROBAR_RUTA_OTRA_VIDEOTECA_USUARIO,PR_VIDEOS_API,PUBLICAR_VIDEO_API,SUBMIT_VIDEO_API} from '../constantes/Configuracion';
+import {AlmacenFacade} from '../store/AlmacenFacade';
+
+import COMPROBAR_RUTA_OTRA_VIDEOTECA_USUARIO, { VIDEOTECAS_PUBLICO_API, VIDEOS_VIDEOTECA_PUBLICO_API, VIDEOTECA_API ,VIDEOTECAS_API, VIDEO_API,VIDEOTECA_GET_API,
+    VIDEOTECA_CHECK_RUTA,PR_VIDEOS_API,PUBLICAR_VIDEO_API,SUBMIT_VIDEO_API} from '../constantes/Configuracion';
+
+
 
 /**
  * 
@@ -119,7 +123,7 @@ export class VideotecasFacade {
      * @param dVideoteca Id de la videoteca
      * @return Una promesa
      */
-    static save(nombre,carpeta,publico,idUsuario) {
+    static save(nombre,carpeta,publico) {
         let headers =  {
             "Content-Type": "application/json",
             "Access-Control-Request-Headers": "*",
@@ -133,8 +137,8 @@ export class VideotecasFacade {
             body: JSON.stringify({
                 nombre: nombre,
                 carpeta: carpeta,
-                publico: publico,
-                idUsuario: idUsuario
+                publico: publico
+                //idUsuario: idUsuario
             })
         }
 
@@ -338,30 +342,29 @@ export class VideotecasFacade {
 
 
     /**
-     * Se envía una petición al servidor para comprobar si existe una determinaa ruta
-     * @param {String} carpeta : Carpeta a comprobar
-     * @param {Integer} idUsuario: Id del usuario
+     * Se envía una petición al servidor para comprobar si existe una determinado carpeta en disco perteneciente 
+     * a un determinado usuario
+     * La petición a enviar al servidor requiere que el usuario esté autenticado
+     * @param {String} folder : Carpeta a comprobar
      * @return Una promesa
      */
-    static comprobarRutaExistenciaVideoteca(carpeta,idUsuario) {
+    static comprobarRutaExistenciaVideoteca(folder) {
+
         let headers =  {
             "Content-Type": "application/json",
             "Access-Control-Request-Headers": "*",
-            "Access-Control-Request-Method": "*"
+            "Access-Control-Request-Method": "*",
+            "Authorization" : AlmacenFacade.getUser().authenticationToken
         }
 
         var opciones = {
-            method: 'POST',
+            method: 'GET',
             mode: 'cors',
-            headers: headers,
-            body: JSON.stringify({
-                idUsuario: idUsuario,
-                carpeta: carpeta
-            })
+            headers: headers
         };
 
         return new Promise((resolver, rechazar) => {
-            fetch(VIDEOTECA_COMPRUEBA_RUTA ,opciones)
+            fetch(VIDEOTECA_CHECK_RUTA + AlmacenFacade.getUser().id + "/" + folder ,opciones)
             .then((response) => {
                 return response.json()
             })

@@ -57,12 +57,12 @@ public class VideotecasController {
 	
 	
 	/**
-	 * Recupera los videotecas de un determinado usuario desde la parte administrativa del sistema
+	 * Comprueba si existe una carpeta en disco con un determinado nombre y que pertenezca a un determinado usuario
 	 * @param id Id del usuario propietario de las videotecas
 	 * @return ResponseEntity<?>
 	 * @throws VideotecasNotFoundException si no hay videotecas
 	 */
-	@GetMapping(value="/private/videotecas/{id}")
+	@GetMapping(value="/private/videoteca/check/{idUsuario}/{folder}")
 	@ApiOperation(value="Recupera las videotecas de un determinado usuario",notes="Provee un mecanismo para recuperar los videotecas de un determinado usuario")
 	@ApiResponses(value={
 		@ApiResponse(code=200,message="OK",response=VideotecaDTO.class),
@@ -71,15 +71,21 @@ public class VideotecasController {
 		@ApiResponse(code=404,message="Not Found",response=ResponseError.class),
 		@ApiResponse(code=500,message="Internal Server Error",response=ResponseError.class)
 	})
-	public ResponseEntity<?> getVideotecasUsuario(@PathVariable Long id) throws VideotecasNotFoundException {
-		List<VideotecaDTO> videotecas = videotecaManager.getVideotecasUsuario(id);
+	public ResponseEntity<?> comprobarRutaVideoteca(@PathVariable Long idUsuario,@PathVariable String folder) throws VideotecasNotFoundException {
 		
-		ResponseOperation<List<VideotecaDTO>> respuesta = new ResponseOperation<List<VideotecaDTO>>();
+		Boolean exito =Boolean.FALSE;
+		if(videotecaManager.checkVideoteca(idUsuario, folder)) {
+			// Existe una videoteca del usuario con el mismo nombre de carpeta
+			exito =Boolean.TRUE;
+		}
+		
+		ResponseOperation<Boolean> respuesta = new ResponseOperation<>();
 		respuesta.setStatus(HttpStatus.OK);
-		respuesta.setData(videotecas);
-		
+		respuesta.setData(exito);
 		return ResponseEntity.status(HttpStatus.OK).body(respuesta);
 	}
+	
+	
 	
 	
 	
