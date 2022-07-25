@@ -33,15 +33,6 @@ public class Videoteca {
     @Column(nullable = false,name = "nombre")
     private String nombre;
     
-    @Column(nullable = false,name = "ruta")
-    private String ruta;
-    
-    @Column(nullable = false,name = "ruta_completa")
-    private String rutaCompleta;
-    
-    @Column(nullable = false,name = "ruta_carpeta_relativa")
-    private String rutaCarpetaRelativa;
-    
     @Column(nullable = false,name = "publico")
     private Boolean publico;
         

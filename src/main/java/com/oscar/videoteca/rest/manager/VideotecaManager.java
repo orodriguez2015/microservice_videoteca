@@ -2,6 +2,7 @@ package com.oscar.videoteca.rest.manager;
 
 import java.util.List;
 
+import com.oscar.videoteca.rest.dto.CreateVideotecaDTO;
 import com.oscar.videoteca.rest.dto.VideotecaDTO;
 import com.oscar.videoteca.rest.exception.VideotecasNotFoundException;
 
@@ -34,5 +35,12 @@ public interface VideotecaManager {
 	 * @return True si existe y false en caso contrario
 	 */
 	Boolean checkVideoteca(Long idUsuario,String folder);
+	
+	/**
+	 * Persiste una nueva videoteca en BBDD
+	 * @param create CreateVideotecaDTO
+	 * @return VideotecaDTO creada
+	 */
+	VideotecaDTO save(CreateVideotecaDTO create);
 	
 }

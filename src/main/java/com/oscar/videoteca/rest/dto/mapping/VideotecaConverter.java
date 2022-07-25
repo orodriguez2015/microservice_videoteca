@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.oscar.videoteca.rest.dto.CreateVideotecaDTO;
 import com.oscar.videoteca.rest.dto.VideotecaDTO;
 import com.oscar.videoteca.rest.model.entity.Videoteca;
 
@@ -32,6 +33,16 @@ public class VideotecaConverter {
 	 */
 	public VideotecaDTO convertTo(Videoteca videoteca) {
 		return modelMapper.map(videoteca,VideotecaDTO.class);
+	}
+	
+	
+	/**
+	 * Convierte un objeto de tipo CreateVideotecaDTO a Videoteca
+	 * @param create
+	 * @return
+	 */
+	public Videoteca convertTo(CreateVideotecaDTO create) {
+		return modelMapper.map(create,Videoteca.class);
 	}
 	
 	

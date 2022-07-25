@@ -268,6 +268,26 @@ public class FileUtil {
 	}
 	
 	
+	/**
+	 * Devuelve la ruta completa en la que se almacena en disco los vídeos de una determinada videoteca
+	 * @param idUsuario Id del usuario
+	 * @param idVideoteca Id de la videoteca 
+	 * @return Strig
+	 */
+	public String getBackupVideoFolder(Long idUsuario,Long idVideoteca) {
+		StringBuilder path = new StringBuilder();
+		path.append(backupConfiguration.getVideo());
+		path.append(File.separatorChar);
+		path.append(idUsuario);
+		path.append(File.separatorChar);
+		path.append(idUsuario);
+		path.append(File.separatorChar);
+		path.append(idVideoteca);
+		
+		return path.toString();	
+	}
+		
+	
 	
 	/**
 	 * Clase PhotoSize

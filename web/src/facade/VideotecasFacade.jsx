@@ -1,7 +1,9 @@
 import {AlmacenFacade} from '../store/AlmacenFacade';
 
-import COMPROBAR_RUTA_OTRA_VIDEOTECA_USUARIO, { VIDEOTECAS_PUBLICO_API, VIDEOS_VIDEOTECA_PUBLICO_API, VIDEOTECA_API ,VIDEOTECAS_API, VIDEO_API,VIDEOTECA_GET_API,
-    VIDEOTECA_CHECK_RUTA,PR_VIDEOS_API,PUBLICAR_VIDEO_API,SUBMIT_VIDEO_API} from '../constantes/Configuracion';
+import COMPROBAR_RUTA_OTRA_VIDEOTECA_USUARIO, { VIDEOTECAS_PUBLICO_API, VIDEOS_VIDEOTECA_PUBLICO_API ,VIDEOTECAS_API, VIDEO_API,VIDEOTECA_GET_API,
+    PR_VIDEOS_API,PUBLICAR_VIDEO_API,SUBMIT_VIDEO_API} from '../constantes/Configuracion';
+
+
 
 
 
@@ -123,11 +125,12 @@ export class VideotecasFacade {
      * @param dVideoteca Id de la videoteca
      * @return Una promesa
      */
-    static save(nombre,carpeta,publico) {
+    static save(nombre,publico) {
         let headers =  {
             "Content-Type": "application/json",
             "Access-Control-Request-Headers": "*",
-            "Access-Control-Request-Method": "*"
+            "Access-Control-Request-Method": "*",
+            "Authorization" : AlmacenFacade.getUser().authenticationToken
         }
 
         var opciones = {
@@ -136,14 +139,13 @@ export class VideotecasFacade {
             headers: headers,
             body: JSON.stringify({
                 nombre: nombre,
-                carpeta: carpeta,
-                publico: publico
-                //idUsuario: idUsuario
+                publico: publico,
+                idUsuario: AlmacenFacade.getUser().id
             })
         }
 
         return new Promise((resolver, rechazar) => {
-            fetch(VIDEOTECA_API,opciones)
+            fetch(VIDEOTECAS_API,opciones)
             .then((response) => {
                 return response.json();
             })
@@ -184,7 +186,7 @@ export class VideotecasFacade {
         }
 
         return new Promise((resolver, rechazar) => {
-            fetch(VIDEOTECA_API + "/" + idVideoteca,opciones)
+            fetch(VIDEOTECAS_API + "/" + idVideoteca,opciones)
             .then((response) => {
                 return response.json();
             })
@@ -208,20 +210,18 @@ export class VideotecasFacade {
         let headers =  {
             "Content-Type": "application/json",
             "Access-Control-Request-Headers": "*",
-            "Access-Control-Request-Method": "*"
+            "Access-Control-Request-Method": "*",
+            "Authorization" : AlmacenFacade.getUser().authenticationToken
         }
 
         var opciones = {
-            method: 'POST',
+            method: 'GET',
             mode: 'cors',
-            body: JSON.stringify({
-                idUsuario: idUsuario
-            }),
             headers: headers
         }
 
         return new Promise((resolver, rechazar) => {
-            fetch(VIDEOTECAS_API,opciones)
+            fetch(VIDEOTECAS_API + "/" + AlmacenFacade.getUser().id,opciones)
             .then((response) => {
                 return response.json();
             })
@@ -259,7 +259,7 @@ export class VideotecasFacade {
         };
 
         return new Promise((resolver, rechazar) => {
-            fetch(VIDEOTECA_API +  "/" + idVideoteca,opciones)
+            fetch(VIDEOTECAS_API +  "/" + idVideoteca,opciones)
             .then((response) => {
                 return response.json()
             })
@@ -341,42 +341,7 @@ export class VideotecasFacade {
     }
 
 
-    /**
-     * Se envía una petición al servidor para comprobar si existe una determinado carpeta en disco perteneciente 
-     * a un determinado usuario
-     * La petición a enviar al servidor requiere que el usuario esté autenticado
-     * @param {String} folder : Carpeta a comprobar
-     * @return Una promesa
-     */
-    static comprobarRutaExistenciaVideoteca(folder) {
-
-        let headers =  {
-            "Content-Type": "application/json",
-            "Access-Control-Request-Headers": "*",
-            "Access-Control-Request-Method": "*",
-            "Authorization" : AlmacenFacade.getUser().authenticationToken
-        }
-
-        var opciones = {
-            method: 'GET',
-            mode: 'cors',
-            headers: headers
-        };
-
-        return new Promise((resolver, rechazar) => {
-            fetch(VIDEOTECA_CHECK_RUTA + AlmacenFacade.getUser().id + "/" + folder ,opciones)
-            .then((response) => {
-                return response.json()
-            })
-            .then((recurso) => { 
-                resolver(recurso);
-            }).catch(err=>{ 
-                rechazar(err);
-            });
-        }); 
-    }
-
-
+   
     /**
      * Se envía una petición al servidor para comprobar si existe alguna videoteca de un usuario con dicha ruta, pero
      * a su vez, que la vidoeteca no tenga una determinada idVideoteca

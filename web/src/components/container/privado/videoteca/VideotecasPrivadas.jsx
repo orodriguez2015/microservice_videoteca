@@ -6,6 +6,8 @@ import {AlmacenFacade} from '../../../../store/AlmacenFacade';
 import {VideotecasFacade} from '../../../../facade/VideotecasFacade';
 import ComponenteAutenticado from '../autenticacion/ComponenteAutenticado';
 import ModalConfirmation from '../../../modal/ModalConfirmation';
+import {HTTP_OK} from '../../../../constantes/HttpResponse';
+
 
 /**
  * Componente que genera un listado con las videotecas de un determinado usuario
@@ -36,27 +38,21 @@ class VideotecasPrivadas extends ComponenteAutenticado {
         if(user!==undefined) {        
             VideotecasFacade.getVideosUsuario(user.id).then(resultado=>{
                 if(resultado!==undefined && resultado!==null) {
-                    switch(resultado.status) {
-                        case 0: {
-                            this.setState({
-                                videotecas: resultado.videos,
-                                error: false,
-                                descError: ''
-                            });
-                            break;
-                        }
-                        case 1: {
-                            this.setState({
-                                albumes: [],
-                                error: true,
-                                descError: "Se ha producido un error al recuperar sus videotecas"
-                            });
-                            break;
-                        }
 
-                        default: {
-                            break;
-                        }
+                    if(resultado.codStatus===HTTP_OK) {
+                        this.setState({
+                            videotecas: resultado.data,
+                            error: false,
+                            descError: ''
+                        });
+                    } else {
+                        this.setState({
+                            albumes: [],
+                            error: true,
+                            descError: "Se ha producido un error al recuperar sus videotecas"
+                        });
+                    
+
                     }
                 }
                 
@@ -155,7 +151,7 @@ class VideotecasPrivadas extends ComponenteAutenticado {
                     <tbody>
 
                     {this.state.videotecas.map((value, index) => {
-                        let publico = (value.publico===1)?'SI':'NO';
+                        let publico = (value.publico===true)?'SI':'NO';
                          return (
                             <tr key={value.id}>
                                 <td><a className="visorMultimedia" href={"/pr_videoteca/" + value.id}>{value.id}</a></td>

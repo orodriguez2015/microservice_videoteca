@@ -6,6 +6,8 @@ export const URL_BACKEND = "http://localhost:8080/videoteca";
 /** URL para mostrar los recursos en forma de imágenes */
 export const URL_BACKEND_IMAGES = URL_BACKEND + "/images";
 
+
+
 /*
  * POST /login: URL a la que se envía una petición por POST para comprobar si un usuario está autenticado
  */
@@ -57,10 +59,6 @@ export const ALBUMES_USUARIO_ADMIN_API = URL_BACKEND +  "/pr_albumes";
  */
 export const ALBUM_ADMIN_API = URL_BACKEND +  "/pr_album/";
 
-/**
- * URL utilizada para persistir, actualizar o eliminar una videoteca de la BBDD
- */
-export const VIDEOTECA_API = URL_BACKEND + "/pr_videoteca";
 
 /**
  * URL utilizada para recuperar una videoteca determinada de un determinado usuario
@@ -70,7 +68,7 @@ export const VIDEOTECA_GET_API = URL_BACKEND + "/pr_videoteca/usuario";
 /**
  * URL utilizada para recuperar las videotecas de un usuario
  */
-export const VIDEOTECAS_API = URL_BACKEND + "/pr_videotecas";
+export const VIDEOTECAS_API = URL_BACKEND + "/private/videotecas";
 
 
 /**
