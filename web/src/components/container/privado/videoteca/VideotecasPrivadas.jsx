@@ -154,10 +154,10 @@ class VideotecasPrivadas extends ComponenteAutenticado {
                         let publico = (value.publico===true)?'SI':'NO';
                          return (
                             <tr key={value.id}>
-                                <td><a className="visorMultimedia" href={"/pr_videoteca/" + value.id}>{value.id}</a></td>
-                                <td><a className="visorMultimedia" href={"/pr_videoteca/" + value.id}>{value.nombre}</a> </td>
-                                <td><a className="visorMultimedia" href={"/pr_videoteca/" + value.id}>{publico}</a></td>
-                                <td><a className="visorMultimedia" href={"/pr_videoteca/" + value.id}>{value.fechaAlta}</a></td>
+                                <td><a className="visorMultimedia" href={"/pr_videoteca/edit/" + value.id}>{value.id}</a></td>
+                                <td><a className="visorMultimedia" href={"/pr_videoteca/edit/" + value.id}>{value.nombre}</a> </td>
+                                <td><a className="visorMultimedia" href={"/pr_videoteca/edit/" + value.id}>{publico}</a></td>
+                                <td><a className="visorMultimedia" href={"/pr_videoteca/edit/" + value.id}>{value.fechaAlta}</a></td>
                                 <td>                                    
                                     <img src="/images/pencil2.png" width="22" onClick={()=>this.handleEditarVideoteca(value.id)} alt="Editar videoteca" title="Editar videoteca"/>
                                     &nbsp;
