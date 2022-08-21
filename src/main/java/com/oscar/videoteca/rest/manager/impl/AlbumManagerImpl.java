@@ -27,7 +27,7 @@ import com.oscar.videoteca.rest.model.entity.Photo;
 import com.oscar.videoteca.rest.model.entity.User;
 import com.oscar.videoteca.rest.model.repository.AlbumRepository;
 import com.oscar.videoteca.rest.util.FileUtil;
-import com.oscar.videoteca.rest.util.PhotoVisibilityEnum;
+import com.oscar.videoteca.rest.util.ResourceVisibilityEnum;
 
 /**
  * Implementación de AlbumManager
@@ -167,7 +167,7 @@ public class AlbumManagerImpl implements AlbumManager {
 
 
 	@Override
-	public AlbumDTO getAlbum(Long idAlbum, Long idUsuario,PhotoVisibilityEnum visibility) throws AlbumNotFoundException, ErrorGetPhotosAlbumException {
+	public AlbumDTO getAlbum(Long idAlbum, Long idUsuario,ResourceVisibilityEnum visibility) throws AlbumNotFoundException, ErrorGetPhotosAlbumException {
 		AlbumDTO album = null;
 		ExampleMatcher publicMatcher = ExampleMatcher.matchingAll()
 				  .withMatcher("id",ExampleMatcher.GenericPropertyMatchers.exact());

@@ -1,6 +1,7 @@
 package com.oscar.videoteca.rest.manager.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,17 +10,20 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import com.oscar.videoteca.rest.config.BackupConfiguration;
+import com.oscar.videoteca.rest.dto.AlbumDTO;
 import com.oscar.videoteca.rest.dto.CreateVideotecaDTO;
 import com.oscar.videoteca.rest.dto.VideotecaDTO;
 import com.oscar.videoteca.rest.dto.mapping.VideotecaConverter;
+import com.oscar.videoteca.rest.exception.AlbumNotFoundException;
+import com.oscar.videoteca.rest.exception.VideotecaNotFoundException;
 import com.oscar.videoteca.rest.exception.VideotecasNotFoundException;
 import com.oscar.videoteca.rest.manager.VideotecaManager;
+import com.oscar.videoteca.rest.model.entity.Album;
 import com.oscar.videoteca.rest.model.entity.User;
 import com.oscar.videoteca.rest.model.entity.Videoteca;
 import com.oscar.videoteca.rest.model.repository.VideotecaRepository;
 import com.oscar.videoteca.rest.util.FileUtil;
-
-import ch.qos.logback.core.pattern.Converter;
+import com.oscar.videoteca.rest.util.ResourceVisibilityEnum;
 
 /**
  * Clase VideotecaManagerImpl
@@ -89,7 +93,7 @@ public class VideotecaManagerImpl implements VideotecaManager {
 		
 		Example<Videoteca> example = Example.of(v,publicMatcher);
 		List<Videoteca> list = videotecaRepository.findAll(example);
-		
+				
 		if(Boolean.TRUE.equals(list.isEmpty())) {
 			return Boolean.FALSE;
 		}
@@ -109,6 +113,44 @@ public class VideotecaManagerImpl implements VideotecaManager {
 		
 		videoteca = videotecaRepository.saveAndFlush(videoteca);
 		return videotecaConverter.convertTo(videoteca);		
+	}
+
+	@Override
+	public VideotecaDTO getVideoteca(Long id,Long idUsuario,ResourceVisibilityEnum visibility) throws VideotecaNotFoundException {
+		ExampleMatcher publicMatcher = ExampleMatcher.matchingAll()
+			      .withMatcher("id", ExampleMatcher.GenericPropertyMatchers.exact())
+			      .withMatcher("idUsuario", ExampleMatcher.GenericPropertyMatchers.exact());	  
+			
+		Videoteca v = new Videoteca();
+		v.setId(id);	
+		
+		Example<Videoteca> example = Example.of(v, publicMatcher);		
+		
+		Optional<Videoteca> opt = videotecaRepository.findOne(example);
+		if(Boolean.TRUE.equals(opt.isEmpty())) {
+			throw new VideotecaNotFoundException("No existe la videoteca");
+		} else 	
+		if(!visibility.equals(ResourceVisibilityEnum.NONE)) {
+			// Si se recuperan los vídeos
+		}
+		
+		return videotecaConverter.convertTo(opt.get());
+	}
+
+	@Override
+	public VideotecaDTO update(CreateVideotecaDTO update) throws VideotecaNotFoundException {
+		Optional<Videoteca> opt = videotecaRepository.findById(update.getId());
+		VideotecaDTO nuevo = null;
+		if(Boolean.FALSE.equals(opt.isPresent())) {
+			throw new VideotecaNotFoundException("No existe la videoteca que se pretende editar");
+		} else {
+			Videoteca original = opt.get();
+			original.setNombre(update.getNombre());
+			original.setPublico(update.getPublico());
+			nuevo = videotecaConverter.convertTo(videotecaRepository.saveAndFlush(original));
+			
+		}
+		return nuevo;
 	}
 
 }

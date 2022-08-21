@@ -7,7 +7,7 @@ import com.oscar.videoteca.rest.dto.CreateAlbumDTO;
 import com.oscar.videoteca.rest.exception.AlbumNotFoundException;
 import com.oscar.videoteca.rest.exception.AlbumesNotFoundException;
 import com.oscar.videoteca.rest.exception.ErrorDeleteAlbumException;
-import com.oscar.videoteca.rest.util.PhotoVisibilityEnum;
+import com.oscar.videoteca.rest.util.ResourceVisibilityEnum;
 
 /**
  * Interface AlbumManager
@@ -40,7 +40,7 @@ public interface AlbumManager {
 	 * @return AlbumDTO
 	 * @throws AlbumNotFoundException si no se ha podido recuperar el álbum
 	 */
-	AlbumDTO getAlbum(Long idAlbum,Long idUsuario,PhotoVisibilityEnum visibility) throws AlbumNotFoundException;
+	AlbumDTO getAlbum(Long idAlbum,Long idUsuario,ResourceVisibilityEnum visibility) throws AlbumNotFoundException;
 	
 	
 	/**

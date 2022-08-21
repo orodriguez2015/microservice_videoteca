@@ -12,7 +12,7 @@ import com.oscar.videoteca.rest.exception.PhotoNotFoundException;
 import com.oscar.videoteca.rest.exception.SaveFileException;
 import com.oscar.videoteca.rest.exception.SavePhotoException;
 import com.oscar.videoteca.rest.model.entity.Photo;
-import com.oscar.videoteca.rest.util.PhotoVisibilityEnum;
+import com.oscar.videoteca.rest.util.ResourceVisibilityEnum;
 
 /**
  * Manager PhotoManager
@@ -77,7 +77,7 @@ public interface PhotoManager {
 	 * @return List<Photo>
 	 * @throws PhotoNotFoundException si ocurre algún error
 	 */
-	List<Photo> getPhotos(Long idAlbum,PhotoVisibilityEnum visibility) throws PhotoNotFoundException; 
+	List<Photo> getPhotos(Long idAlbum,ResourceVisibilityEnum visibility) throws PhotoNotFoundException; 
 	
 	/**
 	 * Incrementa el contador de visualización de una fotografía

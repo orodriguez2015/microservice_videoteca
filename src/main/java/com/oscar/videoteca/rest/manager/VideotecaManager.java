@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.oscar.videoteca.rest.dto.CreateVideotecaDTO;
 import com.oscar.videoteca.rest.dto.VideotecaDTO;
+import com.oscar.videoteca.rest.exception.VideotecaNotFoundException;
 import com.oscar.videoteca.rest.exception.VideotecasNotFoundException;
+import com.oscar.videoteca.rest.util.ResourceVisibilityEnum;
 
 /**
  * VideotecaManager
@@ -27,6 +29,15 @@ public interface VideotecaManager {
 	 */
 	List<VideotecaDTO> getVideotecasUsuario(Long id) throws VideotecasNotFoundException;
 	
+	/**
+	 * Recupera una videoteca determinada
+	 * @param id Id de la videoteca
+	 * @param idUsuario Id del usuario
+	 * @param visibility ResourceVisibilityEnum que hace referencia a si se recupera los vídeos públicos, privados, todos o bien ninguno
+	 * @return VideotecaDTO
+	 * @throws VideotecaNotFoundException si ocurre algún error
+	 */
+	VideotecaDTO getVideoteca(Long id,Long idUsuario,ResourceVisibilityEnum visibility) throws VideotecaNotFoundException;
 	
 	/**
 	 * Comprueba si un determinado usuario ya tiene una videoteca asociada a una determinada carpeta
@@ -42,5 +53,14 @@ public interface VideotecaManager {
 	 * @return VideotecaDTO creada
 	 */
 	VideotecaDTO save(CreateVideotecaDTO create);
+	
+	
+	/**
+	 * Actualiza una determinada videoteca
+	 * @param update CreateVideotecaDTO
+	 * @return VideotecaDTO
+	 * @throws VideotecaNotFoundException si no se ha podido recuperar la videoteca
+	 */
+	VideotecaDTO update(CreateVideotecaDTO update) throws VideotecaNotFoundException;
 	
 }

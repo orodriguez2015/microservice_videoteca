@@ -20,7 +20,6 @@ class EditarVideoteca extends ComponenteAutenticado {
   constructor(props) {
     super(props)
     this.nombre = React.createRef()
-    this.carpeta = React.createRef()
     this.areaMensajeError = React.createRef()
     this.publico = React.createRef()
     this.idVideoteca = React.createRef()
@@ -31,7 +30,6 @@ class EditarVideoteca extends ComponenteAutenticado {
 
     this.state = {
       nombre: '',
-      carpeta: '',
       error: false,
       descError: '',
     }
@@ -54,15 +52,15 @@ class EditarVideoteca extends ComponenteAutenticado {
         var idVideoteca = this.props.match.params.p_videoteca_id
         // Se recupera el nombre de la videoteca pasada en el estado en la petición de carga del componente
 
+
         if (StringUtil.isNotEmpty(idVideoteca)) {
           VideotecasFacade.getVideoteca(idVideoteca, 1)
             .then((resultado) => {
-              if (resultado.status === 0) {
-                this.idVideoteca.current.value = resultado.videoteca.id
-                this.nombre.current.value = resultado.videoteca.nombre
-                this.carpeta.current.value = resultado.videoteca.ruta
+              if (resultado.codStatus === 200) {
+                this.idVideoteca.current.value = resultado.data.id
+                this.nombre.current.value = resultado.data.nombre
 
-                if (resultado.videoteca.publico === 1) {
+                if (resultado.data.publico === true) {
                   this.publico.current.checked = true
                 }
               } else {
@@ -105,53 +103,8 @@ class EditarVideoteca extends ComponenteAutenticado {
    */
   handleAceptar(evt) {
     evt.preventDefault()
-    let user = AlmacenFacade.getUser()
-
-    VideotecasFacade.comprobarRutaExistenciaOtraVideotecaUsuario(
-      this.carpeta.current.value,
-      this.idVideoteca.current.value,
-      user.id,
-    )
-      .then((resultado) => {
-        switch (resultado.status) {
-          case 0: {
-            // Se procede a editar la videoteca
-            this.editarVideoteca()
-            break
-          }
-          case 1: {
-            this.mostrarMensajeError(
-              'La carpeta ya existe en disco y está asociada a otra videoteca. Prueba con otro nombre e intentelo de nuevo',
-            )
-            break
-          }
-
-          case 2: {
-            this.mostrarMensajeError(
-              'Carpeta e identificador de la videoteca desconocidos en el servidor',
-            )
-            break
-          }
-
-          case 3: {
-            this.mostrarMensajeError(
-              'Se ha producido un error al comprobar la existencia de la carpeta en disco. Intentelo de nuevo',
-            )
-            break
-          }
-          default: {
-            this.mostrarMensajeError(
-              'Se ha producido un error al comprobar la existencia de la carpeta en disco. Intentelo de nuevo',
-            )
-            break
-          }
-        }
-      })
-      .catch((err) => {
-        this.mostrarMensajeError(
-          'Se ha producido un error al comprobar si la carpeta ya existe en disco',
-        )
-      })
+    this.editarVideoteca();
+   
   }
 
   /**
@@ -162,32 +115,21 @@ class EditarVideoteca extends ComponenteAutenticado {
 
     VideotecasFacade.updateVideoteca(
       this.nombre.current.value,
-      this.carpeta.current.value,
       this.publico.current.checked,
-      this.idVideoteca.current.value,
-      user.id,
+      this.idVideoteca.current.value
     )
       .then((resultado) => {
-        switch (resultado.status) {
-          case 0: {
-            // Se redirige a la pantalla de administración de videotecas
-            this.props.history.push('/pr_videotecas')
-            break
-          }
-          case 1: {
-            this.mostrarMensajeError(
-              'Se ha producido un error al editar la videoteca. Intentelo de nuevo',
-            )
-            break
-          }
 
-          default: {
-            this.mostrarMensajeError(
-              'Se ha producido un error al editar la videoteca. Intentelo de nuevo',
-            )
-            break
-          }
-        }
+        if(resultado.codStatus===201) {
+          // Se redirige a la pantalla de administración de videotecas
+          this.props.history.push('/pr_videotecas')
+        } else {
+          this.mostrarMensajeError(
+            'Se ha producido un error al editar la videoteca. Intentelo de nuevo',
+          );
+
+        };
+
       })
       .catch((err) => {
         this.mostrarMensajeError(
@@ -308,28 +250,7 @@ class EditarVideoteca extends ComponenteAutenticado {
                   </div>
                 </Form.Group>
 
-                <Form.Group controlId="formGridPassword">
-                  <div className="form-group">
-                    <label htmlFor="login">
-                      <span id="Descripcion">
-                        Carpeta en disco que contiene los vídeos *
-                      </span>
-                      :
-                    </label>
-                    <div className="col-sm-10">
-                      <input
-                        type="text"
-                        ref={this.carpeta}
-                        className="form-control"
-                        id="carpeta"
-                        name="carpeta"
-                        placeholder="Carpeta"
-                        onChange={this.handleChangeCarpeta}
-                        required="required"
-                      />
-                    </div>
-                  </div>
-                </Form.Group>
+        
 
                 <Form.Group controlId="formBasicCheckbox">
                   <Form.Check

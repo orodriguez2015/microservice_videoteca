@@ -21,7 +21,7 @@ import com.oscar.videoteca.rest.exception.ErrorDeleteAlbumException;
 import com.oscar.videoteca.rest.exception.api.ResponseError;
 import com.oscar.videoteca.rest.exception.api.ResponseOperation;
 import com.oscar.videoteca.rest.manager.AlbumManager;
-import com.oscar.videoteca.rest.util.PhotoVisibilityEnum;
+import com.oscar.videoteca.rest.util.ResourceVisibilityEnum;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -108,7 +108,7 @@ public class AlbumesController {
 	})
 	public ResponseEntity<?> getAlbumUsuario(@PathVariable Long id,@PathVariable Long idUsuario) throws AlbumNotFoundException {
 		
-		AlbumDTO album = manager.getAlbum(id, idUsuario,PhotoVisibilityEnum.ALL_PHOTOS);
+		AlbumDTO album = manager.getAlbum(id, idUsuario,ResourceVisibilityEnum.ALL);
 			
 		ResponseOperation<AlbumDTO> respuesta = new ResponseOperation<AlbumDTO>();
 		respuesta.setStatus(HttpStatus.OK);
@@ -136,7 +136,7 @@ public class AlbumesController {
 	})
 	public ResponseEntity<?> getAlbum(@PathVariable Long idAlbum) throws AlbumNotFoundException {
 		
-		AlbumDTO album = manager.getAlbum(idAlbum,null,PhotoVisibilityEnum.PUBLISHED_PHOTO);
+		AlbumDTO album = manager.getAlbum(idAlbum,null,ResourceVisibilityEnum.PUBLISHED);
 			
 		ResponseOperation<AlbumDTO> respuesta = new ResponseOperation<AlbumDTO>();
 		respuesta.setStatus(HttpStatus.OK);

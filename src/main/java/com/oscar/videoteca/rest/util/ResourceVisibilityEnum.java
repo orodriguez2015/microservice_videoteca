@@ -1,13 +1,13 @@
 package com.oscar.videoteca.rest.util;
 
 /**
- * Enumerado que hace referencia a la visibilidad de una fotografía
+ * Enumerado que hace referencia a la visibilidad de un recursos (fotografía, vídeo, etc...)
  * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez</a>
  *
  */
-public enum PhotoVisibilityEnum {
+public enum ResourceVisibilityEnum {
 	
-	PRIVATE_PHOTO(0),PUBLISHED_PHOTO(1),ALL_PHOTOS(2);
+	PRIVATE(0),PUBLISHED(1),ALL(2),NONE(3);
 	/** Código */
 	private Integer codigo;
 	
@@ -15,7 +15,7 @@ public enum PhotoVisibilityEnum {
 	 * Constructor
 	 * @param codigo Integer
 	 */
-	private PhotoVisibilityEnum(Integer codigo) {
+	private ResourceVisibilityEnum(Integer codigo) {
 		this.codigo = codigo;
 	}
 	

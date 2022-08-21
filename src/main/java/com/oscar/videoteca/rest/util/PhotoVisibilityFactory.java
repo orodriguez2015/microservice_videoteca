@@ -9,11 +9,11 @@ public class PhotoVisibilityFactory {
 	 * @param photo Photo
 	 * @param visibility PhotoVisibilityEnum
 	 */
-	public static void establishVisibilityPhotography(Photo photo,PhotoVisibilityEnum visibility) {
-		if(visibility.equals(PhotoVisibilityEnum.PUBLISHED_PHOTO)) {
+	public static void establishVisibilityPhotography(Photo photo,ResourceVisibilityEnum visibility) {
+		if(visibility.equals(ResourceVisibilityEnum.PUBLISHED)) {
 			photo.setPublico(Boolean.TRUE);
 		}else
-		if(visibility.equals(PhotoVisibilityEnum.PRIVATE_PHOTO)) {
+		if(visibility.equals(ResourceVisibilityEnum.PRIVATE)) {
 			photo.setPublico(Boolean.FALSE);
 		}
 	}

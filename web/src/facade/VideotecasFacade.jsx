@@ -1,6 +1,6 @@
 import {AlmacenFacade} from '../store/AlmacenFacade';
 
-import COMPROBAR_RUTA_OTRA_VIDEOTECA_USUARIO, { VIDEOTECAS_PUBLICO_API, VIDEOS_VIDEOTECA_PUBLICO_API ,VIDEOTECAS_API, VIDEO_API,VIDEOTECA_GET_API,
+import COMPROBAR_RUTA_OTRA_VIDEOTECA_USUARIO, { VIDEOTECAS_PUBLICO_API, VIDEOS_VIDEOTECA_PUBLICO_API ,VIDEOTECAS_API, VIDEO_API,
     PR_VIDEOS_API,PUBLICAR_VIDEO_API,SUBMIT_VIDEO_API} from '../constantes/Configuracion';
 
 
@@ -36,7 +36,6 @@ export class VideotecasFacade {
             mode: 'cors',
             headers: headers
         }
-
 
         return new Promise((resolver, rechazar) => {
             fetch(VIDEOTECAS_PUBLICO_API,opciones)
@@ -165,11 +164,12 @@ export class VideotecasFacade {
      * @param dVideoteca Id de la videoteca
      * @return Una promesa
      */
-    static updateVideoteca(nombre,carpeta,publico,idVideoteca,idUsuario) {
+    static updateVideoteca(nombre,publico,idVideoteca) {
         let headers =  {
             "Content-Type": "application/json",
             "Access-Control-Request-Headers": "*",
-            "Access-Control-Request-Method": "*"
+            "Access-Control-Request-Method": "*",
+            "Authorization" : AlmacenFacade.getUser().authenticationToken
         }
 
         var opciones = {
@@ -178,10 +178,9 @@ export class VideotecasFacade {
             headers: headers,
             body: JSON.stringify({
                 nombre: nombre,
-                carpeta: carpeta,
                 publico: publico,
-                idUsuario: idUsuario,
-                idVideoteca: idVideoteca
+                idUsuario: AlmacenFacade.getUser().id,
+                id: idVideoteca
             })
         }
 
@@ -278,25 +277,23 @@ export class VideotecasFacade {
      * @param {Integer} idUsuario : Id del usuario propietario de la videoteca
      * @return Una promesa
      */
-    static getVideoteca(idVideoteca,idUsuario) {
+    static getVideoteca(idVideoteca) {
         let headers =  {
             "Content-Type": "application/json",
             "Access-Control-Request-Headers": "*",
-            "Access-Control-Request-Method": "*"
+            "Access-Control-Request-Method": "*",
+            "Authorization" : AlmacenFacade.getUser().authenticationToken
         }
 
         var opciones = {
-            method: 'POST',
+            method: 'GET',
             mode: 'cors',
-            headers: headers,
-            body: JSON.stringify({
-                idUsuario: idUsuario,
-                idVideoteca: idVideoteca
-            })
+            headers: headers
         };
 
+
         return new Promise((resolver, rechazar) => {
-            fetch(VIDEOTECA_GET_API,opciones)
+            fetch(VIDEOTECAS_API + "/" + idVideoteca + "/" + AlmacenFacade.getUser().id,opciones)
             .then((response) => {
                 return response.json()
             })
@@ -342,44 +339,6 @@ export class VideotecasFacade {
 
 
    
-    /**
-     * Se envía una petición al servidor para comprobar si existe alguna videoteca de un usuario con dicha ruta, pero
-     * a su vez, que la vidoeteca no tenga una determinada idVideoteca
-     * @param {String} carpeta : Carpeta a comprobar
-     * @param {Integer} idUsuario: Id del usuario
-     * @return Una promesa
-     */
-    static comprobarRutaExistenciaOtraVideotecaUsuario(carpeta,idVideoteca,idUsuario) {
-        let headers =  {
-            "Content-Type": "application/json",
-            "Access-Control-Request-Headers": "*",
-            "Access-Control-Request-Method": "*"
-        }
-
-        var opciones = {
-            method: 'POST',
-            mode: 'cors',
-            headers: headers,
-            body: JSON.stringify({
-                idUsuario: idUsuario,
-                carpeta: carpeta,
-                idVideoteca: idVideoteca
-            })
-        };
-
-        return new Promise((resolver, rechazar) => {
-            fetch(COMPROBAR_RUTA_OTRA_VIDEOTECA_USUARIO ,opciones)
-            .then((response) => {
-                return response.json()
-            })
-            .then((recurso) => { 
-                resolver(recurso);
-            }).catch(err=>{ 
-                rechazar(err);
-            });
-        }); 
-    }
-
 
     /**
      * Se envía una petición al servidor para publicar o despublicar un vídeo. 

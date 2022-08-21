@@ -133,6 +133,19 @@ public class GlobalControllerAdvice {
 	
 	
 	/**
+	 * Se controla cuando se ha producido un error al recuperar una determinada videoteca
+	 * @param e VideotecaNotFoundException 
+	 * @return ResponseEntity<ResponseError>
+	 */
+	@ExceptionHandler(VideotecaNotFoundException.class)
+	public ResponseEntity<ResponseError> handleVideotecaNotFoundException(VideotecaNotFoundException e) {
+		ResponseError error = new ResponseError(HttpStatus.NOT_FOUND,e.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
+	
+	
+	/**
 	 * Se controla cuando se ha producido un error al persistir una archivo subido al servidor en disco
 	 * @param e SaveFileException
 	 * @return ResponseEntity<ResponseError>

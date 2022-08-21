@@ -24,7 +24,7 @@ import com.oscar.videoteca.rest.model.entity.Photo;
 import com.oscar.videoteca.rest.model.entity.User;
 import com.oscar.videoteca.rest.model.repository.PhotoRepository;
 import com.oscar.videoteca.rest.util.FileUtil;
-import com.oscar.videoteca.rest.util.PhotoVisibilityEnum;
+import com.oscar.videoteca.rest.util.ResourceVisibilityEnum;
 import com.oscar.videoteca.rest.util.PhotoVisibilityFactory;
 
 /**
@@ -206,12 +206,12 @@ public class PhotoManagerImpl implements PhotoManager {
 	}
 
 	@Override
-	public List<Photo> getPhotos(Long idAlbum, PhotoVisibilityEnum visibility) throws PhotoNotFoundException {
+	public List<Photo> getPhotos(Long idAlbum, ResourceVisibilityEnum visibility) throws PhotoNotFoundException {
 		
 		ExampleMatcher photoMatcher = ExampleMatcher.matchingAll()
 			      .withMatcher("idAlbum", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase());
 			      
-		if(!visibility.equals(PhotoVisibilityEnum.ALL_PHOTOS))  {	      
+		if(!visibility.equals(ResourceVisibilityEnum.ALL))  {	      
 			photoMatcher.withMatcher("publico", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase());
 		}
 		
