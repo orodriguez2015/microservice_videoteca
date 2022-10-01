@@ -10,15 +10,13 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import com.oscar.videoteca.rest.config.BackupConfiguration;
-import com.oscar.videoteca.rest.dto.AlbumDTO;
 import com.oscar.videoteca.rest.dto.CreateVideotecaDTO;
 import com.oscar.videoteca.rest.dto.VideotecaDTO;
 import com.oscar.videoteca.rest.dto.mapping.VideotecaConverter;
-import com.oscar.videoteca.rest.exception.AlbumNotFoundException;
+import com.oscar.videoteca.rest.exception.ErrorDeleteVideotecaException;
 import com.oscar.videoteca.rest.exception.VideotecaNotFoundException;
 import com.oscar.videoteca.rest.exception.VideotecasNotFoundException;
 import com.oscar.videoteca.rest.manager.VideotecaManager;
-import com.oscar.videoteca.rest.model.entity.Album;
 import com.oscar.videoteca.rest.model.entity.User;
 import com.oscar.videoteca.rest.model.entity.Videoteca;
 import com.oscar.videoteca.rest.model.repository.VideotecaRepository;
@@ -45,17 +43,12 @@ public class VideotecaManagerImpl implements VideotecaManager {
 	@Autowired
 	private FileUtil fileUtil;
 	
-	
 	@Override
-	public List<VideotecaDTO> getVideotecasPublicas() {
-		
+	public List<VideotecaDTO> getVideotecasPublicas() {		
 		ExampleMatcher publicMatcher = ExampleMatcher.matchingAll()
 			      .withMatcher("publico", ExampleMatcher.GenericPropertyMatchers.exact());	      
-		
-		Videoteca v = new Videoteca();
-		v.setPublico(Boolean.TRUE);
-		
-		Example<Videoteca> example = Example.of(v, publicMatcher);
+			
+		Example<Videoteca> example = Example.of(Videoteca.builder().publico(Boolean.TRUE).build(), publicMatcher);
 		return videotecaConverter.convertTo(videotecaRepository.findAll(example));
 	}
 
@@ -64,11 +57,9 @@ public class VideotecaManagerImpl implements VideotecaManager {
 		
 		ExampleMatcher publicMatcher = ExampleMatcher.matchingAll()
 			      .withMatcher("idUsuario", ExampleMatcher.GenericPropertyMatchers.exact());	      
-		
-		Videoteca v = new Videoteca();
-		User user = new User();
-		user.setId(id);
-		v.setUsuario(user);
+			
+		User user = User.builder().id(id).build();
+		Videoteca v = Videoteca.builder().usuario(user).build();
 		
 		Example<Videoteca> example = Example.of(v, publicMatcher);		
 		List<Videoteca> videotecas = videotecaRepository.findAll(example);
@@ -85,11 +76,8 @@ public class VideotecaManagerImpl implements VideotecaManager {
 		ExampleMatcher publicMatcher =  ExampleMatcher.matchingAll().withMatcher("idUsuario",ExampleMatcher.GenericPropertyMatchers.exact()).
 		withMatcher("rutaCarpetaRelativa",ExampleMatcher.GenericPropertyMatchers.exact());
 		
-		User user = new User();
-		user.setId(idUsuario);
-		
-		Videoteca v = new Videoteca();
-		v.setUsuario(user);
+		User user = User.builder().id(idUsuario).build();
+		Videoteca v = Videoteca.builder().usuario(user).build();
 		
 		Example<Videoteca> example = Example.of(v,publicMatcher);
 		List<Videoteca> list = videotecaRepository.findAll(example);
@@ -121,8 +109,7 @@ public class VideotecaManagerImpl implements VideotecaManager {
 			      .withMatcher("id", ExampleMatcher.GenericPropertyMatchers.exact())
 			      .withMatcher("idUsuario", ExampleMatcher.GenericPropertyMatchers.exact());	  
 			
-		Videoteca v = new Videoteca();
-		v.setId(id);	
+		Videoteca v = Videoteca.builder().id(id).build();
 		
 		Example<Videoteca> example = Example.of(v, publicMatcher);		
 		
@@ -153,4 +140,38 @@ public class VideotecaManagerImpl implements VideotecaManager {
 		return nuevo;
 	}
 
+	
+	@Override
+	public Boolean delete(Long id,Long idUsuario) throws ErrorDeleteVideotecaException {
+		Boolean exito  = Boolean.FALSE;
+		try {
+			ExampleMatcher exampleMatcher = ExampleMatcher.matchingAll()
+				      .withMatcher("id", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase())
+				      .withMatcher("idUsuario", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase());
+	
+			User user = User.builder().id(idUsuario).build();	
+	
+			Videoteca video = Videoteca.builder().id(id).usuario(user).build();
+			
+			Example<Videoteca> example = Example.of(video,exampleMatcher);		
+			Optional<Videoteca> opt = videotecaRepository.findOne(example);
+			
+			if(opt.isPresent()) {					
+				// Se elimina la subcarpeta que contiene las fotos del álbumm
+				//fileUtil.deleteDirectory(new File(fileUtil.getBackupAlbumDirectory(id, idUsuario)));
+				videotecaRepository.delete(opt.get());
+				exito = Boolean.TRUE;				
+			}
+		}catch(Exception e) {
+			throw new ErrorDeleteVideotecaException("Error al eliminar la videoteca",e);
+		}
+		return exito;
+		
+	}
+
+	@Override
+	public Boolean existsById(Long id) {
+		return videotecaRepository.existsById(id);
+	}	
+	
 }

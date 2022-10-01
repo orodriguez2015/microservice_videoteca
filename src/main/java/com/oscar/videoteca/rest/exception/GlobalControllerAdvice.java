@@ -202,6 +202,18 @@ public class GlobalControllerAdvice {
 		ResponseError error = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
 	}
+
+	
+	/**
+	 * Se controla cuando se ha producido un error al eliminar una videoteca
+	 * @param e ErrorDeleteVideotecaException
+	 * @return ResponseEntity<ResponseError>
+	 */
+	@ExceptionHandler(ErrorDeleteVideotecaException.class)
+	public ResponseEntity<ResponseError> handleErrorDeleteVideotecaException(ErrorDeleteVideotecaException e) {
+		ResponseError error = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+	}
 	
 	
 }

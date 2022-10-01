@@ -47,7 +47,7 @@ class VideotecasPrivadas extends ComponenteAutenticado {
                         });
                     } else {
                         this.setState({
-                            albumes: [],
+                            videotecas: [],
                             error: true,
                             descError: "Se ha producido un error al recuperar sus videotecas"
                         });
@@ -91,12 +91,17 @@ class VideotecasPrivadas extends ComponenteAutenticado {
                     
             VideotecasFacade.deleteVideoteca(idVideoteca,user.id)
             .then(resultado=>{
-                if(resultado.status===0) {
+                if(resultado.codStatus===HTTP_OK) {
                     window.location.href="/pr_videotecas";
                 }
 
             }).catch(err=>{
                 console.log("Se ha producido un error al borrar la videoteca");
+                this.setState({
+                    albumes: [],
+                    error: true,
+                    descError: "Se ha producido un error al eliminar la videoteca"
+                });
             });
         }
     }

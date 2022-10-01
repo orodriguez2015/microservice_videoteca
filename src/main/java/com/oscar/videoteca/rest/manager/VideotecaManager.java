@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.oscar.videoteca.rest.dto.CreateVideotecaDTO;
 import com.oscar.videoteca.rest.dto.VideotecaDTO;
+import com.oscar.videoteca.rest.exception.ErrorDeleteVideotecaException;
 import com.oscar.videoteca.rest.exception.VideotecaNotFoundException;
 import com.oscar.videoteca.rest.exception.VideotecasNotFoundException;
 import com.oscar.videoteca.rest.util.ResourceVisibilityEnum;
@@ -62,5 +63,21 @@ public interface VideotecaManager {
 	 * @throws VideotecaNotFoundException si no se ha podido recuperar la videoteca
 	 */
 	VideotecaDTO update(CreateVideotecaDTO update) throws VideotecaNotFoundException;
+	
+	/**
+	 * Borra una videoteca
+	 * @param id Id de la videoteca
+	 * @param idUsuario Id del usuario
+	 * @return Boolean
+	 * @throws ErrorDeleteVideotecaException
+	 */
+	Boolean delete(Long id,Long idUsuario) throws ErrorDeleteVideotecaException; 
+	
+	/**
+	 * Comprueba si existe una videoteca con un determinado id
+	 * @param id Long
+	 * @return Boolean
+	 */
+	Boolean existsById(Long id);
 	
 }

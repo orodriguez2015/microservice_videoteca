@@ -244,21 +244,18 @@ export class VideotecasFacade {
         let headers =  {
             "Content-Type": "application/json",
             "Access-Control-Request-Headers": "*",
-            "Access-Control-Request-Method": "*"
+            "Access-Control-Request-Method": "*",
+            "Authorization" : AlmacenFacade.getUser().authenticationToken
         }
 
         var opciones = {
             method: 'DELETE',
             mode: 'cors',
-            headers: headers,
-            body: JSON.stringify({
-                idUsuario: idUsuario,
-                idVideoteca: idVideoteca
-            })
+            headers: headers
         };
 
         return new Promise((resolver, rechazar) => {
-            fetch(VIDEOTECAS_API +  "/" + idVideoteca,opciones)
+            fetch(VIDEOTECAS_API +  "/" + idVideoteca + "/" + idUsuario,opciones)
             .then((response) => {
                 return response.json()
             })

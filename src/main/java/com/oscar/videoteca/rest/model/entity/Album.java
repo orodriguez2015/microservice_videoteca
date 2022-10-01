@@ -13,7 +13,10 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
@@ -22,7 +25,8 @@ import lombok.Setter;
  * @author oscar
  *
  */
-@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
+@Getter @Setter @Builder
 @Entity
 @Table(name = "album")
 public class Album {

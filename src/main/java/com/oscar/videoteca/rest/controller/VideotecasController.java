@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,10 +13,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.oscar.videoteca.rest.dto.AlbumDTO;
-import com.oscar.videoteca.rest.dto.CreateAlbumDTO;
 import com.oscar.videoteca.rest.dto.CreateVideotecaDTO;
 import com.oscar.videoteca.rest.dto.VideotecaDTO;
+import com.oscar.videoteca.rest.exception.ErrorDeleteVideotecaException;
 import com.oscar.videoteca.rest.exception.VideotecaNotFoundException;
 import com.oscar.videoteca.rest.exception.VideotecasNotFoundException;
 import com.oscar.videoteca.rest.exception.api.ResponseError;
@@ -169,11 +169,42 @@ public class VideotecasController {
 		ResponseOperation<VideotecaDTO> result = new ResponseOperation<VideotecaDTO>();
 		result.setStatus(HttpStatus.CREATED);
 		result.setData(salida);
-		result.setDescStatus("OK");
-				
+		result.setDescStatus("OK");		
 		return ResponseEntity.status(HttpStatus.CREATED).body(result);
 	}
 	
+	
+	
+	/**
+	 * Recupera una determinada videoteca de un determinado usuario para su posible edición 
+	 * @param id Id del usuario
+	 * @return ResponseEntity<?>
+	 */
+	@DeleteMapping(value="/private/videotecas/{idVideoteca}/{idUsuario}")
+	@ApiOperation(value="Recupera una determinada videoteca",notes="Provee un mecanismo para recuperar una determinada videoteca")
+	@ApiResponses(value={
+		@ApiResponse(code=200,message="OK",response=VideotecaDTO.class),
+		@ApiResponse(code=404,message="Not Found",response=ResponseError.class),
+		@ApiResponse(code=500,message="Internal Server Error",response=ResponseError.class)
+	})
+	public ResponseEntity<?> deleteVideoteca(@PathVariable Long idVideoteca,@PathVariable Long idUsuario) throws ErrorDeleteVideotecaException,VideotecaNotFoundException {
+		
+		if(Boolean.FALSE.equals(manager.existsById(idVideoteca))) {
+			throw new VideotecaNotFoundException("La videoteca no existe");
+		}  
+		
+		if(Boolean.TRUE.equals(manager.delete(idVideoteca,idUsuario))){
+			// En api rest al hacer un delete se devuelve un noContent porque una vez borrado
+			// el producto, este no existe en el servidor
+			ResponseOperation<Object> result = new ResponseOperation<>();
+			result.setStatus(HttpStatus.OK);
+			result.setData(null);
+			result.setDescStatus("OK");
+			return ResponseEntity.status(HttpStatus.OK).body(result);
+		} else {
+			throw new ErrorDeleteVideotecaException("Se ha producido un error al eliminar la videoteca");
+		}	
+	}
 	
 	
 	

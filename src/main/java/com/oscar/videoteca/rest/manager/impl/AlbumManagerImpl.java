@@ -78,19 +78,16 @@ public class AlbumManagerImpl implements AlbumManager {
 		ExampleMatcher publicMatcher = ExampleMatcher.matchingAll()
 			      .withMatcher("idUsuarioAlta", ExampleMatcher.GenericPropertyMatchers.exact());	
 		
-		User user = new User();
-		user.setId(idUsuario);
 		
-		Album a = new Album();
-		a.setUsuarioAlta(user);
-		
+		User user = User.builder().id(idUsuario).build();	
+		Album a = Album.builder().usuarioAlta(user).build();
+	
 		Example<Album> example = Example.of(a,publicMatcher);
 		
 		List<Album> albumes = albumRepository.findAll(example);
 		if(albumes==null || albumes.isEmpty()) {
 			throw new AlbumesNotFoundException("No hay álbumes fotográficos para el usuario actual");
 		}
-		
 		return converter.converTo(albumes);
 	}
 
@@ -139,24 +136,17 @@ public class AlbumManagerImpl implements AlbumManager {
 				      .withMatcher("id", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase())
 				      .withMatcher("idUsuarioAlta", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase());
 	
-			Album album = new Album();
-			album.setId(id);
-			
-			User user = new User();
-			user.setId(idUsuario);		
-			album.setUsuarioAlta(user);
-			
-			
+			User user = User.builder().id(idUsuario).build();
+			Album album = Album.builder().id(id).usuarioAlta(user).build();
+		
 			Example<Album> example = Example.of(album,exampleMatcher);		
 			Optional<Album> opt = albumRepository.findOne(example);
 			
-			if(opt.isPresent()) {
-					
+			if(opt.isPresent()) {			
 				// Se elimina la subcarpeta que contiene las fotos del álbumm
 				fileUtil.deleteDirectory(new File(fileUtil.getBackupAlbumDirectory(id, idUsuario)));
 				albumRepository.delete(opt.get());
 				exito = Boolean.TRUE;	
-			
 			}
 		}catch(Exception e) {
 			throw new ErrorDeleteAlbumException("Error al eliminar el álbum",e);
@@ -176,13 +166,9 @@ public class AlbumManagerImpl implements AlbumManager {
 			publicMatcher.withMatcher("idUsuarioAlta", ExampleMatcher.GenericPropertyMatchers.exact());
 		}
 				
-		Album a = new Album();
-		a.setId(idAlbum);
-		
-		if(idUsuario!=null) {
-			User user = new User();
-			user.setId(idUsuario);
-			a.setUsuarioAlta(user);		
+		Album a  = Album.builder().id(idAlbum).build();
+		if(idUsuario!=null) {	
+			a.setUsuarioAlta(User.builder().id(idUsuario).build());		
 		}
 
 		Example<Album> example = Example.of(a,publicMatcher);
