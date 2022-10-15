@@ -6,7 +6,7 @@ import { StringUtil } from '../../../../util/StringUtil'
 import ErrorMessage from '../../../error/ErrorMessage'
 import ComponenteAutenticado from '../autenticacion/ComponenteAutenticado'
 import Breadcrumb from 'react-bootstrap/Breadcrumb'
-
+import {HTTP_OK} from '../../../../constantes/HttpResponse';
 
 /**
  * Componente EditarVideoteca que permite editar una videoteca
@@ -56,7 +56,7 @@ class EditarVideoteca extends ComponenteAutenticado {
         if (StringUtil.isNotEmpty(idVideoteca)) {
           VideotecasFacade.getVideoteca(idVideoteca, 1)
             .then((resultado) => {
-              if (resultado.codStatus === 200) {
+              if (resultado.codStatus === HTTP_OK) {
                 this.idVideoteca.current.value = resultado.data.id
                 this.nombre.current.value = resultado.data.nombre
 

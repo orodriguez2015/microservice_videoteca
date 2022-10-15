@@ -2,17 +2,15 @@ import React from 'react';
 import {AlbumFacade} from '../../../../facade/AlbumFacade';
 import {StringUtil} from '../../../../util/StringUtil';
 import ErrorMessage from '../../../error/ErrorMessage';
-import LightBoxImages from '../../common/LightBoxImages.jsx';
 import {URL_BACKEND_IMAGES} from '../../../../constantes/Configuracion';
 import {ESTADO_PUBLICACION_FOTO,ESTADO_DESPUBLICACION_FOTO} from '../../../../constantes/Constantes';
-//import SimpleReactLightbox from "simple-react-lightbox"; 
-//import { SRLWrapper} from 'simple-react-lightbox'; 
+import SimpleReactLightbox from "simple-react-lightbox"; 
+import { SRLWrapper} from 'simple-react-lightbox'; 
 import ComponenteAutenticado from '../autenticacion/ComponenteAutenticado';
 import ModalConfirmation from '../../../modal/ModalConfirmation';
 import { AlmacenFacade } from '../../../../store/AlmacenFacade';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import ReactDOM from 'react-dom';
-
 
 /**
  * Componente DetalleAlbumPrivado que muestra las fotografías de un determinado álbum.
@@ -37,7 +35,6 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
 
         this.onConfirmEliminarFoto = this.onConfirmEliminarFoto.bind(this);
         this.onConfirmPublicarFoto = this.onConfirmPublicarFoto.bind(this);
-        this.showLightBox = this.showLightBox.bind(this);
         this.areaMensajeError = React.createRef();
     }
 
@@ -248,17 +245,6 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
         this.areaMensajeError.current.innerHTML = "";
     }
 
-
-    /**
-     * Muestra la caja de luz que permite navegar y visualizar las imágene
-     * @param {Array} imageList contiene el array con la localización de las imágenes 
-     */
-    showLightBox(imageList) {
-        //console.log("showLightBox " + JSON.stringify(imageList));
-        ReactDOM.render(<LightBoxImages isOpen={true} images={imageList}/>, document.getElementById('ventanaModal'));
-    }
-
-
     /**
      * Método que renderiza la vista
      */
@@ -270,17 +256,42 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
             );
         } else {
 
-         
+            // const options = {
+            //     settings: {
+            //         overlayColor: "rgb(0, 0, 0.9)",
+            //         showCaption: false,
+            //         buttonsBackgroundColor: "rgba(0, 0, 0, 0.9)",   
+            //         buttonsIconColor: "rgba(219, 219, 219, 0.7)",
+            //         showThumbnails: true,
+            //         showControls: true,
+            //         transitionSpeed: 200,
+            //         transitionTimingFunction: "linear"
+            //     }
+            // };
 
-            let images =  [];
-            
-            this.state.fotos.map((value, index) => {
-                images.push(URL_BACKEND_IMAGES + value.rutaRelativa);
 
-            });
+            const options = {
+                settings: {
+                  autoplaySpeed: 8000,
+                  hideControlsAfter: 3000,
+                  disableKeyboardControls: false,
+                  disableWheelControls: false,
+                  disablePanzoom: true,
+                  lightboxTransitionSpeed: 300,
+                  lightboxTransitionTimingFunction: 'ease',
+                  overlayColor: 'rgba(0, 0, 0, 0.9)',
+                  slideTransitionSpeed: 100,
+                  slideTransitionTimingFunction: 'ease'
+                //   transitionSpeed: 100,
+                //   transitionTimingFunction: "linear"
+                },
 
-            console.log("images = " + JSON.stringify(images));
-
+                thumbnails: {
+                    showThumbnails: false,
+                    thumbnailsOpacity: 0.4,
+                    thumbnailsSize: ['100px', '80px']
+                  }
+            };
 
             return (
                 
@@ -312,12 +323,18 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
                         <div ref={this.areaMensajeError} className="mensajeError"/>
                     </div>
                 
-                  
+                    <SimpleReactLightbox>
+                    <SRLWrapper options={options}>
+
                     <div className="row">
                         {this.state.fotos.map((value, index) => {
                             // Se construye la ruta de la miniatura en el servidor
                         
-                            let imgOriginal  = URL_BACKEND_IMAGES + value.rutaRelativa;
+                            //let imgOriginal  = URL_BACKEND_IMAGES + value.rutaRelativa;
+                            let imgOriginal  = require(URL_BACKEND_IMAGES + value.rutaRelativa);
+
+                            
+                            
 
                             let imagen = value.publico===1?'/images/ojo_abierto.png':'/images/ojo_cerrado.png';
                             let key = value.id + "_publico";
@@ -328,9 +345,9 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
 
 
 
-                                    
-                                    <img src={`${imgOriginal}`} id={`${imgOriginal}`} alt={`${imgOriginal}`} width="200" height="150" onClick={()=>this.showLightBox(images)}/>
-                                                    
+                                    <a href={`${imgOriginal}`} data-attribute="SRL">
+                                        <img src={`${imgOriginal}`} id={`${imgOriginal}`} alt={`${imgOriginal}`} srl_gallery_image='true' width="200" height="150"/>
+                                    </a>                
                                     
                                     <p className="nombreVideoFoto">{value.nombre}</p>                        
                                     <p className="idVideoFoto">{value.descripcion}</p>                                        
@@ -345,7 +362,9 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
                                 </div>
                         })}
                     </div>
-                                       
+                    </SRLWrapper>
+                    </SimpleReactLightbox>
+                    
                 </div>
                 
               );
