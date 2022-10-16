@@ -14,12 +14,23 @@ class LightBoxImages extends React.Component {
         super(props);
 
         this.state = {
-            photoIndex: 0,
-            isOpen: this.props.isOpen,
+            photoIndex: this.props.photoIndex,
             images:this.props.images
         };
 
         this.onCloseLightBox = this.onCloseLightBox.bind(this);
+        this.onCallbackImageLoad = this.onCallbackImageLoad.bind(this);
+    }
+
+
+    /**
+     * Callback que 
+     * @param {int} photoIndex 
+     */
+    onCallbackImageLoad(index) {
+        if(typeof(this.props.callbackOnImageLoad)==="function") {
+            this.props.callbackOnImageLoad(index);
+        }
     }
 
     onCloseLightBox() {
@@ -36,29 +47,33 @@ class LightBoxImages extends React.Component {
 
 
     render() {
-        const { photoIndex, isOpen } = this.state;
-        console.log("LightBoxImages render isOpen: " + this.state.isOpen);
-        console.log("LightBoxImages render photoIndex: " + JSON.stringify(this.state.photoIndex));
-
+        const { photoIndex, images } = this.state;
+        
         return (
             <div>
             
                 {(
                 <Lightbox
-                    mainSrc={this.state.images[photoIndex]}
-                    nextSrc={this.state.images[(photoIndex + 1) % this.state.images.length]}
-                    prevSrc={this.state.images[(photoIndex + this.state.images.length - 1) % this.state.images.length]}
+                    mainSrc={images[photoIndex]}
+                    nextSrc={images[(photoIndex + 1) % images.length]}
+                    prevSrc={images[(photoIndex + images.length - 1) % images.length]}
                     onCloseRequest={() => this.onCloseLightBox()}
                     onMovePrevRequest={() =>
                     this.setState({
-                        photoIndex: (photoIndex + this.state.images.length - 1) % this.state.images.length,
+                        photoIndex: (photoIndex + images.length - 1) % images.length,
                     })
                     }
                     onMoveNextRequest={() =>
                     this.setState({
-                        photoIndex: (photoIndex + 1) % this.state.images.length,
+                        photoIndex: (photoIndex + 1) % images.length,
                     })
                     }
+
+                    onImageLoad={
+                        (imageSrc,srcType,image)=> this.onCallbackImageLoad(photoIndex)
+                    }
+                   
+                   
                 />
                 )}
             </div>

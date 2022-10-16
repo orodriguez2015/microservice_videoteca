@@ -249,13 +249,18 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
     }
 
 
+    callbackOnImageLoad(index) {
+        console.log("callbackOnImageLoad index = " + index);
+    }
+
     /**
      * Muestra la caja de luz que permite navegar y visualizar las imágene
+     * @param {Integer} index Indice de la foto en el array de fotografías
      * @param {Array} imageList contiene el array con la localización de las imágenes 
      */
-    showLightBox(imageList) {
-        //console.log("showLightBox " + JSON.stringify(imageList));
-        ReactDOM.render(<LightBoxImages isOpen={true} images={imageList}/>, document.getElementById('ventanaModal'));
+    showLightBox(index,imageList) {
+        //ReactDOM.render(<LightBoxImages photoIndex={index} images={imageList} callbackOnImageLoad={()=>this.callbackOnImageLoad(index)}/>, document.getElementById('ventanaModal'));
+        ReactDOM.render(<LightBoxImages photoIndex={index} images={imageList} />, document.getElementById('ventanaModal'));
     }
 
 
@@ -270,16 +275,11 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
             );
         } else {
 
-         
-
             let images =  [];
             
             this.state.fotos.map((value, index) => {
                 images.push(URL_BACKEND_IMAGES + value.rutaRelativa);
-
             });
-
-            console.log("images = " + JSON.stringify(images));
 
 
             return (
@@ -324,14 +324,10 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
                             let keyImage = value.id + "_image";
                             
                             return <div key={value.id} className="col-3">
-                    
-
-
-
+    
                                     
-                                    <img src={`${imgOriginal}`} id={`${imgOriginal}`} alt={`${imgOriginal}`} width="200" height="150" onClick={()=>this.showLightBox(images)}/>
-                                                    
-                                    
+                                    <img src={`${imgOriginal}`} id={`${imgOriginal}`} alt={`${imgOriginal}`} width="200" height="150" onClick={()=>this.showLightBox(index,images)}/>
+                                                                                    
                                     <p className="nombreVideoFoto">{value.nombre}</p>                        
                                     <p className="idVideoFoto">{value.descripcion}</p>                                        
                                     <p className="idVideoFoto">ID # {value.id}</p>
