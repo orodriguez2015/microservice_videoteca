@@ -1,11 +1,13 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {AlbumFacade} from '../../../facade/AlbumFacade';
 import {PhotoFacade} from '../../../facade/PhotoFacade';
+import LightBoxImages from '../common/LightBoxImages.jsx';
 import {StringUtil} from '../../../util/StringUtil';
 import ErrorMessage from '../../error/ErrorMessage';
 import {URL_BACKEND_IMAGES} from '../../../constantes/Configuracion';
 import {ELEMENT} from '../../../constantes/Constantes';
-import { SRLWrapper} from 'simple-react-lightbox'; 
+
 
 /**
  * Componente DetalleAlbumPublico que muestra un listado de los álbumes cuyos administradores
@@ -137,6 +139,16 @@ class DetalleAlbumPublico extends React.Component {
         })
     }
 
+
+     /**
+     * Muestra la caja de luz que permite navegar y visualizar las imágene
+     * @param {Integer} index Indice de la foto en el array de fotografías
+     * @param {Array} imageList contiene el array con la localización de las imágenes 
+     */
+      showLightBox(index,imageList) {
+        //ReactDOM.render(<LightBoxImages photoIndex={index} images={imageList} callbackOnImageLoad={()=>this.callbackOnImageLoad(index)}/>, document.getElementById('ventanaModal'));
+        ReactDOM.render(<LightBoxImages photoIndex={index} images={imageList} activatePhotoDisplayCount={true}/>, document.getElementById('ventanaModal'));
+    }
    
 
     /**
@@ -150,25 +162,17 @@ class DetalleAlbumPublico extends React.Component {
             );
         } else {
 
-            const options = {
-                overlayColor: "rgb(0, 0, 0.9)",
-                showCaption: false,
-                buttonsBackgroundColor: "rgba(0, 0, 0, 0.9)",
-                buttonsIconColor: "rgba(219, 219, 219, 0.7)",
-                showThumbnails: true,
-                transitionSpeed: 200,
-                transitionTimingFunction: "linear"
-            };
-
-
-            const callbacks = {
-                onSlideChange: object => this.onHandleDisplayPhoto(object),
-                onLightboxOpened: object => this.onLightboxOpened(object)
-               
-            };
+            let images =  [];
+            
+            this.state.fotos.map((value, index) => {
+                images.push({
+                    id:value.id,
+                    url: URL_BACKEND_IMAGES + value.rutaRelativa
+                });
+            });
 
             return (
-                <SRLWrapper options={options} callbacks={callbacks}>
+               
                 <div className="container">
                     <div className="subtitulo">
                         <h2>Fotografías del álbum {this.state.nombreAlbum}</h2>
@@ -181,10 +185,8 @@ class DetalleAlbumPublico extends React.Component {
                             let imgOriginal  = URL_BACKEND_IMAGES + value.rutaRelativa;
                             
                             return <div key={value.id} className="col-3">
-                
-                                        <a href={`${imgOriginal}`} data-attribute="SRL">
-                                            <img src={`${imgOriginal}`} alt={`${imgOriginal}`} width="200" height="150"/>
-                                        </a>
+                                        <img src={`${imgOriginal}`} id={`${imgOriginal}`} alt={`${imgOriginal}`} width="200" height="150" onClick={()=>this.showLightBox(index,images)}/>
+
                                         <p className="nombreVideoFoto">{value.nombre}</p>                        
                                         <p className="idVideoFoto">{value.descripcion}</p>
                                         <p className="idVideoFoto">ID # {value.id}</p>
@@ -196,7 +198,7 @@ class DetalleAlbumPublico extends React.Component {
                         })}
                     </div>
                 </div>
-                </SRLWrapper>
+                
               );
         }
     }

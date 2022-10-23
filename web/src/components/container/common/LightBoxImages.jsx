@@ -1,5 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {AlbumFacade} from '../../../facade/AlbumFacade';
+import { AlmacenFacade } from '../../../store/AlmacenFacade';
+import {ESTADO_PUBLICACION_FOTO,ESTADO_DESPUBLICACION_FOTO} from '../../../constantes/Constantes';
 import Lightbox from "react-image-lightbox";
 import 'react-image-lightbox/style.css'; 
 
@@ -24,13 +27,16 @@ class LightBoxImages extends React.Component {
 
 
     /**
-     * Callback que 
-     * @param {int} photoIndex 
+     * Se envia petición al servidor
+     * @param {Integer} id 
      */
-    onCallbackImageLoad(index) {
-        if(typeof(this.props.callbackOnImageLoad)==="function") {
-            this.props.callbackOnImageLoad(index);
-        }
+     onCallbackImageLoad(id) {
+        console.log("id = " + id);
+        
+        if(this.props.activatePhotoDisplayCount===true) {
+          
+
+        }         
     }
 
     onCloseLightBox() {
@@ -54,9 +60,9 @@ class LightBoxImages extends React.Component {
             
                 {(
                 <Lightbox
-                    mainSrc={images[photoIndex]}
-                    nextSrc={images[(photoIndex + 1) % images.length]}
-                    prevSrc={images[(photoIndex + images.length - 1) % images.length]}
+                    mainSrc={images[photoIndex].url}
+                    nextSrc={images[(photoIndex + 1) % images.length].url}
+                    prevSrc={images[(photoIndex + images.length - 1) % images.length].url}
                     onCloseRequest={() => this.onCloseLightBox()}
                     onMovePrevRequest={() =>
                     this.setState({
@@ -70,7 +76,7 @@ class LightBoxImages extends React.Component {
                     }
 
                     onImageLoad={
-                        (imageSrc,srcType,image)=> this.onCallbackImageLoad(photoIndex)
+                        (imageSrc,srcType,image)=> this.onCallbackImageLoad(images[photoIndex].id)
                     }
                    
                    

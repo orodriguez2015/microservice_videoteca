@@ -5,14 +5,13 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {store} from './store/Almacen';
 import RouterConfig from './components/router/RouterConfig';
-import SimpleReactLightbox from "simple-react-lightbox";
 
 ReactDOM.render(
     <Provider store={store}>  
-     <SimpleReactLightbox>
+     
         <RouterConfig/>
         <App/>
-      </SimpleReactLightbox>
+     
     </Provider>,
     document.getElementById('root')
   )

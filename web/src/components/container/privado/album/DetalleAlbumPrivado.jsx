@@ -248,19 +248,13 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
         this.areaMensajeError.current.innerHTML = "";
     }
 
-
-    callbackOnImageLoad(index) {
-        console.log("callbackOnImageLoad index = " + index);
-    }
-
     /**
      * Muestra la caja de luz que permite navegar y visualizar las imágene
      * @param {Integer} index Indice de la foto en el array de fotografías
      * @param {Array} imageList contiene el array con la localización de las imágenes 
      */
     showLightBox(index,imageList) {
-        //ReactDOM.render(<LightBoxImages photoIndex={index} images={imageList} callbackOnImageLoad={()=>this.callbackOnImageLoad(index)}/>, document.getElementById('ventanaModal'));
-        ReactDOM.render(<LightBoxImages photoIndex={index} images={imageList} />, document.getElementById('ventanaModal'));
+        ReactDOM.render(<LightBoxImages photoIndex={index} images={imageList} activatePhotoDisplayCount={false}/>, document.getElementById('ventanaModal'));
     }
 
 
@@ -278,7 +272,10 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
             let images =  [];
             
             this.state.fotos.map((value, index) => {
-                images.push(URL_BACKEND_IMAGES + value.rutaRelativa);
+                images.push({
+                    id:value.id,
+                    url: URL_BACKEND_IMAGES + value.rutaRelativa
+                });
             });
 
 
