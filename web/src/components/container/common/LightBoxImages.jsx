@@ -31,10 +31,11 @@ class LightBoxImages extends React.Component {
      * @param {Integer} id 
      */
      onCallbackImageLoad(id) {
-        console.log("id = " + id);
+    
+        console.log("typeof = " + typeof(this.props.onCallbackActivateCounterDisplay));
         
-        if(this.props.activatePhotoDisplayCount===true) {
-          
+        if(typeof(this.props.onCallbackActivateCounterDisplay)==="function") {
+          this.props.onCallbackActivateCounterDisplay(id);
 
         }         
     }

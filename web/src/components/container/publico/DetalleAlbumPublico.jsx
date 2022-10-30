@@ -121,12 +121,21 @@ class DetalleAlbumPublico extends React.Component {
     }
 
 
-    /**
-     * Incrementa el contador de visualizaciones de una fotografía invocando al servidor, y actualiza el número de visualizaciones
-     * en pantalla
-     * @param {Integer} Id de la fotografía
+     /**
+     * Muestra la caja de luz que permite navegar y visualizar las imágene
+     * @param {Integer} index Indice de la foto en el array de fotografías
+     * @param {Array} imageList contiene el array con la localización de las imágenes 
      */
-    increasePhotoDisplayCounter(id) {
+    showLightBox(index,imageList) {
+        ReactDOM.render(<LightBoxImages photoIndex={index} images={imageList} onCallbackActivateCounterDisplay={this.onCallbackActivateCounterDisplay} activatePhotoDisplayCount={true}/>, document.getElementById('ventanaModal'));
+    }
+   
+
+    /**
+     * Callback que se invoca cuando se visualiza una fotografía
+     * @param {int} id 
+     */
+    onCallbackActivateCounterDisplay(id) {
         PhotoFacade.increasePhotoDisplayCounter(id).then(resultado=>{
 
             if(resultado.codStatus===200) {
@@ -140,16 +149,6 @@ class DetalleAlbumPublico extends React.Component {
     }
 
 
-     /**
-     * Muestra la caja de luz que permite navegar y visualizar las imágene
-     * @param {Integer} index Indice de la foto en el array de fotografías
-     * @param {Array} imageList contiene el array con la localización de las imágenes 
-     */
-      showLightBox(index,imageList) {
-        //ReactDOM.render(<LightBoxImages photoIndex={index} images={imageList} callbackOnImageLoad={()=>this.callbackOnImageLoad(index)}/>, document.getElementById('ventanaModal'));
-        ReactDOM.render(<LightBoxImages photoIndex={index} images={imageList} activatePhotoDisplayCount={true}/>, document.getElementById('ventanaModal'));
-    }
-   
 
     /**
      * Método que renderiza la vista
