@@ -6,7 +6,6 @@ import LightBoxImages from '../common/LightBoxImages.jsx';
 import {StringUtil} from '../../../util/StringUtil';
 import ErrorMessage from '../../error/ErrorMessage';
 import {URL_BACKEND_IMAGES} from '../../../constantes/Configuracion';
-import {ELEMENT} from '../../../constantes/Constantes';
 
 
 /**
@@ -99,24 +98,6 @@ class DetalleAlbumPublico extends React.Component {
             let selectedPhotoId = this.state.fotos[object.index].id;
             
             this.increasePhotoDisplayCounter(selectedPhotoId);
-        }
-    }
-
-
-    /**
-     * Función invocada cuando se abre el lightbox seleccionando una fotografía
-     * @param {Object} object 
-     */
-    onLightboxOpened(object) {
-        if(object!==undefined) {
-            
-            // Se obtiene la posición de la foto en la lista de fotos
-            var position = String(object.currentSlide.id);
-            position = position.replace(ELEMENT,'');
-            // Se recupera la foto en base a la posición para recuperar el id de la foto
-            //let selectedPhotoId = this.state.fotos[position].id;
-            this.increasePhotoDisplayCounter(this.state.fotos[position].id);
-           
         }
     }
 

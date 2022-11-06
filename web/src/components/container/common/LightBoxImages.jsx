@@ -1,8 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {AlbumFacade} from '../../../facade/AlbumFacade';
-import { AlmacenFacade } from '../../../store/AlmacenFacade';
-import {ESTADO_PUBLICACION_FOTO,ESTADO_DESPUBLICACION_FOTO} from '../../../constantes/Constantes';
 import Lightbox from "react-image-lightbox";
 import 'react-image-lightbox/style.css'; 
 
@@ -22,24 +19,53 @@ class LightBoxImages extends React.Component {
         };
 
         this.onCloseLightBox = this.onCloseLightBox.bind(this);
-        this.onCallbackImageLoad = this.onCallbackImageLoad.bind(this);
+
+        // Array que contiene los ids de las imágenes que se van visualizando y que se han
+        // pasado por parámetro al LightBox
+        this.seenImages = [];
     }
 
 
     /**
-     * Se envia petición al servidor
-     * @param {Integer} id 
+     * Comprueba si la imagen se encuentre entre las imagenes ya visualizados.
+     * Si ya se ha visualizado, se evita que se incremente el contador de visualizaciones de la foto 
+     * @param {Integer} id Id de la imagen 
+     * @returns {Boolean}
      */
-     onCallbackImageLoad(id) {
-    
-        console.log("typeof = " + typeof(this.props.onCallbackActivateCounterDisplay));
-        
-        if(typeof(this.props.onCallbackActivateCounterDisplay)==="function") {
-          this.props.onCallbackActivateCounterDisplay(id);
-
-        }         
+    isImageHasBeenViewed(id) {
+        var exito = false;
+        if(this.seenImages.includes(id)===true) {
+            exito = true;
+        }
+        return exito;
     }
 
+
+    /**
+     * Inserta la imagen en el array de imágenes ya visualizadas
+     * @param {Integer} Id de la imagen
+     */
+    insertImageViewed(id){
+        this.seenImages.push(id);
+    }
+
+
+    /**
+     * Callback que es llamado cuando Se envia petición al servidor
+     * @param {Integer} Id de la imagen
+     */
+     onCallbackImageLoad(id) {
+
+        if(id!==undefined && this.isImageHasBeenViewed(id)===false && typeof(this.props.onCallbackActivateCounterDisplay)==="function") {
+            // La imagen ha sido seleccionada por el usuario y se añade 
+            this.seenImages.push(id);
+            this.props.onCallbackActivateCounterDisplay(id);
+        }
+    }
+
+    /**
+     * Se ejecuta cuando se cierra el lightbox
+     */
     onCloseLightBox() {
         this.destroyComponent();
     }
@@ -53,6 +79,9 @@ class LightBoxImages extends React.Component {
     }
 
 
+    /**
+     * Renderiza la vista
+     */
     render() {
         const { photoIndex, images } = this.state;
         
@@ -77,7 +106,7 @@ class LightBoxImages extends React.Component {
                     }
 
                     onImageLoad={
-                        (imageSrc,srcType,image)=> this.onCallbackImageLoad(images[photoIndex].id)
+                       (imageSrc,srcType,image)=> this.onCallbackImageLoad(images[photoIndex].id)                       
                     }
                    
                    
