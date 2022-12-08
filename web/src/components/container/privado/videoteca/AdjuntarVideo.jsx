@@ -85,11 +85,11 @@ class AdjuntarVideo extends ComponenteAutenticado {
      * @param {Event} evt 
      */
     onSubmitFile(evt) {
-        const fichero = document.getElementById('fichero').files[0];
+        const fichero = document.getElementById('fichero').files;
 
         this.showProgressBar();
 
-        VideotecasFacade.submitVideo(this.props.match.params.p_videoteca_id,AlmacenFacade.getUser().id,fichero)
+        VideotecasFacade.submitVideo(this.props.match.params.p_videoteca_id,fichero)
         .then(resultado=>{       
             
             this.hideProgressBar();
@@ -210,10 +210,11 @@ class AdjuntarVideo extends ComponenteAutenticado {
                         </div>
                         
                         
-                        <FileList ficheros={this.state.ficheros} mostrar={this.state.mostrarListaFicheros} accion={this.executeOnErrorActionAfterUploadingVideo}/>     
+                        <FileList ficheros={this.state.ficheros} verificacionFormato="video" mostrar={this.state.mostrarListaFicheros} accion={this.executeOnErrorActionAfterUploadingVideo}/>     
 
                         <AreaMensajes mostrar={this.state.mostrarAreaMensajes} mensaje={this.state.mensajeAreaMensajes} tipo={this.state.tipoAreaMensajes}/>
-                        
+
+
                     
                         <div align="right">
                             <Button variant="success" id="botonAceptar" ref={this.botonAceptar} onClick={this.onSubmitFile}>

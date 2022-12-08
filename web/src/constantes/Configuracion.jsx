@@ -104,4 +104,4 @@ export const PUBLICAR_VIDEO_API = URL_BACKEND + "/pr_video/publicar";
 export const PUBLICAR_FOTO_API = URL_BACKEND + "/pr_foto/publicar/"
 
 
-export const SUBMIT_VIDEO_API = URL_BACKEND + "/pr_videoteca/upload";
+export const SUBMIT_VIDEO_API = URL_BACKEND + "/private/video/";

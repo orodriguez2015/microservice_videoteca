@@ -382,19 +382,26 @@ export class VideotecasFacade {
      * Se envía una petición al servidor para publicar o despublicar un vídeo. 
      * La petición la tiene que hacer el usuario propietario del vídeo
      * @param {Integer} idVideoteca: Id de la videoteca
-     * @param {Integer} idUsuario: Id del usuario que ejecuta la operación
-     * @param {File} fichero: Fichero a enviar al servidor
+     * @param {File} ficheros: Fichero a enviar al servidor
      * @return Una promesa
      */
-    static submitVideo(idVideoteca,idUsuario,fichero) {
+    static submitVideo(idVideoteca,ficheros) {
         let headers =  {
             "Access-Control-Request-Headers": "*",
-            "Access-Control-Request-Method": "*"
+            "Access-Control-Request-Method": "*",
+            "Authorization" : AlmacenFacade.getUser().authenticationToken
         }
 
         var formData = new FormData();
-        formData.append("idUsuario",idUsuario);
-        formData.append("fichero",fichero);
+        formData.append("idVideoteca",idVideoteca);
+        formData.append("idUsuario",AlmacenFacade.getUser().id);
+        //formData.append("ficheros",fichero);
+
+        if(ficheros!==undefined) {
+            Object.values(ficheros).forEach(element => {
+                formData.append("ficheros",element);
+            });
+        }
 
         var opciones = {
             method: 'POST',
@@ -404,7 +411,7 @@ export class VideotecasFacade {
         };
 
         return new Promise((resolver, rechazar) => {
-            fetch(SUBMIT_VIDEO_API + "/" + idVideoteca,opciones)
+            fetch(SUBMIT_VIDEO_API + idVideoteca + "/" + AlmacenFacade.getUser().id,opciones)
             .then((response) => {
                 return response.json()
             })

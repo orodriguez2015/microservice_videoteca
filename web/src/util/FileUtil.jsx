@@ -36,6 +36,7 @@ export default class FileUtil {
         var exito = true;
         const tipos = (formato!==undefined && formato==="imagen")?mimetypes:mimetypesVideos;
 
+        console.log("fichero = " + fichero.type);
         if(tipos.mimetypes.indexOf(fichero.type)===-1) {
             exito = false;
         }

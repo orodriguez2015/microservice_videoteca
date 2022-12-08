@@ -50,8 +50,7 @@ class FileList extends Component {
             this.props.accion();
         }
 
-     
-
+    
         return (
             <div>
                 <div className="row-fluid">

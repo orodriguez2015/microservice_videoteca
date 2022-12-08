@@ -1,20 +1,19 @@
 package com.oscar.videoteca.rest.exception;
 
 /**
- * Excepción lanzada cuando se produce un error al guardar una fotografía
+ * Excepción que se lanza cuando ocurre un error al persistir un vídeo
  * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
-public class SavePhotoException extends RuntimeException {
-
-
-	private static final long serialVersionUID = 2626159706325250383L;
+public class SaveVideoException extends Exception {
+	
+	private static final long serialVersionUID = -5424866380330519308L;
 
 	/**
 	 * Constructor
 	 * @param message String
 	 */
-	public SavePhotoException(String message) {
+	public SaveVideoException(String message) {
 		super(message);
 	}
 
@@ -23,7 +22,7 @@ public class SavePhotoException extends RuntimeException {
 	 * Constructor
 	 * @param t Throwable
 	 */
-	public SavePhotoException(Throwable t) {
+	public SaveVideoException(Throwable t) {
 		super(t);
 	}
 	
@@ -32,7 +31,7 @@ public class SavePhotoException extends RuntimeException {
 	 * @param message String
 	 * @param t Throwable t
 	 */
-	public SavePhotoException(String message,Throwable t) {
+	public SaveVideoException(String message,Throwable t) {
 		super(message,t);
 	}
 }

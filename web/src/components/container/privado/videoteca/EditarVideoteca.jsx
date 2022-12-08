@@ -1,7 +1,6 @@
 import React from 'react'
 import { Button, Form } from 'react-bootstrap'
 import { VideotecasFacade } from '../../../../facade/VideotecasFacade'
-import { AlmacenFacade } from '../../../../store/AlmacenFacade'
 import { StringUtil } from '../../../../util/StringUtil'
 import ErrorMessage from '../../../error/ErrorMessage'
 import ComponenteAutenticado from '../autenticacion/ComponenteAutenticado'
@@ -111,31 +110,30 @@ class EditarVideoteca extends ComponenteAutenticado {
    * Método que se invoca para enviar la petición de edicion de una videoteca al servidor
    */
   editarVideoteca() {
-    let user = AlmacenFacade.getUser()
 
     VideotecasFacade.updateVideoteca(
       this.nombre.current.value,
       this.publico.current.checked,
       this.idVideoteca.current.value
     )
-      .then((resultado) => {
+    .then((resultado) => {
 
-        if(resultado.codStatus===201) {
-          // Se redirige a la pantalla de administración de videotecas
-          this.props.history.push('/pr_videotecas')
-        } else {
-          this.mostrarMensajeError(
-            'Se ha producido un error al editar la videoteca. Intentelo de nuevo',
-          );
-
-        };
-
-      })
-      .catch((err) => {
+      if(resultado.codStatus===201) {
+        // Se redirige a la pantalla de administración de videotecas
+        this.props.history.push('/pr_videotecas')
+      } else {
         this.mostrarMensajeError(
-          'Se ha producido un error genérico al editar la videoteca. Intentelo de nuevo',
-        )
-      })
+          'Se ha producido un error al editar la videoteca. Intentelo de nuevo',
+        );
+
+      };
+
+    })
+    .catch((err) => {
+      this.mostrarMensajeError(
+        'Se ha producido un error genérico al editar la videoteca. Intentelo de nuevo',
+      )
+    })
   }
 
   /**

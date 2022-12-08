@@ -36,8 +36,11 @@ public class Video {
     @Column(nullable = false,name = "extension")
     private String extension;
     
+    @Column(nullable = false,name = "ruta")
+    private String ruta;
+    
     @Column(nullable = false,name = "publico")
-    private String publico;
+    private Boolean publico;
             
     @Column(nullable = false, updatable = false,name="fecha_alta")
     @CreationTimestamp
