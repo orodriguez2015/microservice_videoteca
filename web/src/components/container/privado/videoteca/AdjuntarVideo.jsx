@@ -9,9 +9,7 @@ import FileList from '../../common/Filelist';
 import ModalProgressBar from '../../common/ModalProgressBar';
 import {VideotecasFacade} from '../../../../facade/VideotecasFacade';
 import AreaMensajes from '../../../mensajes/AreaMensajes';
-import { AlmacenFacade } from '../../../../store/AlmacenFacade';
-
-
+import {INTERNAL_SERVER_ERROR,HTTP_OK} from '../../../../constantes/HttpResponse';
 
 /**
  * Componente a través del cual se puede adjuntar un vídeo a una videoteca
@@ -72,12 +70,23 @@ class AdjuntarVideo extends ComponenteAutenticado {
      * @param {Event} evt 
      */
     onClickFile(evt) {
-        this.setState({
-            mostrarAreaMensajes: false,
-            mostrarListaFicheros:false
-        });
-        
+    //       this.setState({
+    //           mostrarAreaMensajes: false,
+    //           mostrarListaFicheros:false
+    //      });
+
+        this.hideErrorMessageArea(false,false);
         this.botonAceptar.current.disabled = true;
+    }
+
+    /**
+     * Oculta el área de mensajes de error
+     */
+    hideErrorMessageArea(showMessageArea,showFileList) {
+        this.setState({
+            mostrarAreaMensajes:showMessageArea,
+            mostrarListaFicheros:showFileList
+        })
     }
 
     /**
@@ -88,34 +97,30 @@ class AdjuntarVideo extends ComponenteAutenticado {
         const fichero = document.getElementById('fichero').files;
 
         this.showProgressBar();
-
+        this.hideErrorMessageArea(false,true);
+        
         VideotecasFacade.submitVideo(this.props.match.params.p_videoteca_id,fichero)
         .then(resultado=>{       
             
             this.hideProgressBar();
-            switch(resultado.status) {
-                case 0: {
+
+            console.log("resultado = " + JSON.stringify(resultado));
+            if(resultado.codStatus===HTTP_OK) {
+                
                     this.setState({
                         mostrarAreaMensajes: true,
                         mostrarListaFicheros:false,
                         mensajeAreaMensajes:"Se ha subido el vídeo correctamente",
                         tipoAreaMensajes: "success"
                     });
-                    break;
-                }
+            } else
+            if(resultado.codStatus===INTERNAL_SERVER_ERROR) {
 
-                case 1: {
                     this.setState({
                         mostrarAreaMensajes: true,
-                        mensajeAreaMensajes:"Ya un vídeo con el mismo nombre en el servidor. Modifica el nombre y subelo de nuevo",
+                        mensajeAreaMensajes:"Se ha producido un error al subir el vídeo al servidor. Inténtalo de nuevo.",
                         tipoAreaMensajes: "error"
                     });
-                    break;
-                }
-
-                default: {
-                    break;
-                }
             }
 
         }).catch(err=>{
@@ -211,10 +216,7 @@ class AdjuntarVideo extends ComponenteAutenticado {
                         
                         
                         <FileList ficheros={this.state.ficheros} verificacionFormato="video" mostrar={this.state.mostrarListaFicheros} accion={this.executeOnErrorActionAfterUploadingVideo}/>     
-
                         <AreaMensajes mostrar={this.state.mostrarAreaMensajes} mensaje={this.state.mensajeAreaMensajes} tipo={this.state.tipoAreaMensajes}/>
-
-
                     
                         <div align="right">
                             <Button variant="success" id="botonAceptar" ref={this.botonAceptar} onClick={this.onSubmitFile}>

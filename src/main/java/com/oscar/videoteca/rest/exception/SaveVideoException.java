@@ -5,7 +5,7 @@ package com.oscar.videoteca.rest.exception;
  * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
-public class SaveVideoException extends Exception {
+public class SaveVideoException extends RuntimeException {
 	
 	private static final long serialVersionUID = -5424866380330519308L;
 

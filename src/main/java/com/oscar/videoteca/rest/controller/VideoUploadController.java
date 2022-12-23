@@ -35,18 +35,14 @@ public class VideoUploadController {
 	 * @return ResponseEntity<?>
 	 */
 	@PostMapping("/private/video/{idVideoteca}/{idUsuario}")
-	public ResponseEntity<?> uploadVideo(@RequestParam("ficheros")MultipartFile[] files,@RequestParam("idVideoteca") String idVideoteca,@RequestParam("idUsuario") String idUsuario){
+	public ResponseEntity<?> uploadVideo(@RequestParam("ficheros")MultipartFile[] files,@RequestParam("idVideoteca") String idVideoteca,@RequestParam("idUsuario") String idUsuario) {
         try{
             List<String> fileNames = new ArrayList<>();
         
             Arrays.asList(files).stream().forEach(file->{            	 	
-            	try { 	                
-            		videoManager.saveVideo(file,Long.valueOf(idVideoteca),Long.valueOf(idUsuario));
-            		
-            	}catch(SaveVideoException e) {
-            		e.printStackTrace();
-            	}
-                fileNames.add(file.getOriginalFilename());
+          	                
+               videoManager.saveVideo(file,Long.valueOf(idVideoteca),Long.valueOf(idUsuario));	
+               fileNames.add(file.getOriginalFilename());
             });
 
                         
@@ -57,11 +53,14 @@ public class VideoUploadController {
 			return ResponseEntity.status(HttpStatus.OK).body(response);		
         
             
-        }catch (Exception e){   
+        } catch(SaveVideoException e) {
+        	throw e;
+        }
+        catch (Exception e){   
             ResponseOperation<Object> response = new ResponseOperation<Object>();
-			response.setStatus(HttpStatus.EXPECTATION_FAILED);
+			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
 			response.setDescStatus("Error al subir video al servidor: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(response);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 

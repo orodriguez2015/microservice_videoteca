@@ -33,9 +33,6 @@ public class Video {
     @Column(nullable = false,name = "nombre")
     private String nombre;
     
-    @Column(nullable = false,name = "extension")
-    private String extension;
-    
     @Column(nullable = false,name = "ruta")
     private String ruta;
     

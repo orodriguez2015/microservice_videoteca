@@ -215,5 +215,18 @@ public class GlobalControllerAdvice {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
 	}
 	
+
+	/**
+	 * Se controla cuando se ha producido un error al persistir un video en disco y/o BBDD
+	 * @param e ErrorDeleteVideotecaException
+	 * @return ResponseEntity<ResponseError>
+	 */
+	@ExceptionHandler(SaveVideoException.class)
+	public ResponseEntity<ResponseError> handleErrorDeleteVideotecaException(SaveVideoException e) {
+		ResponseError error = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+	}
+
+	
 	
 }

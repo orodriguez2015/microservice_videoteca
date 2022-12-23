@@ -1,5 +1,6 @@
 package com.oscar.videoteca.rest.manager.impl;
 
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +23,7 @@ import com.oscar.videoteca.rest.model.entity.Videoteca;
 import com.oscar.videoteca.rest.model.repository.VideotecaRepository;
 import com.oscar.videoteca.rest.util.FileUtil;
 import com.oscar.videoteca.rest.util.ResourceVisibilityEnum;
+import com.oscar.videoteca.rest.util.VideoUtil;
 
 /**
  * Clase VideotecaManagerImpl
@@ -39,6 +41,11 @@ public class VideotecaManagerImpl implements VideotecaManager {
 	
 	@Autowired
 	private BackupConfiguration backupConfiguration;
+	
+	@Autowired
+	private VideoUtil videoUtil;
+	
+	
 	
 	@Autowired
 	private FileUtil fileUtil;
@@ -97,9 +104,12 @@ public class VideotecaManagerImpl implements VideotecaManager {
 			fileUtil.createFolder(folderBackupVideo);	
 		} 	
 		
-		Videoteca videoteca = videotecaConverter.convertTo(create);
-		
+			
+		Videoteca videoteca = videotecaConverter.convertTo(create);	
 		videoteca = videotecaRepository.saveAndFlush(videoteca);
+		
+		// Se crea la subcarpeta en disco para almacenar los vídeos de un determinada videoteca
+		fileUtil.createFolder(folderBackupVideo + File.separator + videoteca.getId());
 		return videotecaConverter.convertTo(videoteca);		
 	}
 
@@ -158,7 +168,7 @@ public class VideotecaManagerImpl implements VideotecaManager {
 			
 			if(opt.isPresent()) {					
 				// Se elimina la subcarpeta que contiene las fotos del álbumm
-				//fileUtil.deleteDirectory(new File(fileUtil.getBackupAlbumDirectory(id, idUsuario)));
+				fileUtil.deleteDirectory(new File(videoUtil.getBackupVideoFolder(id)));
 				videotecaRepository.delete(opt.get());
 				exito = Boolean.TRUE;				
 			}
