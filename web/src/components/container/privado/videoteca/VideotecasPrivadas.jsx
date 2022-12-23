@@ -45,14 +45,6 @@ class VideotecasPrivadas extends ComponenteAutenticado {
                             error: false,
                             descError: ''
                         });
-                    } else {
-                        this.setState({
-                            videotecas: [],
-                            error: true,
-                            descError: "Se ha producido un error al recuperar sus videotecas"
-                        });
-                    
-
                     }
                 }
                 

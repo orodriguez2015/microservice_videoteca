@@ -70,11 +70,6 @@ class AdjuntarVideo extends ComponenteAutenticado {
      * @param {Event} evt 
      */
     onClickFile(evt) {
-    //       this.setState({
-    //           mostrarAreaMensajes: false,
-    //           mostrarListaFicheros:false
-    //      });
-
         this.hideErrorMessageArea(false,false);
         this.botonAceptar.current.disabled = true;
     }
@@ -103,10 +98,7 @@ class AdjuntarVideo extends ComponenteAutenticado {
         .then(resultado=>{       
             
             this.hideProgressBar();
-
-            console.log("resultado = " + JSON.stringify(resultado));
             if(resultado.codStatus===HTTP_OK) {
-                
                     this.setState({
                         mostrarAreaMensajes: true,
                         mostrarListaFicheros:false,
