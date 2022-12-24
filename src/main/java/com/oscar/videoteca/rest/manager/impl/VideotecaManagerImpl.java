@@ -104,12 +104,9 @@ public class VideotecaManagerImpl implements VideotecaManager {
 			fileUtil.createFolder(folderBackupVideo);	
 		} 	
 		
-			
 		Videoteca videoteca = videotecaConverter.convertTo(create);	
 		videoteca = videotecaRepository.saveAndFlush(videoteca);
 		
-		// Se crea la subcarpeta en disco para almacenar los vídeos de un determinada videoteca
-		fileUtil.createFolder(folderBackupVideo + File.separator + videoteca.getId());
 		return videotecaConverter.convertTo(videoteca);		
 	}
 
@@ -168,7 +165,7 @@ public class VideotecaManagerImpl implements VideotecaManager {
 			
 			if(opt.isPresent()) {					
 				// Se elimina la subcarpeta que contiene las fotos del álbumm
-				fileUtil.deleteDirectory(new File(videoUtil.getBackupVideoFolder(id)));
+				fileUtil.deleteDirectory(new File(videoUtil.getBackupVideoFolder(id,idUsuario)));
 				videotecaRepository.delete(opt.get());
 				exito = Boolean.TRUE;				
 			}

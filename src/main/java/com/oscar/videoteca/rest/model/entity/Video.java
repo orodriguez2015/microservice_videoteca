@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +22,7 @@ import lombok.Setter;
  * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez</a>
  *
  */
-@Getter @Setter
+@Getter @Setter @Builder
 @Entity
 @Table(name = "video")
 public class Video {

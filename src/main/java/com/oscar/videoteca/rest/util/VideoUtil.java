@@ -25,21 +25,45 @@ public class VideoUtil {
 		
 	}
 	
+
+	
+	/**
+	 * Devuelve un String con la ruta de backup de un álbum de un usuario 
+	 * @param idUsuario Long
+	 * @return String
+	 */
+	public String getBackupUserDirectory(Long idUsuario) {
+		StringBuilder path = new StringBuilder();
+		path.append(backupConfiguration.getVideo());
+		path.append(File.separatorChar);
+		path.append(idUsuario);
+		
+		return path.toString();
+	}
+
+	
 	
 	/**
 	 * Devuelve la ruta completa en la que se almacena en disco los vídeos de una determinada videoteca
 	 * @param idVideoteca Id de la videoteca 
 	 * @return String
 	 */
-	public String getBackupVideoFolder(Long idVideoteca) {
+	public String getBackupVideoFolder(Long idVideoteca,Long idUsuario) {
 		StringBuilder path = new StringBuilder();
 		path.append(backupConfiguration.getVideo());
+		path.append(File.separatorChar);
+		path.append(idUsuario);
+		
 		path.append(File.separatorChar);
 		path.append(idVideoteca);
 		
 		return path.toString();	
 	}
-		
+	
+	
+	
+	
+	
 	
 	/**
 	 * Devuelve la ruta en disco en el que será almacenado un determinado video
@@ -47,9 +71,9 @@ public class VideoUtil {
 	 * @param fileName Nombre del fichero 
 	 * @return String
 	 */
-	public String getBackupVideo(Long idVideoteca,String fileName) {
+	public String getBackupVideo(Long idVideoteca,Long idUsuario,String fileName) {
 		StringBuilder path = new StringBuilder();
-		path.append(getBackupVideoFolder(idVideoteca));
+		path.append(getBackupVideoFolder(idVideoteca,idUsuario));
 		path.append(File.separatorChar);
 		path.append(String.valueOf(idVideoteca).concat("_").concat("_").concat(StringUtils.normalizeSpace(fileName)));
 		return path.toString();	

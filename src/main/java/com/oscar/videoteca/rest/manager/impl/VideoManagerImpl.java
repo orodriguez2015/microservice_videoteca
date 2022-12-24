@@ -31,50 +31,81 @@ public class VideoManagerImpl implements VideoManager{
 	private VideoRepository videoRepository;
 
 	@Override
-	public void saveVideo(MultipartFile foto, Long idVideoteca, Long idUsuario) throws SaveVideoException {	
-	
-		// Si se ha creado el directorio o ya existe, se persiste el vídeo			
+	public void saveVideo(MultipartFile file, Long idVideoteca, Long idUsuario) throws SaveVideoException {	
+		// Si no existe se crea el directorio del usuario dentro del directorio de backup de álbum			
+		Boolean userPathCreated = fileUtil.createFolder(videoUtil.getBackupUserDirectory(idUsuario));
+		// Dentro del directorio de backup de los álbumes del usuario, se crea la carpeta de la videoteca (idVideoteca)
+		Boolean videotecaPathCreated = fileUtil.createFolder(videoUtil.getBackupVideoFolder(idVideoteca, idUsuario));
+		String path = videoUtil.getBackupVideo(idVideoteca,idUsuario,file.getOriginalFilename());
 		
-		String path = videoUtil.getBackupVideo(idVideoteca,foto.getOriginalFilename());
+		User user = User.builder().id(idUsuario).build();
+		Videoteca videoteca = Videoteca.builder().id(idVideoteca).build();
 		
-		Boolean continuar = Boolean.FALSE;
+		Video video = Video.builder().fechaAlta(Calendar.getInstance().getTime()).
+		nombre(videoUtil.getNameVideoInBackup(idVideoteca, file.getOriginalFilename())).
+		publico(Boolean.TRUE).
+		usuario(user).
+		ruta(videoUtil.getRelativePathVideo(file.getOriginalFilename(), idVideoteca)).
+		videoteca(videoteca).build();
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		try {
-			fileUtil.saveFile(foto.getInputStream(),path);		
-			continuar =Boolean.TRUE;
+			// Persiste el vídeo en BBDD
+			videoRepository.saveAndFlush(video);
+			// Persiste el vídeo en disco
+			this.saveFileToDisk(file, path);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			
+			// Si ha ocurrido alǵun error, entonces se borra la foto del disco
+			fileUtil.deleteFile(new File(path));
+			
+			throw new SaveVideoException(e.getMessage());
+		}
+		
+	}
+	
+	
+	private void saveFileToDisk(MultipartFile file,String path) throws SaveVideoException{
+		try {
+			fileUtil.saveFile(file.getInputStream(),path);		
 			
 		}catch(SaveFileException | IOException e) {
 			throw new SaveVideoException("Se ha producido un error al persistir el vídeo en disco",e);
 		}
 				
-		if(Boolean.TRUE.equals(continuar)) {
-			// Si se ha almacenado el fichero en disco => Se almacena registro en BBDD
-			User user = new User();
-			user.setId(idUsuario);
-							
-			Videoteca videoteca = new Videoteca();
-			videoteca.setId(idVideoteca);
-			
-			Video video = new Video();
-			video.setFechaAlta(Calendar.getInstance().getTime());
-			video.setNombre(videoUtil.getNameVideoInBackup(idVideoteca, foto.getOriginalFilename()));
-			video.setPublico(Boolean.TRUE);
-			video.setUsuario(user);
-			video.setRuta(videoUtil.getRelativePathVideo(foto.getOriginalFilename(), idVideoteca));
-			video.setVideoteca(videoteca);
-			
-			File file = new File(path);
-		
-			try {
-				videoRepository.saveAndFlush(video);
-			}catch(Exception e) {
-				e.printStackTrace();
-				
-				// Si ha ocurrido alǵun error, entonces se borra la foto del disco
-				fileUtil.deleteFile(file);
-				
-				throw new SaveVideoException(e.getMessage());
-			}
-		}	
 	}
 
 }

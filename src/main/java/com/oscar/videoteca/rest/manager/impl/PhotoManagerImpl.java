@@ -24,8 +24,9 @@ import com.oscar.videoteca.rest.model.entity.Photo;
 import com.oscar.videoteca.rest.model.entity.User;
 import com.oscar.videoteca.rest.model.repository.PhotoRepository;
 import com.oscar.videoteca.rest.util.FileUtil;
-import com.oscar.videoteca.rest.util.ResourceVisibilityEnum;
+import com.oscar.videoteca.rest.util.PhotoUtil;
 import com.oscar.videoteca.rest.util.PhotoVisibilityFactory;
+import com.oscar.videoteca.rest.util.ResourceVisibilityEnum;
 
 /**
  * Clase FotoManagerImpl
@@ -44,16 +45,20 @@ public class PhotoManagerImpl implements PhotoManager {
 	@Autowired
 	private FileUtil fileUtil;
 
+	@Autowired
+	private PhotoUtil photoUtil;
+
+	
 	@Override
 	public void savePhoto(MultipartFile foto, Long idAlbum, Long idUsuario) throws IOException,SaveFileException, SavePhotoException {
 		
-		Boolean userPathCreated = fileUtil.createFolder(fileUtil.getBackupUserDirectory(idUsuario));		
-		Boolean albumPathCreated = fileUtil.createFolder(fileUtil.getBackupAlbumDirectory(idAlbum, idUsuario));
+		Boolean userPathCreated = fileUtil.createFolder(photoUtil.getBackupUserDirectory(idUsuario));		
+		Boolean albumPathCreated = fileUtil.createFolder(photoUtil.getBackupAlbumDirectory(idAlbum, idUsuario));
 				
 		if(Boolean.TRUE.equals(albumPathCreated) && Boolean.TRUE.equals(userPathCreated)) {
 			// Si se ha creado el directorio o ya existe, se persiste la foto			
 			
-			String path = fileUtil.getBackupPhoto(idAlbum, idUsuario,foto.getOriginalFilename());
+			String path = photoUtil.getBackupPhoto(idAlbum, idUsuario,foto.getOriginalFilename());
 			
 			Boolean continuar = Boolean.FALSE;
 			try {
@@ -73,6 +78,7 @@ public class PhotoManagerImpl implements PhotoManager {
 				album.setId(idAlbum);
 				
 				Photo f = new Photo();
+
 				f.setNombre(foto.getOriginalFilename());
 				f.setTipoMime(foto.getContentType());
 				f.setRuta(path);

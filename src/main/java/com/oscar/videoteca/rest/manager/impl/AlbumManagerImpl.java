@@ -27,6 +27,7 @@ import com.oscar.videoteca.rest.model.entity.Photo;
 import com.oscar.videoteca.rest.model.entity.User;
 import com.oscar.videoteca.rest.model.repository.AlbumRepository;
 import com.oscar.videoteca.rest.util.FileUtil;
+import com.oscar.videoteca.rest.util.PhotoUtil;
 import com.oscar.videoteca.rest.util.ResourceVisibilityEnum;
 
 /**
@@ -56,6 +57,9 @@ public class AlbumManagerImpl implements AlbumManager {
 	@Autowired
 	private FileUtil fileUtil;
 	
+	@Autowired
+	private PhotoUtil photoUtil;
+	
 	@Override
 	public List<AlbumDTO> getAlbumesPublicos() {
 	
@@ -78,7 +82,6 @@ public class AlbumManagerImpl implements AlbumManager {
 		ExampleMatcher publicMatcher = ExampleMatcher.matchingAll()
 			      .withMatcher("idUsuarioAlta", ExampleMatcher.GenericPropertyMatchers.exact());	
 		
-		
 		User user = User.builder().id(idUsuario).build();	
 		Album a = Album.builder().usuarioAlta(user).build();
 	
@@ -94,7 +97,6 @@ public class AlbumManagerImpl implements AlbumManager {
 
 	@Override
 	public AlbumDTO saveAlbum(CreateAlbumDTO album) {
-		AlbumDTO salida = null;
 		String folderBackupAlbum = backupConfiguration.getAlbum();
 		if(StringUtils.isNotEmpty(folderBackupAlbum)) {
 			// Se crea la carpeta raíz de backup de álbumes sino existe
@@ -104,14 +106,7 @@ public class AlbumManagerImpl implements AlbumManager {
 		// Se da de alta el álbum en BBDD	
 		Album created = albumRepository.save(converter.convertTo(album));
 		
-		// Se crea la subcarpeta propia del álbum en la que se almacenaránsus fotos
-		String folderBackupAlbumDetail = folderBackupAlbum + File.separator + created.getId();
-		fileUtil.createFolder(folderBackupAlbumDetail);
-
-		salida = converter.convertTo(created); 
-	
-				
-		return salida;
+		return converter.convertTo(created); 
 	}
 	
 	
@@ -144,7 +139,7 @@ public class AlbumManagerImpl implements AlbumManager {
 			
 			if(opt.isPresent()) {			
 				// Se elimina la subcarpeta que contiene las fotos del álbumm
-				fileUtil.deleteDirectory(new File(fileUtil.getBackupAlbumDirectory(id, idUsuario)));
+				fileUtil.deleteDirectory(new File(photoUtil.getBackupAlbumDirectory(id, idUsuario)));
 				albumRepository.delete(opt.get());
 				exito = Boolean.TRUE;	
 			}
