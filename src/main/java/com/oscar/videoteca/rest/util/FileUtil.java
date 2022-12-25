@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -200,61 +201,20 @@ public class FileUtil {
 		return ps;
 	}
 
-	
 
-//	/**
-//	 * Devuelve un String con la ruta de backup de un álbum de un usuario 
-//	 * @param idUsuario Long
-//	 * @return String
-//	 */
-//	public String getBackupUserDirectory(Long idUsuario) {
-//		StringBuilder path = new StringBuilder();
-//		path.append(backupConfiguration.getAlbum());
-//		path.append(File.separatorChar);
-//		path.append(idUsuario);
-//		
-//		return path.toString();
-//	}
-//
-//	
-//	
-//	
-//	/**
-//	 * Devuelve un String con la ruta de backup de un álbum de un usuario 
-//	 * @param idAlbum Long
-//	 * @param idUsuario Long
-//	 * @return String
-//	 */
-//	public String getBackupAlbumDirectory(Long idAlbum,Long idUsuario) {
-//		StringBuilder path = new StringBuilder();
-//		path.append(backupConfiguration.getAlbum());
-//		path.append(File.separatorChar);
-//		path.append(idUsuario);
-//		
-//		path.append(File.separatorChar);
-//		path.append(idAlbum);
-//		
-//		return path.toString();
-//	}
 
-	
-//	/**
-//	 * Devuelve la ruta de backup de una fotografía de un álbum en disco
-//	 * @param idAlbum Id del álbum
-//	 * @param idUsuario Id del usuario
-//	 * @param fileName Nombre de la fotografía
-//	 * @return String
-//	 */
-//	public String getBackupPhoto(Long idAlbum,Long idUsuario,String fileName) {
-//		StringBuilder path = new StringBuilder();
-//		path.append(getBackupAlbumDirectory(idAlbum, idUsuario));
-//		path.append(File.separatorChar);
-//		path.append(fileName);
-//
-//		return path.toString();	
-//	}
-	
-	
+	/**
+	 * Devuelve la extensión de archivo o null en caso contrario
+	 * @param fileName Nombre fichero
+	 * @return Stringx
+	 */
+	public String getExtension(String fileName) {
+		if(StringUtils.isNotEmpty(fileName) && fileName.indexOf(".")!=-1) {
+			return fileName.substring(fileName.indexOf(".")+1,fileName.length());
+		}
+		return null;
+	}
+
 	
 	
 	/**

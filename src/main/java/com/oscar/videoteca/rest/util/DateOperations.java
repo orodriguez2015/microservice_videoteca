@@ -11,6 +11,7 @@ import java.util.Calendar;
 public class DateOperations {
 
 	public static String DD_MM_YYYY_hh_mm_ss = "dd-MM-yyyy-hh-mm-ss";
+	public static String DDMMYYYY_hhmmss = "ddMMyyyy_hhmmss";
 	
 	/**
 	 * Constructor
@@ -24,7 +25,7 @@ public class DateOperations {
 	 * @param format String
 	 * @return Strig
 	 */
-	public String getTimestamp(String format) {
+	public static String getTimestamp(String format) {
 		SimpleDateFormat sf = new SimpleDateFormat(format);
 		return sf.format(Calendar.getInstance().getTime());
 	}

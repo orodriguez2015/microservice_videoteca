@@ -2,7 +2,6 @@ package com.oscar.videoteca.rest.util;
 
 import java.io.File;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +17,10 @@ public class VideoUtil {
 	
 	@Autowired
 	private BackupConfiguration backupConfiguration;
+	
+	@Autowired
+	private FileUtil fileUtil;
+	
 	/**
 	 * Constructor
 	 */
@@ -61,22 +64,34 @@ public class VideoUtil {
 	}
 	
 	
-	
-	
-	
-	
 	/**
 	 * Devuelve la ruta en disco en el que será almacenado un determinado video
 	 * @param idVideoteca Long
+	 * @param idUsuario Long
 	 * @param fileName Nombre del fichero 
 	 * @return String
 	 */
-	public String getBackupVideo(Long idVideoteca,Long idUsuario,String fileName) {
+	public String getFilePathInBackup(Long idVideoteca,Long idUsuario,String fileName) {
 		StringBuilder path = new StringBuilder();
 		path.append(getBackupVideoFolder(idVideoteca,idUsuario));
 		path.append(File.separatorChar);
-		path.append(String.valueOf(idVideoteca).concat("_").concat("_").concat(StringUtils.normalizeSpace(fileName)));
+		path.append(String.valueOf(idVideoteca).concat("_").concat(fileName));
 		return path.toString();	
+	}
+	
+	
+	/**
+	 * A partir del nombre de un fichero genera uno nuevo con nombre de la fecha y hora actual
+	 * @param oldFileName Nombre anterior del 
+	 * @return
+	 */
+	public String getNewFileNameVideo(String oldFileName) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(DateOperations.getTimestamp(DateOperations.DDMMYYYY_hhmmss));
+		sb.append(".");
+		sb.append(fileUtil.getExtension(oldFileName));
+		
+		return sb.toString();
 	}
 	
 	
@@ -97,14 +112,4 @@ public class VideoUtil {
 		return path.toString();	
 	}
 	
-	/**
-	 * Devuelve el nombre con el que se almacenará un vídeo en disco.
-	 * Tendrá el formato [idVideoteca]_[fileName]
-	 * @param idVideoteca Id de la videoteca
- 	 * @param fileName Nombre del fichero
-	 * @return String
-	 */
-	public String getNameVideoInBackup(Long idVideoteca,String fileName) {
-		return String.valueOf(idVideoteca).concat("_").concat(fileName);
-	}
 }

@@ -33,71 +33,46 @@ public class VideoManagerImpl implements VideoManager{
 	@Override
 	public void saveVideo(MultipartFile file, Long idVideoteca, Long idUsuario) throws SaveVideoException {	
 		// Si no existe se crea el directorio del usuario dentro del directorio de backup de álbum			
-		Boolean userPathCreated = fileUtil.createFolder(videoUtil.getBackupUserDirectory(idUsuario));
+		fileUtil.createFolder(videoUtil.getBackupUserDirectory(idUsuario));
 		// Dentro del directorio de backup de los álbumes del usuario, se crea la carpeta de la videoteca (idVideoteca)
-		Boolean videotecaPathCreated = fileUtil.createFolder(videoUtil.getBackupVideoFolder(idVideoteca, idUsuario));
-		String path = videoUtil.getBackupVideo(idVideoteca,idUsuario,file.getOriginalFilename());
+		fileUtil.createFolder(videoUtil.getBackupVideoFolder(idVideoteca, idUsuario));
+		// Ruta en disco del fichero en el backup. El nombe del fichero se modifica por la combinación del día y hora 
+		String path= videoUtil.getFilePathInBackup(idVideoteca,idUsuario,videoUtil.getNewFileNameVideo(file.getOriginalFilename()));;
 		
 		User user = User.builder().id(idUsuario).build();
 		Videoteca videoteca = Videoteca.builder().id(idVideoteca).build();
 		
-		Video video = Video.builder().fechaAlta(Calendar.getInstance().getTime()).
-		nombre(videoUtil.getNameVideoInBackup(idVideoteca, file.getOriginalFilename())).
+		Video video = Video.builder().
+		fechaAlta(Calendar.getInstance().getTime()).
+		nombre(file.getOriginalFilename()).
 		publico(Boolean.TRUE).
 		usuario(user).
-		ruta(videoUtil.getRelativePathVideo(file.getOriginalFilename(), idVideoteca)).
+		ruta(path).
 		videoteca(videoteca).build();
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+			
 		try {
 			// Persiste el vídeo en BBDD
-			videoRepository.saveAndFlush(video);
-			// Persiste el vídeo en disco
+			video = videoRepository.saveAndFlush(video);
+						
+			// Persiste el vídeo en disco		
 			this.saveFileToDisk(file, path);
 			
+		
 		}catch(Exception e) {
-			e.printStackTrace();
-			
 			// Si ha ocurrido alǵun error, entonces se borra la foto del disco
 			fileUtil.deleteFile(new File(path));
-			
 			throw new SaveVideoException(e.getMessage());
 		}
 		
 	}
 	
 	
+	/**
+	 * Persiste un video en disco
+	 * @param file Fichero subido al servicor
+	 * @param path Ruta del fichero en la carpeta de backup
+	 * @throws SaveVideoException si ocurre un error al persistir el vídeo
+	 */
 	private void saveFileToDisk(MultipartFile file,String path) throws SaveVideoException{
 		try {
 			fileUtil.saveFile(file.getInputStream(),path);		
