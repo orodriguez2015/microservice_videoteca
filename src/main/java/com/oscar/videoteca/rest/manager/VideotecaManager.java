@@ -30,6 +30,15 @@ public interface VideotecaManager {
 	 */
 	List<VideotecaDTO> getVideotecasUsuario(Long id) throws VideotecasNotFoundException;
 	
+	
+	/**
+	 * Recupera una videoteca junto con sus vídeos
+	 * @param idVideoteca Id de la videoteca
+	 * @return idVideoteca Long
+	 * @throws VideotecaNotFoundException si no se ha podido recuperar la videoteca
+	 */
+	VideotecaDTO getVideos(Long idVideoteca) throws VideotecaNotFoundException;
+	
 	/**
 	 * Recupera una videoteca determinada
 	 * @param id Id de la videoteca

@@ -90,6 +90,32 @@ public class VideotecasController {
 	
 	
 	
+	/**
+	 * Recupera los vídeos de una determinada videoteca 
+	 * @param idVideoteca Id de la videoteca
+	 * @return ResponseEntity
+	 */
+	@GetMapping(value="/private/videos/{idVideoteca}")
+	@ApiOperation(value="Recupera las videotecas de un determinado usuario",notes="Provee un mecanismo para recuperar las videotecas de un usuario")
+	@ApiResponses(value={
+		@ApiResponse(code=200,message="OK",response=VideotecaDTO.class),
+		@ApiResponse(code=404,message="Not Found",response=ResponseError.class),
+		@ApiResponse(code=500,message="Internal Server Error",response=ResponseError.class)
+	})
+	public ResponseEntity<?> getVideos(@PathVariable Long idVideoteca) throws VideotecaNotFoundException {
+		VideotecaDTO videoteca = manager.getVideos(idVideoteca);
+		
+		// En api rest al hacer un delete se devuelve un noContent porque una vez borrado
+		// el producto, este no existe en el servidor
+		ResponseOperation<VideotecaDTO> result = new ResponseOperation<>();
+		result.setStatus(HttpStatus.OK);
+		result.setData(videoteca);
+		result.setDescStatus("OK");
+		
+		return ResponseEntity.status(HttpStatus.OK).body(result);
+	}
+	
+	
 	
 	/**
 	 * Recupera una determinada videoteca de un determinado usuario para su posible edición 

@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.oscar.videoteca.rest.dto.CreateVideotecaDTO;
+import com.oscar.videoteca.rest.dto.VideoDTO;
 import com.oscar.videoteca.rest.dto.VideotecaDTO;
+import com.oscar.videoteca.rest.model.entity.Video;
 import com.oscar.videoteca.rest.model.entity.Videoteca;
 
 import lombok.RequiredArgsConstructor;
@@ -54,6 +56,22 @@ public class VideotecaConverter {
 	public List<VideotecaDTO> convertTo(List<Videoteca> videotecas) {
 		 return videotecas.stream().map(v -> this.convertTo(v)).collect(Collectors.toList());
 	}
+	
+	
+	/**
+	 * Convierte un objeto de tipo Video en un VideoDTO
+	 * @param video Video
+	 * @return VideoDTO
+	 */
+	public VideoDTO convertTo(Video video) {
+		return modelMapper.map(video,VideoDTO.class);
+	}
+	
+	
+	public List<VideoDTO> convertToListVideoDTO(List<Video> videos) {
+		return videos.stream().map(v->this.convertTo(v)).collect(Collectors.toList());
+	}
+	
 	
 	
 }

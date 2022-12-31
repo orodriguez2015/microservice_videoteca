@@ -2,6 +2,9 @@ package com.oscar.videoteca.rest.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
+import com.oscar.videoteca.rest.model.entity.Video;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -35,4 +38,5 @@ public class VideotecaDTO implements Serializable{
         
     private String loginUsuario;
 	
+    private List<VideoDTO> videos;
 }

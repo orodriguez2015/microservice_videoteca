@@ -76,17 +76,6 @@ export const VIDEOTECAS_API = URL_BACKEND + "/private/videotecas";
  */
 export const VIDEO_API = URL_BACKEND + "/pr_video";
 
-/**
- * URL para comprobar la existencia de una carpeta asociada a alguna videoteca de un determinado usuario
- */
-export const VIDEOTECA_CHECK_RUTA = URL_BACKEND + "/private/videoteca/check/";
-
-/**
- * URL para comprobar la existencia de una carpeta asociada a una videoteca de un determinado usuario, pero 
- * que dicha videoteca no tenga como identificador, un determinado idVideoteca
- */
-export default URL_BACKEND + "/pr_videoteca/comprobarRutaOtraVideotecaUsuario";
-
 
 export const PR_VIDEOS_API = URL_BACKEND  +  "/pr_videos/";
 
@@ -96,12 +85,22 @@ export const PR_VIDEOS_API = URL_BACKEND  +  "/pr_videos/";
 export const PUBLICAR_VIDEO_API = URL_BACKEND + "/pr_video/publicar";
 
 
-
-
 /**
  * Constante que contiene la url de publicación/despublicación de una fotografía
  */
 export const PUBLICAR_FOTO_API = URL_BACKEND + "/pr_foto/publicar/"
 
 
+/**
+ * Constante que contiene la url de upload de un vídeo al servidor
+ */
 export const SUBMIT_VIDEO_API = URL_BACKEND + "/private/video/";
+
+
+/**
+ * Constante que contiene la url que permite recuperar vídeos de una videoteca
+ */
+export const GET_VIDEOS_API = URL_BACKEND + "/private/videos/";
+
+
+

@@ -1,6 +1,5 @@
 package com.oscar.videoteca.rest.manager.impl;
 
-import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +18,9 @@ import com.oscar.videoteca.rest.exception.VideotecaNotFoundException;
 import com.oscar.videoteca.rest.exception.VideotecasNotFoundException;
 import com.oscar.videoteca.rest.manager.VideotecaManager;
 import com.oscar.videoteca.rest.model.entity.User;
+import com.oscar.videoteca.rest.model.entity.Video;
 import com.oscar.videoteca.rest.model.entity.Videoteca;
+import com.oscar.videoteca.rest.model.repository.VideoRepository;
 import com.oscar.videoteca.rest.model.repository.VideotecaRepository;
 import com.oscar.videoteca.rest.util.FileUtil;
 import com.oscar.videoteca.rest.util.ResourceVisibilityEnum;
@@ -35,6 +36,10 @@ public class VideotecaManagerImpl implements VideotecaManager {
 
 	@Autowired
 	private VideotecaRepository videotecaRepository;
+	
+	@Autowired
+	private VideoRepository videoRepository;
+	
 	
 	@Autowired
 	private VideotecaConverter videotecaConverter;
@@ -163,10 +168,9 @@ public class VideotecaManagerImpl implements VideotecaManager {
 			Example<Videoteca> example = Example.of(video,exampleMatcher);		
 			Optional<Videoteca> opt = videotecaRepository.findOne(example);
 			
-			if(opt.isPresent()) {					
-				// Se elimina la subcarpeta que contiene las fotos del álbumm
-				fileUtil.deleteDirectory(new File(videoUtil.getBackupVideoFolder(id,idUsuario)));
-				videotecaRepository.delete(opt.get());
+			if(opt.isPresent()) {
+				
+		
 				exito = Boolean.TRUE;				
 			}
 		}catch(Exception e) {
@@ -179,6 +183,35 @@ public class VideotecaManagerImpl implements VideotecaManager {
 	@Override
 	public Boolean existsById(Long id) {
 		return videotecaRepository.existsById(id);
+	}
+
+	@Override
+	public VideotecaDTO getVideos(Long idVideoteca) throws VideotecaNotFoundException {
+		VideotecaDTO videotecaDTO = null;
+		ExampleMatcher publicMatcher = ExampleMatcher.matchingAll()
+			      .withMatcher("id", ExampleMatcher.GenericPropertyMatchers.exact())
+			      .withMatcher("idUsuario", ExampleMatcher.GenericPropertyMatchers.exact());	  
+			
+		Videoteca videoteca = Videoteca.builder().id(idVideoteca).build();
+		Video video = Video.builder().videoteca(videoteca).build();
+		
+		Example<Videoteca> example = Example.of(videoteca, publicMatcher);		
+		
+		Optional<Videoteca> opt = videotecaRepository.findOne(example);
+		if(Boolean.TRUE.equals(opt.isEmpty())) {
+			throw new VideotecaNotFoundException("No existe la videoteca");
+		} else {
+			// Se ha recuperado la videoteca, y ahora se recuperan los vídeos de la misma
+			publicMatcher = ExampleMatcher.matchingAll().withMatcher("idVideoteca",ExampleMatcher.GenericPropertyMatchers.exact());
+			Example<Video> optv = Example.of(video,publicMatcher);
+			List<Video> videos = videoRepository.findAll(optv);
+					
+			videotecaDTO = this.videotecaConverter.convertTo(opt.get());
+			videotecaDTO.setVideos(this.videotecaConverter.convertToListVideoDTO(videos));
+
+		}
+		
+		return videotecaDTO;
 	}	
 	
 }
