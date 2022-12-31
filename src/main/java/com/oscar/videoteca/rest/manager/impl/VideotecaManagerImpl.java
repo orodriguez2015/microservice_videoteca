@@ -24,7 +24,6 @@ import com.oscar.videoteca.rest.model.repository.VideoRepository;
 import com.oscar.videoteca.rest.model.repository.VideotecaRepository;
 import com.oscar.videoteca.rest.util.FileUtil;
 import com.oscar.videoteca.rest.util.ResourceVisibilityEnum;
-import com.oscar.videoteca.rest.util.VideoUtil;
 
 /**
  * Clase VideotecaManagerImpl
@@ -46,11 +45,6 @@ public class VideotecaManagerImpl implements VideotecaManager {
 	
 	@Autowired
 	private BackupConfiguration backupConfiguration;
-	
-	@Autowired
-	private VideoUtil videoUtil;
-	
-	
 	
 	@Autowired
 	private FileUtil fileUtil;

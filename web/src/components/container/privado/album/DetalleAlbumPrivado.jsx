@@ -5,8 +5,6 @@ import ErrorMessage from '../../../error/ErrorMessage';
 import LightBoxImages from '../../common/LightBoxImages.jsx';
 import {URL_BACKEND_IMAGES} from '../../../../constantes/Configuracion';
 import {ESTADO_PUBLICACION_FOTO,ESTADO_DESPUBLICACION_FOTO} from '../../../../constantes/Constantes';
-//import SimpleReactLightbox from "simple-react-lightbox"; 
-//import { SRLWrapper} from 'simple-react-lightbox'; 
 import ComponenteAutenticado from '../autenticacion/ComponenteAutenticado';
 import ModalConfirmation from '../../../modal/ModalConfirmation';
 import { AlmacenFacade } from '../../../../store/AlmacenFacade';

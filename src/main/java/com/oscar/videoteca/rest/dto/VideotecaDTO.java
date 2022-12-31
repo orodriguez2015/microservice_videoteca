@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import com.oscar.videoteca.rest.model.entity.Video;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,7 +24,7 @@ public class VideotecaDTO implements Serializable{
     
     private String ruta;
     
-    private String rutaCompleta;
+    private String rutaRelativa;
      
     private Boolean publico;
         

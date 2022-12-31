@@ -7,6 +7,7 @@ import VisorVideo from '../../video/VisorVideo';
 import ModalConfirmation from '../../../modal/ModalConfirmation';
 import { AlmacenFacade } from '../../../../store/AlmacenFacade';
 import ComponenteAutenticado from '../autenticacion/ComponenteAutenticado';
+import {URL_BACKEND_VIDEOS} from '../../../../constantes/Configuracion';
 import Breadcrumb from 'react-bootstrap/Breadcrumb'; 
 
 /**
@@ -66,7 +67,9 @@ class DetalleVideoteca extends ComponenteAutenticado {
         if(StringUtil.isNotEmpty(idVideoteca)) { 
             VideotecasFacade.getVideosFromVideoteca(idVideoteca,user.id)
             .then(resultado=>{
-                this.setEstado(resultado.videos,resultado.nombreVideoteca,false,'');
+
+                console.log("resultado = " + JSON.stringify(resultado));
+                this.setEstado(resultado.data.videos,resultado.data.nombre,false,'');
             }).catch(err=>{
                 this.setEstado([],'',true,'Se ha producido un error al recuperar los vídeos que conforman las videotecas');
             });
@@ -275,7 +278,7 @@ class DetalleVideoteca extends ComponenteAutenticado {
                
                 <div className="container">
                     <div className="subtitulo">
-                        <h2>Videos: {this.state.nombreVideoteca}</h2>
+                        <h2>{this.state.nombreVideoteca}</h2>
                         <hr></hr>
                     </div>
 
@@ -311,7 +314,7 @@ class DetalleVideoteca extends ComponenteAutenticado {
                                 <VisorVideo video={value}/>
 
                                 <p className="nombreVideoFoto">{value.nombre}</p>                                
-                                <p className="idVideoFoto">Alta el {value.fecha_alta}</p>
+                                <p className="idVideoFoto">Alta el {value.fechaAltaFormato}</p>
                                 <p className="idVideoFoto">ID #{value.id}</p>
                                 <input type="hidden" id={key} name={key} value={value.publico}/>
                                 <p>

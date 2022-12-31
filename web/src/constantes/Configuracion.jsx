@@ -7,6 +7,8 @@ export const URL_BACKEND = "http://localhost:8080/videoteca";
 export const URL_BACKEND_IMAGES = URL_BACKEND + "/images";
 
 
+/** URL para mostrar los recursos en forma de vídeos */
+export const URL_BACKEND_VIDEOS = URL_BACKEND + "/videos";
 
 /*
  * POST /login: URL a la que se envía una petición por POST para comprobar si un usuario está autenticado

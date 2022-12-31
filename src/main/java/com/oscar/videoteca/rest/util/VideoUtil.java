@@ -65,6 +65,25 @@ public class VideoUtil {
 	
 	
 	/**
+	 * Devuelve la ruta relativa en disco en el que será almacenado un determinado video
+	 * @param idVideoteca Long
+	 * @param idUsuario Long
+	 * @param fileName Nombre del fichero 
+	 * @return String
+	 */
+	public String getFileRelativePathInBackup(Long idVideoteca,Long idUsuario,String fileName) {
+		StringBuilder path = new StringBuilder();
+		path.append(File.separatorChar);
+		path.append(idUsuario);
+		path.append(File.separatorChar);
+		path.append(idVideoteca);
+		path.append(File.separatorChar);
+		path.append(String.valueOf(idVideoteca).concat("_").concat(fileName));
+		return path.toString();	
+	}
+	
+	
+	/**
 	 * Devuelve la ruta en disco en el que será almacenado un determinado video
 	 * @param idVideoteca Long
 	 * @param idUsuario Long

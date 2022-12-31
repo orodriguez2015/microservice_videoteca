@@ -37,7 +37,8 @@ public class VideoManagerImpl implements VideoManager{
 		// Dentro del directorio de backup de los álbumes del usuario, se crea la carpeta de la videoteca (idVideoteca)
 		fileUtil.createFolder(videoUtil.getBackupVideoFolder(idVideoteca, idUsuario));
 		// Ruta en disco del fichero en el backup. El nombe del fichero se modifica por la combinación del día y hora 
-		String path= videoUtil.getFilePathInBackup(idVideoteca,idUsuario,videoUtil.getNewFileNameVideo(file.getOriginalFilename()));;
+		String path= videoUtil.getFilePathInBackup(idVideoteca,idUsuario,videoUtil.getNewFileNameVideo(file.getOriginalFilename()));
+		String relativePath = videoUtil.getFileRelativePathInBackup(idVideoteca, idUsuario, videoUtil.getNewFileNameVideo(file.getOriginalFilename()));
 		
 		User user = User.builder().id(idUsuario).build();
 		Videoteca videoteca = Videoteca.builder().id(idVideoteca).build();
@@ -48,6 +49,7 @@ public class VideoManagerImpl implements VideoManager{
 		publico(Boolean.TRUE).
 		usuario(user).
 		ruta(path).
+		rutaRelativa(relativePath).
 		videoteca(videoteca).build();
 			
 		try {
