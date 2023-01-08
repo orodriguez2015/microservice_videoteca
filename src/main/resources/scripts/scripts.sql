@@ -131,7 +131,7 @@ INSERT INTO `videoteca`.`permisos` (`permiso`) VALUES ('Edición de usuario');
 
 
 
-
+DELETE FROM videoteca.video;
 
 
 

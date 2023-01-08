@@ -67,8 +67,6 @@ class DetalleVideoteca extends ComponenteAutenticado {
         if(StringUtil.isNotEmpty(idVideoteca)) { 
             VideotecasFacade.getVideosFromVideoteca(idVideoteca,user.id)
             .then(resultado=>{
-
-                console.log("resultado = " + JSON.stringify(resultado));
                 this.setEstado(resultado.data.videos,resultado.data.nombre,false,'');
             }).catch(err=>{
                 this.setEstado([],'',true,'Se ha producido un error al recuperar los vídeos que conforman las videotecas');

@@ -43,9 +43,11 @@ class DetalleVideotecaPublica extends React.Component {
 
             if(StringUtil.isNotEmpty(idVideoteca)) { 
 
-                VideotecasFacade.getVideos(idVideoteca)
+                VideotecasFacade.getVideosFromVideoteca(idVideoteca)
                 .then(resultado=>{
-                    this.setEstado(resultado.videos,nombreVideoteca,false,'');
+                    console.log("resultado = " + JSON.stringify(resultado));
+                    this.setEstado(resultado.data.videos,resultado.data.nombre,false,'');
+                    
 
                 }).catch(err=>{
                     this.setEstado([],nombreVideoteca,true,"Se ha producido un error al recuperar los vídeos que forman la videoteca");
@@ -90,7 +92,7 @@ class DetalleVideotecaPublica extends React.Component {
                 
                 <div className="container">
                     <div className="subtitulo">
-                        <h2>Videos: {this.state.nombreVideoteca}</h2>
+                        <h2>{this.state.nombreVideoteca}</h2>
                         <hr></hr>
                     </div>
                 

@@ -17,6 +17,7 @@ authentication:
         "/login",
         "/public/videotecas",
         "/public/albumes",
+        "/public/videos/**",
         "/images/**",
         "/videos/**",
         "/public/album/**"

@@ -1,7 +1,7 @@
 import {AlmacenFacade} from '../store/AlmacenFacade';
 
 import { VIDEOTECAS_PUBLICO_API ,VIDEOTECAS_API, VIDEO_API,
-    PUBLICAR_VIDEO_API,SUBMIT_VIDEO_API,GET_VIDEOS_API} from '../constantes/Configuracion';
+    PUBLICAR_VIDEO_API,SUBMIT_VIDEO_API,GET_VIDEOS_API,PUBLIC_VIDEOS_API} from '../constantes/Configuracion';
 
 /**
  * 
@@ -48,38 +48,6 @@ export class VideotecasFacade {
 
 
 
-    /**
-     * Se envía una petición al servidor para recuperar los vídeos que conforman una 
-     * determinada videoteca 
-     * @param idVideoteca Id de la videoteca
-     * @return Una promesa
-     */
-    // static getVideos(idVideoteca) {
-    //     let headers =  {
-    //         "Content-Type": "application/json",
-    //         "Access-Control-Request-Headers": "*",
-    //         "Access-Control-Request-Method": "*",
-    //         "Authorization" : AlmacenFacade.getUser().authenticationToken
-    //     }
-
-    //     var opciones = {
-    //         method: 'GET',
-    //         mode: 'cors',
-    //         headers: headers
-    //     }
-
-    //     return new Promise((resolver, rechazar) => {
-    //         fetch(GET_VIDEOS_API + "/" + idVideoteca,opciones)
-    //         .then((response) => {
-    //             return response.json();
-    //         })
-    //         .then((recurso) => { 
-    //             resolver(recurso);
-    //         }).catch(err=>{ 
-    //             rechazar(err);
-    //         });
-    //     });
-    // }
 
     /**
      * Se envía una petición al servidor para recuperar los vídeos que conforman una 
@@ -92,8 +60,7 @@ export class VideotecasFacade {
         let headers =  {
             "Content-Type": "application/json",
             "Access-Control-Request-Headers": "*",
-            "Access-Control-Request-Method": "*",
-            "Authorization" : AlmacenFacade.getUser().authenticationToken
+            "Access-Control-Request-Method": "*"
         }
 
         var opciones = {
@@ -103,7 +70,8 @@ export class VideotecasFacade {
         }
 
         return new Promise((resolver, rechazar) => {
-            fetch(GET_VIDEOS_API + idVideoteca,opciones)
+            //fetch(GET_VIDEOS_API + idVideoteca,opciones)
+            fetch(PUBLIC_VIDEOS_API + idVideoteca,opciones)
             .then((response) => {
                 return response.json();
             })

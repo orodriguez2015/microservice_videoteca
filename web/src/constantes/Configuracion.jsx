@@ -105,4 +105,7 @@ export const SUBMIT_VIDEO_API = URL_BACKEND + "/private/video/";
 export const GET_VIDEOS_API = URL_BACKEND + "/private/videos/";
 
 
+export const PUBLIC_VIDEOS_API = URL_BACKEND + "/public/videos/";
+
+
 
