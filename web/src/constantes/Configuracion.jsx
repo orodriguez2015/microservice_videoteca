@@ -84,7 +84,7 @@ export const PR_VIDEOS_API = URL_BACKEND  +  "/pr_videos/";
 /**
  * Constante que representa la url del servicio rest que permite publicar/despublicar un vídeo
  */
-export const PUBLICAR_VIDEO_API = URL_BACKEND + "/pr_video/publicar";
+export const PUBLICAR_VIDEO_API = URL_BACKEND + "/private/video/publish/";
 
 
 /**

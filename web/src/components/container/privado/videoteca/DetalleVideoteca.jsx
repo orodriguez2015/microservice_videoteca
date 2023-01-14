@@ -150,7 +150,7 @@ class DetalleVideoteca extends ComponenteAutenticado {
         var key = id + "_publico";
 
         if(id!==undefined && document.getElementById(key)!==undefined) {
-            mensaje = (document.getElementById(key).value===1)?"¿Deseas despublicar el vídeo con id #" + id + "?":"¿Deseas publicar el vídeo con id #" + id + "?";
+            mensaje = (document.getElementById(key).value==="true")?"¿Deseas despublicar el vídeo con id #" + id + "?":"¿Deseas publicar el vídeo con id #" + id + "?";
         } 
         return mensaje;
     }
@@ -184,35 +184,25 @@ class DetalleVideoteca extends ComponenteAutenticado {
         if(document.getElementById(key)!==null && document.getElementById(key)!==undefined 
             && document.getElementById(key).value!==null && document.getElementById(key).value!==undefined) {
             var value = document.getElementById(key).value;
-          
-            VideotecasFacade.publicarVideo(id,user.id,this.getValorPublicar(value))
+                
+
+            VideotecasFacade.publicarVideo(id,this.getValorPublicar(value))
             .then(resultado=>{   
-                switch(resultado.status) {
-                    case 0 :{
-                        // Actualizar imagen
-                        let keyImagen = id + "_img";
-                        document.getElementById(key).value = this.getValorPublicar(value);
-                        document.getElementById(keyImagen).src   = this.getImagenPublicar(this.getValorPublicar(value));
-                        break;
-                    }
+                console.log("resultado = " + JSON.stringify(resultado));
 
-                    case 1: {
-                        this.mostrarMensajeError("Se ha producido un error al publicar/despublicar el vídeo");
-                        break;
-                    }
-
-                    case 2: {
-                        this.mostrarMensajeError("El vídeo no es de tu propiedad, por tanto, no puede cambiar su visibilidad");
-                        break;
-                    }
-                    default:{
-                        // Do nothing
-                        break;
-                    }
-                }                
+                if(resultado.codStatus===200) {
+                    // Actualizar imagen
+                    let keyImagen = id + "_img";
+                    document.getElementById(key).value = this.getValorPublicar(value);
+                    document.getElementById(keyImagen).src   = this.getImagenPublicar(this.getValorPublicar(value));
+                } else {
+                    this.mostrarMensajeError("Se ha producido un error al publicar/despublicar el vídeo");
+                }
+                
             }).catch(err=>{
                 this.mostrarMensajeError("Se ha producido un error al publicar/despublicar el vídeo");
             });
+        
         }
     }
 
@@ -224,7 +214,8 @@ class DetalleVideoteca extends ComponenteAutenticado {
      */
     getValorPublicar(publico) {
         let salida = 1;
-        if(publico!==undefined && publico!==null && publico==='1') {
+       // console.log("getValorPublicar publico = " + publico);
+        if(publico!==undefined && publico!==null && publico==="true") {
             salida = 0;
         }
         return salida;
@@ -305,8 +296,9 @@ class DetalleVideoteca extends ComponenteAutenticado {
                         {this.state.videos.map((value, index) => {                            
                             let key = value.id + "_publico";
                             let keyImage = value.id + "_img";
-                            let imagen = value.publico===1?'/images/ojo_abierto.png':'/images/ojo_cerrado.png';
+                            let imagen = value.publico===true?'/images/ojo_abierto.png':'/images/ojo_cerrado.png';
 
+                            console.log("value = " + JSON.stringify(value));
                             return (
                                 <div key={value.id} className="contenedorVideo">
                                 <VisorVideo video={value}/>

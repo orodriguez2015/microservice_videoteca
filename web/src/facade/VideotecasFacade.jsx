@@ -270,15 +270,15 @@ export class VideotecasFacade {
 
     /**
      * Se envía una petición al servidor para eliminar un determinado video
-     * @param {Integer} idVideo: Id del video
-     * @param {Integer} idUsuario : Id del usuario
+     * @param {Integer} idVideo Id del video
      * @return Una promesa
      */
-    static deleteVideo(idVideo,idUsuario) {
+    static deleteVideo(idVideo) {
         let headers =  {
             "Content-Type": "application/json",
             "Access-Control-Request-Headers": "*",
-            "Access-Control-Request-Method": "*"
+            "Access-Control-Request-Method": "*",
+            "Authorization" : AlmacenFacade.getUser().authenticationToken
         }
 
         var opciones = {
@@ -307,30 +307,25 @@ export class VideotecasFacade {
      * Se envía una petición al servidor para publicar o despublicar un vídeo. 
      * La petición la tiene que hacer el usuario propietario del vídeo
      * @param {Integer} idVideo: Id del video
-     * @param {Integer} idUsuario: Id del usuario que tiene que ser el propietario del vídeo
      * @param {Integer} value  : Id del usuario
      * @return Una promesa
      */
-    static publicarVideo(idVideo,idUsuario,value) {
+    static publicarVideo(idVideo,value) {
         let headers =  {
             "Content-Type": "application/json",
             "Access-Control-Request-Headers": "*",
-            "Access-Control-Request-Method": "*"
+            "Access-Control-Request-Method": "*",
+            "Authorization" : AlmacenFacade.getUser().authenticationToken
         }
 
         var opciones = {
-            method: 'POST',
+            method: 'PUT',
             mode: 'cors',
-            headers: headers,
-            body: JSON.stringify({
-                idVideo: idVideo,
-                publico: value,
-                idUsuario: idUsuario
-            })
+            headers: headers
         };
 
         return new Promise((resolver, rechazar) => {
-            fetch(PUBLICAR_VIDEO_API,opciones)
+            fetch(PUBLICAR_VIDEO_API + idVideo + "/" + AlmacenFacade.getUser().id + "/" + value,opciones)
             .then((response) => {
                 return response.json()
             })

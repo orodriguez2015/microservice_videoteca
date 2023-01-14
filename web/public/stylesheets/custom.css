@@ -99,6 +99,8 @@ a.nombreAlbum:hover {
 .nombreVideoFoto {
     font-size: 14pt;
     margin-left:10px;
+    border: 0px dotted #000000;
+    height: 50px;
 }
 
 

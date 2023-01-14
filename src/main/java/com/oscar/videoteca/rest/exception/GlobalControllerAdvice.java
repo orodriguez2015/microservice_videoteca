@@ -228,5 +228,27 @@ public class GlobalControllerAdvice {
 	}
 
 	
+	/**
+	 * Se controla cuando no existe un vídeo
+	 * @param e VideoNotFoundException
+	 * @return ResponseEntity<ResponseError>
+	 */
+	@ExceptionHandler(VideoNotFoundException.class)
+	public ResponseEntity<ResponseError> handleVideoNotFoundException(VideoNotFoundException e) {
+		ResponseError error = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
+	
+
+	/**
+	 * Se controla cuando se produce un error al publicar un vídeo
+	 * @param e ErrorPublishVideoException
+	 * @return ResponseEntity<ResponseError>
+	 */
+	@ExceptionHandler(ErrorPublishVideoException.class)
+	public ResponseEntity<ResponseError> handleErrorPublishVideoException(ErrorPublishVideoException e) {
+		ResponseError error = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	}
 	
 }

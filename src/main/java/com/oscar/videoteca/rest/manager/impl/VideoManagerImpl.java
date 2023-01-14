@@ -3,13 +3,18 @@ package com.oscar.videoteca.rest.manager.impl;
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.oscar.videoteca.rest.exception.ErrorPublishVideoException;
 import com.oscar.videoteca.rest.exception.SaveFileException;
 import com.oscar.videoteca.rest.exception.SaveVideoException;
+import com.oscar.videoteca.rest.exception.VideoNotFoundException;
 import com.oscar.videoteca.rest.manager.VideoManager;
 import com.oscar.videoteca.rest.model.entity.User;
 import com.oscar.videoteca.rest.model.entity.Video;
@@ -84,5 +89,59 @@ public class VideoManagerImpl implements VideoManager{
 		}
 				
 	}
+
+
+	@Override
+	public Boolean publishVideo(Long idVideo, Long idUsuario, Long value) throws VideoNotFoundException {
+		Boolean salida =Boolean.FALSE;
+		
+		try {
+			// Se recupera el vídeo de la BBDD
+			Video video = this.getVideo(idVideo, idUsuario);
+			video.setPublico(Boolean.FALSE);
+			
+			if(value.equals(1L)) {
+				video.setPublico(Boolean.TRUE);	
+			}
+			
+			this.videoRepository.saveAndFlush(video);
+			salida = Boolean.TRUE;
+		}catch(Exception e) {
+			salida =Boolean.FALSE;
+			throw new ErrorPublishVideoException("Error al publicar/despublicar un vídeo");
+		}
+		
+		return salida;	
+	}
+	
+	/**
+	 * Recupera un determinado vídeo de un usuario
+	 * @param idVideo Id del vídeo
+	 * @param idUsuario Id del usuairo
+	 * @return Video
+	 * @throws VideoNotFoundException sino existe el vídeo
+	 * 
+	 */
+	public Video getVideo(Long idVideo,Long idUsuario) throws VideoNotFoundException{
+		ExampleMatcher exampleMatcher = ExampleMatcher.matchingAll()
+			      .withMatcher("id", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase())
+			      .withMatcher("idUsuario", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase());
+		
+		Video salida = null;
+		User user = User.builder().id(idUsuario).build();
+		Video video = Video.builder().id(idVideo).usuario(user).build();
+	
+		Example<Video> example = Example.of(video,exampleMatcher);
+		Optional<Video> opt = this.videoRepository.findOne(example);
+		if(Boolean.FALSE.equals(opt.isPresent())) {
+			throw new VideoNotFoundException("No existe el vídeo"); 
+		} else {
+			salida = opt.get();
+		}
+		
+		return salida;
+	}
+
+
 
 }
