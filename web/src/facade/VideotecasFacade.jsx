@@ -53,10 +53,11 @@ export class VideotecasFacade {
      * Se envía una petición al servidor para recuperar los vídeos que conforman una 
      * determinada videoteca , y que a su vez son de un determinado usuario
      * @param idVideoteca Id de la videoteca
-     * @param idUsuario Id del usuario
+     * @param visibilidad Toma el valor 1 si se quieren recuperar sólo los vídeos públicos. Otro valor
+     *                    para cualquier otro caso
      * @return Una promesa
      */
-    static getVideosFromVideoteca(idVideoteca,idUsuario) {
+    static getVideosFromVideoteca(idVideoteca,visibilidad) {
         let headers =  {
             "Content-Type": "application/json",
             "Access-Control-Request-Headers": "*",
@@ -70,8 +71,7 @@ export class VideotecasFacade {
         }
 
         return new Promise((resolver, rechazar) => {
-            //fetch(GET_VIDEOS_API + idVideoteca,opciones)
-            fetch(PUBLIC_VIDEOS_API + idVideoteca,opciones)
+            fetch(PUBLIC_VIDEOS_API + idVideoteca + "/" + visibilidad,opciones)
             .then((response) => {
                 return response.json();
             })

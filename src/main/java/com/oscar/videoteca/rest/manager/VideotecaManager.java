@@ -34,10 +34,11 @@ public interface VideotecaManager {
 	/**
 	 * Recupera una videoteca junto con sus vídeos
 	 * @param idVideoteca Id de la videoteca
+	 * @param visibility ResourceVisibilityEnum
 	 * @return idVideoteca Long
 	 * @throws VideotecaNotFoundException si no se ha podido recuperar la videoteca
 	 */
-	VideotecaDTO getVideos(Long idVideoteca) throws VideotecaNotFoundException;
+	VideotecaDTO getVideos(Long idVideoteca,ResourceVisibilityEnum visibility) throws VideotecaNotFoundException;
 	
 	/**
 	 * Recupera una videoteca determinada

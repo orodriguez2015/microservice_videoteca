@@ -12,6 +12,14 @@ public enum ResourceVisibilityEnum {
 	private Integer codigo;
 	
 	/**
+	 * Devuelve el código 
+	 * @return Integer
+	 */
+	public Integer getCodigo() {
+		return this.codigo;
+	}
+	
+	/**
 	 * Constructor
 	 * @param codigo Integer
 	 */

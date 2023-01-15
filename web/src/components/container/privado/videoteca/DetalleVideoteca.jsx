@@ -65,7 +65,7 @@ class DetalleVideoteca extends ComponenteAutenticado {
         var user = AlmacenFacade.getUser();
 
         if(StringUtil.isNotEmpty(idVideoteca)) { 
-            VideotecasFacade.getVideosFromVideoteca(idVideoteca,user.id)
+            VideotecasFacade.getVideosFromVideoteca(idVideoteca,2)
             .then(resultado=>{
                 this.setEstado(resultado.data.videos,resultado.data.nombre,false,'');
             }).catch(err=>{

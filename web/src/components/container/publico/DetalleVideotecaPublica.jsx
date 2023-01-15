@@ -43,7 +43,7 @@ class DetalleVideotecaPublica extends React.Component {
 
             if(StringUtil.isNotEmpty(idVideoteca)) { 
 
-                VideotecasFacade.getVideosFromVideoteca(idVideoteca)
+                VideotecasFacade.getVideosFromVideoteca(idVideoteca,1)
                 .then(resultado=>{
                     this.setEstado(resultado.data.videos,resultado.data.nombre,false,'');
             

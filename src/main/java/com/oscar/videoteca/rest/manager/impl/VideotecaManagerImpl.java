@@ -180,14 +180,14 @@ public class VideotecaManagerImpl implements VideotecaManager {
 	}
 
 	@Override
-	public VideotecaDTO getVideos(Long idVideoteca) throws VideotecaNotFoundException {
+	public VideotecaDTO getVideos(Long idVideoteca,ResourceVisibilityEnum visibility) throws VideotecaNotFoundException {
 		VideotecaDTO videotecaDTO = null;
 		ExampleMatcher publicMatcher = ExampleMatcher.matchingAll()
 			      .withMatcher("id", ExampleMatcher.GenericPropertyMatchers.exact())
-			      .withMatcher("idUsuario", ExampleMatcher.GenericPropertyMatchers.exact());	  
+			      .withMatcher("idUsuario", ExampleMatcher.GenericPropertyMatchers.exact());
 			
 		Videoteca videoteca = Videoteca.builder().id(idVideoteca).build();
-		Video video = Video.builder().videoteca(videoteca).build();
+		
 		
 		Example<Videoteca> example = Example.of(videoteca, publicMatcher);		
 		
@@ -197,6 +197,15 @@ public class VideotecaManagerImpl implements VideotecaManager {
 		} else {
 			// Se ha recuperado la videoteca, y ahora se recuperan los vídeos de la misma
 			publicMatcher = ExampleMatcher.matchingAll().withMatcher("idVideoteca",ExampleMatcher.GenericPropertyMatchers.exact());
+			Video.VideoBuilder videoBuilder = Video.builder().videoteca(videoteca);
+			
+			if(visibility.equals(ResourceVisibilityEnum.PUBLISHED)) {
+				// Se recuperan los vídeos públicos si así se ha indicado por paráemtros
+				publicMatcher.withMatcher("publico",ExampleMatcher.GenericPropertyMatchers.exact());
+				videoBuilder.publico(Boolean.TRUE);				
+			}
+			
+			Video video  = videoBuilder.build(); 
 			Example<Video> optv = Example.of(video,publicMatcher);
 			List<Video> videos = videoRepository.findAll(optv);
 					
