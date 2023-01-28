@@ -115,25 +115,12 @@ class DetalleVideoteca extends ComponenteAutenticado {
         var user = AlmacenFacade.getUser();
 
         VideotecasFacade.deleteVideo(id,user.id).then(resultado=>{
-            switch(resultado.status) {
-                case 0: {
-                    this.getVideos(this.props.match.params.p_videoteca_id);
-                    break;
-                }
-
-                case 1: {
-                    this.mostrarMensajeError("Se ha producido un error al eliminar el vídeo con id #" + id + ". Intentalo de nuevo");
-                    break;
-                }
-
-                case 3: {
-                    this.mostrarMensajeError("Se ha producido un error al eliminar el vídeo con id #" + id + ". Intentalo de nuevo");
-                    break;
-                }
-                default:{
-                    break;
-                }
-            }// switch
+    
+            if(resultado.codStatus==200) {
+                this.getVideos(this.props.match.params.p_videoteca_id);
+            }else {
+                this.mostrarMensajeError("Se ha producido un error al eliminar el vídeo con id #" + id + ". Intentalo de nuevo");
+            }
 
         }).catch(error=>{
             this.mostrarMensajeError("Se ha producido un error desconocido al eliminar el vídeo con id #" + id + ". Intentalo de nuevo");
@@ -188,8 +175,7 @@ class DetalleVideoteca extends ComponenteAutenticado {
 
             VideotecasFacade.publicarVideo(id,this.getValorPublicar(value))
             .then(resultado=>{   
-                console.log("resultado = " + JSON.stringify(resultado));
-
+            
                 if(resultado.codStatus===200) {
                     // Actualizar imagen
                     let keyImagen = id + "_img";
@@ -214,7 +200,6 @@ class DetalleVideoteca extends ComponenteAutenticado {
      */
     getValorPublicar(publico) {
         let salida = 1;
-       // console.log("getValorPublicar publico = " + publico);
         if(publico!==undefined && publico!==null && publico==="true") {
             salida = 0;
         }
@@ -298,7 +283,6 @@ class DetalleVideoteca extends ComponenteAutenticado {
                             let keyImage = value.id + "_img";
                             let imagen = value.publico===true?'/images/ojo_abierto.png':'/images/ojo_cerrado.png';
 
-                            console.log("value = " + JSON.stringify(value));
                             return (
                                 <div key={value.id} className="contenedorVideo">
                                 <VisorVideo video={value}/>

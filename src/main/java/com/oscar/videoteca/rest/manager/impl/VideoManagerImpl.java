@@ -11,6 +11,7 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.oscar.videoteca.rest.exception.ErrorDeleteVideoException;
 import com.oscar.videoteca.rest.exception.ErrorPublishVideoException;
 import com.oscar.videoteca.rest.exception.SaveFileException;
 import com.oscar.videoteca.rest.exception.SaveVideoException;
@@ -140,6 +141,36 @@ public class VideoManagerImpl implements VideoManager{
 		}
 		
 		return salida;
+	}
+
+
+	@Override
+	public Boolean deleteVideo(Long idVideo, Long idUsuario) throws ErrorDeleteVideoException {
+		Boolean exito  = Boolean.FALSE;
+		try {
+			ExampleMatcher exampleMatcher = ExampleMatcher.matchingAll()
+				      .withMatcher("id", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase())
+				      .withMatcher("idUsuario", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase());
+	
+			User user = User.builder().id(idUsuario).build();
+			Video video = Video.builder().usuario(user).id(idVideo).build();
+			
+			Example<Video> example = Example.of(video,exampleMatcher);		
+			Optional<Video> opt = this.videoRepository.findOne(example);
+			
+			if(opt.isPresent()) {
+				// Se elimina el fichero del disco y, a posteriori, se elimina de la BBDD	
+				File file = new File(opt.get().getRuta());
+				
+				if(Boolean.TRUE.equals(fileUtil.deleteFile(file))) {
+					this.videoRepository.delete(opt.get());
+					exito = Boolean.TRUE;	
+				}	
+			}
+		}catch(Exception e) {
+			throw new ErrorDeleteVideoException("Error al eliminar el vídeo",e);
+		}
+		return exito;
 	}
 
 

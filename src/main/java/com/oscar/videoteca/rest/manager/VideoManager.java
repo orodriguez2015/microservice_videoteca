@@ -2,6 +2,7 @@ package com.oscar.videoteca.rest.manager;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.oscar.videoteca.rest.exception.ErrorDeleteVideoException;
 import com.oscar.videoteca.rest.exception.SaveFileException;
 import com.oscar.videoteca.rest.exception.SaveVideoException;
 import com.oscar.videoteca.rest.exception.VideoNotFoundException;
@@ -43,4 +44,15 @@ public interface VideoManager {
 	 * @throws VideoNotFoundException si no existe el vídeo
 	 */
 	Boolean publishVideo(Long idVideo,Long idUsuario,Long value) throws VideoNotFoundException;
+	
+	
+	/**
+	 * Eliminar un vídeo de BBDD y del almacenamiento en disco
+	 * @param idVideo Id del vídeo
+	 * @param idUsuario Id del usuario
+	 * @return True si se ha eliminado y false en caso contrario
+	 * @throws ErrorDeleteVideoException si ocurre algún error
+	 */
+	Boolean deleteVideo(Long idVideo,Long idUsuario) throws ErrorDeleteVideoException;
+	
 }

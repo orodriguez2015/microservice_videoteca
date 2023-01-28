@@ -288,7 +288,7 @@ export class VideotecasFacade {
         };
 
         return new Promise((resolver, rechazar) => {
-            fetch(VIDEO_API +  "/" + idVideo,opciones)
+            fetch(SUBMIT_VIDEO_API +  + idVideo + "/" + AlmacenFacade.getUser().id,opciones)
             .then((response) => {
                 return response.json()
             })
