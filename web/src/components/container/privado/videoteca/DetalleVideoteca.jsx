@@ -7,7 +7,6 @@ import VisorVideo from '../../video/VisorVideo';
 import ModalConfirmation from '../../../modal/ModalConfirmation';
 import { AlmacenFacade } from '../../../../store/AlmacenFacade';
 import ComponenteAutenticado from '../autenticacion/ComponenteAutenticado';
-import {URL_BACKEND_VIDEOS} from '../../../../constantes/Configuracion';
 import Breadcrumb from 'react-bootstrap/Breadcrumb'; 
 
 /**
@@ -62,8 +61,6 @@ class DetalleVideoteca extends ComponenteAutenticado {
      * @param {Integer} idVideoteca Identifidador de la videoteca
      */
     getVideos(idVideoteca) {
-        var user = AlmacenFacade.getUser();
-
         if(StringUtil.isNotEmpty(idVideoteca)) { 
             VideotecasFacade.getVideosFromVideoteca(idVideoteca,2)
             .then(resultado=>{
@@ -116,7 +113,7 @@ class DetalleVideoteca extends ComponenteAutenticado {
 
         VideotecasFacade.deleteVideo(id,user.id).then(resultado=>{
     
-            if(resultado.codStatus==200) {
+            if(resultado.codStatus===200) {
                 this.getVideos(this.props.match.params.p_videoteca_id);
             }else {
                 this.mostrarMensajeError("Se ha producido un error al eliminar el vídeo con id #" + id + ". Intentalo de nuevo");
@@ -166,8 +163,7 @@ class DetalleVideoteca extends ComponenteAutenticado {
      */
     onConfirmPublicacionVideo(id) {
         var key = id + "_publico";
-        var user = AlmacenFacade.getUser();
-
+    
         if(document.getElementById(key)!==null && document.getElementById(key)!==undefined 
             && document.getElementById(key).value!==null && document.getElementById(key).value!==undefined) {
             var value = document.getElementById(key).value;
@@ -242,6 +238,9 @@ class DetalleVideoteca extends ComponenteAutenticado {
      * Método que renderiza la vista
      */
     render() { 
+
+        const styleRow = {float:'right'};
+
         if(this.hayErrores()===true)  {
             // Sino se ha comunicado una idVideoteca => Entonces se muestra la pantalla de error
             return (
@@ -287,10 +286,13 @@ class DetalleVideoteca extends ComponenteAutenticado {
                                 <div key={value.id} className="contenedorVideo">
                                 <VisorVideo video={value}/>
 
-                                <p className="nombreVideoFoto">{value.nombre}</p>                                
-                                <p className="idVideoFoto">Alta el {value.fechaAltaFormato}</p>
-                                <p className="idVideoFoto">ID #{value.id}</p>
                                 <input type="hidden" id={key} name={key} value={value.publico}/>
+                                <p className="idVideoFoto">ID #{value.id}</p>
+                                <p className="idVideoFoto">Alta el {value.fechaAltaFormato}</p>
+                                <p className="nombreVideoFoto">{value.nombre}</p>                                
+                                
+                                
+                                
                                 <p>
                                     <img src={imagen} id={keyImage} name={keyImage} border="0" width="26" height="26" title="" alt="" onClick={()=>this.handleOcultarVideo(value.id)}/>
                                     <img src="/images/full_trash.png" border="0" width="20" height="20" title="Eliminar" alt="Eliminar" onClick={()=>this.handleEliminar(value.id)}/>
