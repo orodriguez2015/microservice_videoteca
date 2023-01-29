@@ -1,7 +1,7 @@
 import {AlmacenFacade} from '../store/AlmacenFacade';
 
-import { VIDEOTECAS_PUBLICO_API ,VIDEOTECAS_API, VIDEO_API,
-    PUBLICAR_VIDEO_API,SUBMIT_VIDEO_API,GET_VIDEOS_API,PUBLIC_VIDEOS_API} from '../constantes/Configuracion';
+import { VIDEOTECAS_PUBLICO_API ,VIDEOTECAS_API,
+    PUBLICAR_VIDEO_API,SUBMIT_VIDEO_API,PUBLIC_VIDEOS_API} from '../constantes/Configuracion';
 
 /**
  * 
