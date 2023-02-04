@@ -1,0 +1,54 @@
+/** ESTILOS PARA CONTENEDOR DE FOTOGRAFIAS ***/
+.contenedorAlbum {
+    width:30%;
+    margin: 0 auto;
+    
+}
+
+.contenedorFoto {
+    margin: 0 auto;
+    text-align: center;    
+}
+
+.botoneraAlbum {
+    width:60%;
+    height: 25px;
+    text-align: right;
+    margin: 0 auto;
+}
+
+
+.idFoto {
+    font-size:10pt;
+    margin: 0 auto;
+    width: 60%;
+    text-align: left;
+}
+
+.nombreFoto {
+    font-size: 12pt;
+    width:60%;
+    margin: 0 auto;
+    text-align: left;
+}
+
+/** Estilos para dispositivos móviles */
+@media screen and (max-width: 915px) {
+    .contenedorAlbum{
+       float: right;
+       width: 100%;
+    }
+
+    .botoneraAlbum {
+        width:52%;
+    }
+
+    .idFoto {
+        width: 52%;
+    }
+    
+    .nombreFoto {
+        width:52%;
+    }
+    
+}

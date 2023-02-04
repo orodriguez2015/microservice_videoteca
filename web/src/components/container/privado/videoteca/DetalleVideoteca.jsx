@@ -239,8 +239,6 @@ class DetalleVideoteca extends ComponenteAutenticado {
      */
     render() { 
 
-        const styleRow = {float:'right'};
-
         if(this.hayErrores()===true)  {
             // Sino se ha comunicado una idVideoteca => Entonces se muestra la pantalla de error
             return (
@@ -283,20 +281,23 @@ class DetalleVideoteca extends ComponenteAutenticado {
                             let imagen = value.publico===true?'/images/ojo_abierto.png':'/images/ojo_cerrado.png';
 
                             return (
-                                <div key={value.id} className="contenedorVideo">
-                                <VisorVideo video={value}/>
 
-                                <input type="hidden" id={key} name={key} value={value.publico}/>
-                                <p className="idVideoFoto">ID #{value.id}</p>
-                                <p className="idVideoFoto">Alta el {value.fechaAltaFormato}</p>
-                                <p className="nombreVideoFoto">{value.nombre}</p>                                
+                                <div key={value.id} className="contenedorVideo">
+
+                                    <VisorVideo video={value}/>
+
+                                    <div className="botoneraVideo">                                        
+                                        <img src={imagen} id={keyImage} name={keyImage} border="0" width="26" height="26" title="" alt="" onClick={()=>this.handleOcultarVideo(value.id)}/>
+                                        <img src="/images/full_trash.png" border="0" width="20" height="20" title="Eliminar" alt="Eliminar" onClick={()=>this.handleEliminar(value.id)}/>
+                                    </div>
+
+
+                                    <input type="hidden" id={key} name={key} value={value.publico}/>
+                                    <p className="idVideoFoto">ID #{value.id}</p>
+                                    <p className="idVideoFoto">Alta el {value.fechaAltaFormato}</p>
+                                    <p className="nombreVideoFoto">{value.nombre}</p>                                
                                 
                                 
-                                
-                                <p>
-                                    <img src={imagen} id={keyImage} name={keyImage} border="0" width="26" height="26" title="" alt="" onClick={()=>this.handleOcultarVideo(value.id)}/>
-                                    <img src="/images/full_trash.png" border="0" width="20" height="20" title="Eliminar" alt="Eliminar" onClick={()=>this.handleEliminar(value.id)}/>
-                                </p>
                                 </div>
                             );
                         })}

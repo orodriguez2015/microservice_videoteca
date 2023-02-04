@@ -318,22 +318,31 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
                             let key = value.id + "_publico";
                             let keyImage = value.id + "_image";
                             
-                            return <div key={value.id} className="col-3">
+                            return (
+                            
+                                <div key={value.id} className="contenedorAlbum">
     
-                                    
-                                    <img src={`${imgOriginal}`} id={`${imgOriginal}`} alt={`${imgOriginal}`} width="200" height="150" onClick={()=>this.showLightBox(index,images)}/>
-                                                                                    
-                                    <p className="nombreVideoFoto">{value.nombre}</p>                        
-                                    <p className="idVideoFoto">{value.descripcion}</p>                                        
-                                    <p className="idVideoFoto">ID # {value.id}</p>
-                                    <p className="idVideoFoto">Visto { value.numeroVisualizaciones } veces</p>
-                                    <p className="idVideoFoto">Alta el {value.fechaAltaFormato}</p>            
+
+                                    <div className="contenedorFoto">
+                                        <img src={`${imgOriginal}`} id={`${imgOriginal}`} alt={`${imgOriginal}`} width="200" height="150" onClick={()=>this.showLightBox(index,images)}/>
+                                    </div>
+
+                                    <div className="botoneraAlbum">                                        
+                                        <img src={imagen} id={keyImage} name={keyImage} border="0" width="26" height="26" title="Mostrar/Ocultar" alt="Mostrar/Ocultar" onClick={()=>this.handleOcultarFoto(value.id)}/>
+                                        <img src="/images/full_trash.png"  border="0" width="20" height="20" title="Eliminar" alt="Eliminar" onClick={()=>this.handleEliminar(value.id)}/>
+                                    </div>
+
+                                    <p className="nombreFoto">{value.nombre}</p>                        
+                                    <p className="idFoto">{value.descripcion}</p>                                        
+                                    <p className="idFoto">ID # {value.id}</p>
+                                    <p className="idFoto">Visto { value.numeroVisualizaciones } veces</p>
+                                    <p className="idFoto">Alta el {value.fechaAltaFormato}</p>            
                                                     
-                                    <img src={imagen} id={keyImage} name={keyImage} border="0" width="26" height="26" title="Mostrar/Ocultar" alt="Mostrar/Ocultar" onClick={()=>this.handleOcultarFoto(value.id)}/>
-                                    <img src="/images/full_trash.png"  border="0" width="20" height="20" title="Eliminar" alt="Eliminar" onClick={()=>this.handleEliminar(value.id)}/>
+                                
                                     <input type="hidden" id={key} name={key} value={value.publico}/>
                                     <p></p>
                                 </div>
+                            )   
                         })}
                     </div>
                                        
