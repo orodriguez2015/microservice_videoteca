@@ -164,17 +164,24 @@ class DetalleAlbumPublico extends React.Component {
                         
                             let imgOriginal  = URL_BACKEND_IMAGES + value.rutaRelativa;
                             
-                            return <div key={value.id} className="col-3">
-                                        <img src={`${imgOriginal}`} id={`${imgOriginal}`} alt={`${imgOriginal}`} width="200" height="150" onClick={()=>this.showLightBox(index,images)}/>
+                            return (
+                            
+                                 <div key={value.id} className="contenedorAlbum">
 
-                                        <p className="nombreVideoFoto">{value.nombre}</p>                        
-                                        <p className="idVideoFoto">{value.descripcion}</p>
-                                        <p className="idVideoFoto">ID # {value.id}</p>
-                                        <p className="idVideoFoto">Visto <span id={value.id} name={value.id}>{ value.numeroVisualizaciones }</span>  veces</p>
-                                        <p className="idVideoFoto">Alta el {value.fechaAltaFormato}</p>
-                                        
+                                    <div className="contenedorFoto">
+                                        <img src={`${imgOriginal}`} id={`${imgOriginal}`} alt={`${imgOriginal}`} width="200" height="150" onClick={()=>this.showLightBox(index,images)}/>
+                                    </div>
+
+                                    <div className='pieFoto'>
+                                        <p className="nombreFoto">{value.nombre}</p>                        
+                                        <p className="idFoto">{value.descripcion}</p>
+                                        <p className="idFoto">ID # {value.id}</p>
+                                        <p className="idFoto">Visto <span id={value.id} name={value.id}>{ value.numeroVisualizaciones }</span>  veces</p>
+                                        <p className="idFoto">Alta el {value.fechaAltaFormato}</p>
+                                    </div>
                                         
                                 </div>
+                            )
                         })}
                     </div>
                 </div>

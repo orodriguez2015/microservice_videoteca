@@ -332,11 +332,13 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
                                         <img src="/images/full_trash.png"  border="0" width="20" height="20" title="Eliminar" alt="Eliminar" onClick={()=>this.handleEliminar(value.id)}/>
                                     </div>
 
-                                    <p className="nombreFoto">{value.nombre}</p>                        
-                                    <p className="idFoto">{value.descripcion}</p>                                        
-                                    <p className="idFoto">ID # {value.id}</p>
-                                    <p className="idFoto">Visto { value.numeroVisualizaciones } veces</p>
-                                    <p className="idFoto">Alta el {value.fechaAltaFormato}</p>            
+                                    <div className='pieFoto'>
+                                        <p className="nombreFoto">{value.nombre}</p>                        
+                                        <p className="idFoto">{value.descripcion}</p>                                        
+                                        <p className="idFoto">ID # {value.id}</p>
+                                        <p className="idFoto">Visto { value.numeroVisualizaciones } veces</p>
+                                        <p className="idFoto">Alta el {value.fechaAltaFormato}</p>            
+                                    </div>
                                                     
                                 
                                     <input type="hidden" id={key} name={key} value={value.publico}/>

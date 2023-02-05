@@ -8,6 +8,7 @@
 .contenedorFoto {
     margin: 0 auto;
     text-align: center;    
+   /* border: 1px solid blue;*/
 }
 
 .botoneraAlbum {
@@ -32,6 +33,13 @@
     text-align: left;
 }
 
+.pieFoto {
+    /*border: 1px solid red;*/
+    height: 150px;
+    width: 200px;
+    margin: 0 auto;
+}
+
 /** Estilos para dispositivos móviles */
 @media screen and (max-width: 915px) {
     .contenedorAlbum{
@@ -39,16 +47,19 @@
        width: 100%;
     }
 
+   
     .botoneraAlbum {
         width:52%;
     }
 
     .idFoto {
-        width: 52%;
+       /* width: 52%; */
+        text-align:left;
     }
     
     .nombreFoto {
-        width:52%;
+        /*width:52%;*/
+        text-align:left;
     }
     
 }
