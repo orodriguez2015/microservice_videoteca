@@ -41,10 +41,39 @@
 }
 
 /** Estilos para dispositivos móviles */
+
+
 @media screen and (max-width: 915px) {
     .contenedorAlbum{
        float: right;
        width: 100%;
+    }
+
+   
+    .botoneraAlbum {
+        width:52%;
+    }
+
+    .idFoto {
+       /* width: 52%; */
+        text-align:left;
+    }
+    
+    .nombreFoto {
+        /*width:52%;*/
+        text-align:left;
+    }
+    
+}
+
+
+
+/** Estilos para dispositivos iPad */
+
+@media (min-height: 820px) and (max-width:1180px){
+    .contenedorAlbum{
+       float: right;
+       width: 30%;
     }
 
    

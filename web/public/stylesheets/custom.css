@@ -146,6 +146,36 @@ a.nombreAlbum:hover {
   }
 
 
+  /** Estilos para dispositivos iPad */
+@media (min-height: 820px) and (max-width:1180px){
+    .contenedorVideo{
+       border: 0px solid blueviolet;
+       float: right;
+       width: 45%;
+       margin-left: 0px;
+       margin-bottom: 10px;
+    }
+
+    .idVideoFoto {
+        width: 70%;
+    }
+    
+    .nombreVideoFoto {
+        font-size: 12pt;
+        width:70%;
+        height:90px;
+        margin: 0 auto;
+        margin-bottom: 10px;
+    }
+    
+    
+    .botoneraVideo {
+        width:72%;
+    }
+    
+  }
+
+
 
 .mensajeError {
     color:red;

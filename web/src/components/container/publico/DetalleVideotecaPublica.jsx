@@ -101,8 +101,9 @@ class DetalleVideotecaPublica extends React.Component {
                             <div key={value.id} className="contenedorVideo">
                                 <VisorVideo video={value}/>
                                 <p className="nombreVideoFoto">{value.nombre}</p>
-                                <p className="idVideoFoto">Alta el {value.fechaAltaFormato}</p>
                                 <p className="idVideoFoto">ID #{value.id}</p>
+                                <p className="idVideoFoto">Alta el {value.fechaAltaFormato}</p>
+                                
 
                             </div>
                         );
