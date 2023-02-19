@@ -312,7 +312,7 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
                         {this.state.fotos.map((value, index) => {
                             // Se construye la ruta de la miniatura en el servidor
                         
-                            let imgOriginal  = URL_BACKEND_IMAGES + value.rutaRelativa;
+                            let imgOriginal  = URL_BACKEND_IMAGES + value.rutaRelativaMiniatura;
 
                             let imagen = value.publico===1?'/images/ojo_abierto.png':'/images/ojo_cerrado.png';
                             let key = value.id + "_publico";
@@ -324,11 +324,11 @@ class DetalleAlbumPrivado extends ComponenteAutenticado {
     
 
                                     <div className="contenedorFoto">
-                                        <img src={`${imgOriginal}`} id={`${imgOriginal}`} alt={`${imgOriginal}`} width="200" height="150" onClick={()=>this.showLightBox(index,images)}/>
+                                        <img src={`${imgOriginal}`} id={`${imgOriginal}`} alt={`${imgOriginal}`} onClick={()=>this.showLightBox(index,images)}/>
                                     </div>
 
                                     <div className="botoneraAlbum">                                        
-                                        <img src={imagen} id={keyImage} name={keyImage} border="0" width="26" height="26" title="Mostrar/Ocultar" alt="Mostrar/Ocultar" onClick={()=>this.handleOcultarFoto(value.id)}/>
+                                        <img src={imagen} id={keyImage} name={keyImage} border="0" width="26" height="26" title="Mostrar/Ocultar" alt="Mostrar/Ocultar" onClick={()=>this.handleOcultarFoto(value.id)}/>                                        
                                         <img src="/images/full_trash.png"  border="0" width="20" height="20" title="Eliminar" alt="Eliminar" onClick={()=>this.handleEliminar(value.id)}/>
                                     </div>
 

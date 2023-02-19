@@ -28,6 +28,8 @@ public class PhotoDTO implements Serializable {
     private String ruta;
     
     private String rutaRelativa;
+    
+    private String rutaRelativaMiniatura;
          
     private Integer publico;
         

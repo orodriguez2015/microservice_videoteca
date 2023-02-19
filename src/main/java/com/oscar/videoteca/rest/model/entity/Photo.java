@@ -13,7 +13,10 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -21,7 +24,8 @@ import lombok.Setter;
  * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez Brea</a>
  *
  */
-@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
+@Getter @Setter @Builder
 @Entity
 @Table(name = "foto")
 public class Photo {
@@ -38,7 +42,10 @@ public class Photo {
     
     @Column(nullable = false,name = "ruta_relativa")
     private String rutaRelativa;
-         
+    
+    @Column(nullable = false,name = "ruta_relativa_miniatura")
+    private String rutaRelativaMiniatura;
+    
     @Column(nullable = false,name = "publico")
     private Boolean publico;
         

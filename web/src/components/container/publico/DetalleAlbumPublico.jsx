@@ -162,14 +162,14 @@ class DetalleAlbumPublico extends React.Component {
                     <div className="row">
                         {this.state.fotos.map((value, index) => {
                         
-                            let imgOriginal  = URL_BACKEND_IMAGES + value.rutaRelativa;
+                            let imgOriginal  = URL_BACKEND_IMAGES + value.rutaRelativaMiniatura;
                             
                             return (
                             
                                  <div key={value.id} className="contenedorAlbum">
 
                                     <div className="contenedorFoto">
-                                        <img src={`${imgOriginal}`} id={`${imgOriginal}`} alt={`${imgOriginal}`} width="200" height="150" onClick={()=>this.showLightBox(index,images)}/>
+                                        <img src={`${imgOriginal}`} id={`${imgOriginal}`} alt={`${imgOriginal}`} onClick={()=>this.showLightBox(index,images)}/>
                                     </div>
 
                                     <div className='pieFoto'>

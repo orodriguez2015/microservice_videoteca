@@ -1,5 +1,6 @@
 package com.oscar.videoteca.rest.manager.impl;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.oscar.videoteca.constants.Constants;
 import com.oscar.videoteca.rest.dto.PhotoDTO;
 import com.oscar.videoteca.rest.dto.mapping.PhotoConverter;
 import com.oscar.videoteca.rest.exception.ErrorDeletePhotoException;
@@ -24,6 +26,7 @@ import com.oscar.videoteca.rest.model.entity.Photo;
 import com.oscar.videoteca.rest.model.entity.User;
 import com.oscar.videoteca.rest.model.repository.PhotoRepository;
 import com.oscar.videoteca.rest.util.FileUtil;
+import com.oscar.videoteca.rest.util.ImageUtil;
 import com.oscar.videoteca.rest.util.PhotoUtil;
 import com.oscar.videoteca.rest.util.PhotoVisibilityFactory;
 import com.oscar.videoteca.rest.util.ResourceVisibilityEnum;
@@ -54,56 +57,50 @@ public class PhotoManagerImpl implements PhotoManager {
 		
 		Boolean userPathCreated = fileUtil.createFolder(photoUtil.getBackupUserDirectory(idUsuario));		
 		Boolean albumPathCreated = fileUtil.createFolder(photoUtil.getBackupAlbumDirectory(idAlbum, idUsuario));
-				
-		if(Boolean.TRUE.equals(albumPathCreated) && Boolean.TRUE.equals(userPathCreated)) {
+		Boolean albumThumbPathCreated = fileUtil.createFolder(photoUtil.getBackupAlbumThumbnailDirectory(idAlbum, idUsuario));
+		
+		if(Boolean.TRUE.equals(albumPathCreated) && Boolean.TRUE.equals(userPathCreated) && Boolean.TRUE.equals(albumThumbPathCreated)) {
 			// Si se ha creado el directorio o ya existe, se persiste la foto			
-			
 			String path = photoUtil.getBackupPhoto(idAlbum, idUsuario,foto.getOriginalFilename());
 			
 			Boolean continuar = Boolean.FALSE;
 			try {
-				fileUtil.saveFile(foto.getInputStream(),path);
-					
+				fileUtil.saveFile(foto.getInputStream(),path);				
+				ByteArrayOutputStream baos = ImageUtil.createThumbnail(foto, Constants.WIDTH_THUMBNAIL);				
+				fileUtil.saveFile(baos, photoUtil.getBackupThumbnail(idAlbum, idUsuario,foto.getOriginalFilename()));					
 				continuar =Boolean.TRUE;
+				
 			}catch(SaveFileException e) {
 				throw e;
 			}
 			
 			if(Boolean.TRUE.equals(continuar)) {
-				// Si se ha almacenado el fichero en disco => Se almacena registro en BBDD
-				User user = new User();
-				user.setId(idUsuario);
-				
-				Album album = new Album();
-				album.setId(idAlbum);
-				
-				Photo f = new Photo();
-
-				f.setNombre(foto.getOriginalFilename());
-				f.setTipoMime(foto.getContentType());
-				f.setRuta(path);
-				f.setRutaRelativa(fileUtil.getRelativePathPhoto(foto.getOriginalFilename(), idAlbum, idUsuario));
-				f.setPublico(Boolean.TRUE);
-		
-				File fotografia = new File(path);
-				
+				File fotografia = new File(path);				
 				FileUtil.PhotoSize size = fileUtil.getPhotoSize(fotografia);
-				f.setAlto(size.getHeight());
-				f.setAncho(size.getWidth());
 				
-				f.setNumeroVisualizaciones(Integer.valueOf(0));			
-				f.setUsuario(user);
-				f.setAlbum(album);
+				User user = User.builder().id(idUsuario).build();
+				Album album = Album.builder().id(idAlbum).build();
+				
+				Photo f = Photo.builder().nombre(foto.getOriginalFilename())
+				.tipoMime(foto.getContentType())
+				.ruta(path)
+				.rutaRelativa(fileUtil.getRelativePathPhoto(foto.getOriginalFilename(), idAlbum, idUsuario))
+				.rutaRelativaMiniatura(fileUtil.getRelativePathThumbnail(foto.getOriginalFilename(), idAlbum, idUsuario))
+				.publico(Boolean.TRUE)
+				.alto(size.getHeight())
+				.ancho(size.getWidth())
+				.numeroVisualizaciones(Integer.valueOf(0))
+				.usuario(user)
+				.album(album)
+				.build();
+							
 				try {
 					photoRepository.saveAndFlush(f);
-				}catch(Exception e) {
-					e.printStackTrace();
-					
+				} catch(Exception e) {	
 					// Si ha ocurrido alǵun error, entonces se borra la foto del disco
 					fileUtil.deleteFile(fotografia);
-					
 					throw new SavePhotoException(e.getMessage());
-				}
+			    }
 			}
 		}
 		

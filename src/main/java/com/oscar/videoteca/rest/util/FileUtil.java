@@ -1,5 +1,6 @@
 package com.oscar.videoteca.rest.util;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.oscar.videoteca.constants.Constants;
 import com.oscar.videoteca.rest.config.BackupConfiguration;
 import com.oscar.videoteca.rest.exception.SaveFileException;
 
@@ -55,6 +57,26 @@ public class FileUtil {
 		return exito;
 	}
 	
+	
+	/**
+	 * Persiste en disco un fichero 
+	 * @param baos ByteArrayOutputStream
+	 * @param path Ruta en disco
+	 * @return Boolean
+	 * @throws IOException si ocurre algún error
+	 */
+	public Boolean saveFile(ByteArrayOutputStream baos,String path) throws IOException {
+		Boolean exito =Boolean.FALSE;
+		
+		try {
+			FileOutputStream fos = new FileOutputStream(new File(path));
+			baos.writeTo(fos);
+			exito = Boolean.TRUE;
+		}catch(IOException e) {
+			
+		}
+		return exito;
+	}
 	
 
 	
@@ -231,6 +253,30 @@ public class FileUtil {
 		path.append(idUsuario);
 		path.append(File.separatorChar);
 		path.append(idAlbum);
+		path.append(File.separatorChar);
+		path.append(fileName);
+		
+		return path.toString();	
+	}
+	
+	
+	
+	/**
+	 * Devuelve la ruta relativa de una fotografía en disco y que se utilizará para poder
+	 * mostrar la fotografía
+	 * @param fileName Nombre de la fotografía
+	 * @param idAlbum Id del álbum
+	 * @param idUsuario Id del usuario
+	 * @return String
+	 */
+	public String getRelativePathThumbnail(String fileName,Long idAlbum,Long idUsuario) {
+		StringBuilder path = new StringBuilder();
+		path.append(File.separatorChar);
+		path.append(idUsuario);
+		path.append(File.separatorChar);
+		path.append(idAlbum);
+		path.append(File.separatorChar);
+		path.append(Constants.THUMBS);
 		path.append(File.separatorChar);
 		path.append(fileName);
 		
