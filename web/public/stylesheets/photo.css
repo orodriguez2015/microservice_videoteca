@@ -1,14 +1,18 @@
 /** ESTILOS PARA CONTENEDOR DE FOTOGRAFIAS ***/
-.contenedorAlbum {
-    width:30%;
+
+.contenedorAlbumPadre {
     margin: 0 auto;
-    
+}
+
+.contenedorAlbum {
+    width:25%;
+    /*margin: 0 auto;*/
+    border: 1px dotted black; 
 }
 
 .contenedorFoto {
     margin: 0 auto;
     text-align: center;    
-   /* border: 1px solid blue;*/
 }
 
 .botoneraAlbum {
@@ -43,8 +47,13 @@
 /** Estilos para dispositivos móviles */
 
 
-@media screen and (max-width: 915px) {
+
+    
+/* Smartphones (portrait) 
+@media only screen and (max-device-width : 444px) and (orientation : portrait){
+
     .contenedorAlbum{
+       border: 1px solid red;
        float: right;
        width: 100%;
     }
@@ -55,25 +64,54 @@
     }
 
     .idFoto {
-       /* width: 52%; */
         text-align:left;
     }
     
     .nombreFoto {
-        /*width:52%;*/
+        text-align:left;
+    }    
+}
+
+*/
+
+/* Smartphones (landscape) 
+@media only screen and (orientation : landscape) and (max-device-width : 667px) {
+
+    .contenedorAlbum{
+       border: 1px solid blueviolet;
+       float: left;
+       width: 40%;
+       text-align: left;
+    }
+
+
+    .contenedorFoto {
+       
+        border: 1px solid blue;
+    }
+   
+    .botoneraAlbum {
+        width:52%;
+    }
+
+    .idFoto {
         text-align:left;
     }
     
+    .nombreFoto {
+        text-align:left;
+    }    
 }
+*/
 
 
+/* Tablets (portrait) 
+@media only screen and (orientation : portrait) and (max-device-width : 810px){
 
-/** Estilos para dispositivos iPad */
-
-@media (min-height: 820px) and (max-width:1180px){
     .contenedorAlbum{
+       border: 1px solid yellowgreen;
        float: right;
-       width: 30%;
+       width: 50%;
     }
 
    
@@ -82,13 +120,12 @@
     }
 
     .idFoto {
-       /* width: 52%; */
         text-align:left;
     }
     
     .nombreFoto {
-        /*width:52%;*/
         text-align:left;
-    }
-    
+    }    
 }
+*/
+
