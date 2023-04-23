@@ -2,7 +2,7 @@
 @media only screen and (max-device-width : 444px) and (orientation : portrait){
 
     .contenedorAlbum{
-       border: 1px solid red;
+       border: 0px solid red;
        float: right;
        width: 100%;
     }
@@ -26,7 +26,7 @@
     @media only screen and (orientation : landscape) and (max-device-width : 915px) {    
 
     .contenedorAlbum{
-       border: 1px solid blueviolet;
+       border: 0px solid blueviolet;
        float: left;
        width: 40%;
        text-align: left;
@@ -34,8 +34,7 @@
 
 
     .contenedorFoto {
-       
-        border: 1px solid blue;
+        border: 0px solid blue;
     }
    
     .botoneraAlbum {

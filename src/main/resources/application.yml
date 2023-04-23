@@ -27,4 +27,4 @@ authentication:
 backup:
    folder:
       album: /home/oscar/backup/album
-      video: /home/oscar/backup/video
+      video: /home/oscar/backup/video   

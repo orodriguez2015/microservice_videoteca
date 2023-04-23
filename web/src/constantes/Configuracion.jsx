@@ -1,9 +1,9 @@
 /**
  * URL base de acceso al servidor en la que está instalado los servicios de tipo REST
  */
-export const URL_BACKEND = "http://localhost:8080/videoteca";
+//export const URL_BACKEND = "http://localhost:8080/videoteca";
 
-//export const URL_BACKEND = "http://192.168.1.20:8080/videoteca";
+export const URL_BACKEND = "http://192.168.1.20:8080/videoteca";
 
 /** URL para mostrar los recursos en forma de imágenes */
 export const URL_BACKEND_IMAGES = URL_BACKEND + "/images";
